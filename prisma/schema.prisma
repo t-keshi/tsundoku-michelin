@@ -1,0 +1,38 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+generator nexusPrisma {
+  provider = "nexus-prisma"
+}
+
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+// this-project
+
+model Candidate {
+  id         Int      @id @default(autoincrement())
+  status     String   @db.VarChar(255)
+  name       String   @db.VarChar(255)
+  age        String   @db.VarChar(255)
+  gender     String   @db.VarChar(255)
+  depertment DateTime @default(now())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+// other-project
+
+model Bookmark {
+  id        Int      @id @default(autoincrement())
+  title     String   @db.VarChar(255)
+  url       String   @db.VarChar(255)
+  icon      String   @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
