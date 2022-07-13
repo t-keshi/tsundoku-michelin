@@ -31,7 +31,7 @@ const styles = {
   },
 };
 
-export const Grow = forwardRef<HTMLDivElement, GrowProps>((props) => {
+export const Grow: React.FC<GrowProps> = (props) => {
   const {
     children,
     inProp = false,
@@ -66,4 +66,4 @@ export const Grow = forwardRef<HTMLDivElement, GrowProps>((props) => {
       }}
     </Transition>
   );
-});
+};

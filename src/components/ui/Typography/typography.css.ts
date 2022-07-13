@@ -1,4 +1,3 @@
-import { style } from "@vanilla-extract/css";
 import { recipe } from "@vanilla-extract/recipes";
 import { vars } from "../../system/theme/index.css";
 import { mq } from "../../system/utils/mediaQuery";

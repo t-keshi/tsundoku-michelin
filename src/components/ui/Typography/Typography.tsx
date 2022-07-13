@@ -56,11 +56,13 @@ export const Typography = forwardRef<
   if (variant === "blockquote") {
     return (
       <figure
+        ref={ref}
         className={clsx(
           typogrqphyClasses.root,
           sx && configs(sx as object),
           figure()
         )}
+        {...rest}
       >
         <blockquote className={blockquote()}>{children}</blockquote>
       </figure>
@@ -82,7 +84,6 @@ export const Typography = forwardRef<
         responsive,
         color,
       }),
-
       className
     ),
     ...rest,
@@ -107,5 +108,5 @@ export const Typography = forwardRef<
     return <h6 {..._props}>{children}</h6>;
   }
 
-  return <p {..._props} />;
+  return <p {..._props}>{children}</p>;
 });

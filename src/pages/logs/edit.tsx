@@ -23,7 +23,7 @@ import { AppBar } from "../../components/ui/AppBar/AppBar";
 import { Button } from "../../components/ui/Button/Button";
 import { NextPageWithLayout } from "../../type";
 import { useRouter } from "next/router";
-import { MarkdownRenderer } from "../../components/ui-group/MarkdownRenderer";
+import { MarkdownRenderer } from "../../components/organisms/MarkdownRenderer";
 
 const WRITTING_MODE = {
   EDIT: "EDIT",

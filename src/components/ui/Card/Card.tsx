@@ -9,7 +9,6 @@ import { Typography } from "../Typography/Typography";
 import { card } from "./card.css";
 
 type CardProps = {
-  children?: React.ReactNode;
   className?: string;
   color?: "inherit" | "paper";
   outlined?: false;
@@ -17,6 +16,7 @@ type CardProps = {
   media?: string;
   href?: string;
   title?: string;
+  footer?: React.ReactNode;
 } & { sx?: Partial<SystemProps> } & Omit<JSX.IntrinsicElements["div"], "color">;
 
 const cardClasses = {
@@ -27,13 +27,13 @@ export const Card = forwardRef<HTMLDivElement, CardProps>((props, ref) => {
   const {
     className,
     sx,
-    children = null,
     color = "inherit",
     outlined = true,
     elevation,
     media,
     href,
     title,
+    footer,
     ...rest
   } = props;
 
@@ -56,18 +56,33 @@ export const Card = forwardRef<HTMLDivElement, CardProps>((props, ref) => {
               layout="fill"
               objectFit="contain"
               alt="logo"
-              style={href ? { cursor: "pointer" } : {}}
+              style={{
+                ...(href && { cursor: "pointer" }),
+              }}
             />
           </Box>
         )}
-        {title && (
-          <Box sx={href ? { p: 2, cursor: "pointer" } : { p: 2 }}>
-            <Typography variant="h5" clickable={Boolean(href)}>
-              {title}
-            </Typography>
-          </Box>
-        )}
-        {children}
+        <Box
+          sx={{
+            ...(href && { cursor: "pointer" }),
+            px: 2,
+            py: 1,
+            mt: 1,
+          }}
+        >
+          {title && (
+            <Box
+              sx={{
+                mb: 1,
+              }}
+            >
+              <Typography variant="h5" clickable={Boolean(href)}>
+                {title}
+              </Typography>
+            </Box>
+          )}
+          {footer && footer}
+        </Box>
       </div>
     </LinkWrapper>
   );

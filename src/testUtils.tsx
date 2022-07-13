@@ -1,7 +1,7 @@
 import { render, RenderOptions, RenderResult } from "@testing-library/react";
 import { AuthModalProvider } from "./containers/authModal";
 import { Layout } from "./components/layout/Layout";
-import { AuthModal } from "./components/ui-group/AuthModal";
+import { AuthModal } from "./components/organisms/AuthModal";
 import "@vanilla-extract/css/disableRuntimeStyles";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";

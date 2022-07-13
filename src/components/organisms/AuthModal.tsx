@@ -9,13 +9,18 @@ import { Button } from "../ui/Button/Button";
 import { Dialog } from "../ui/Dialog/Dialog";
 import { Flex } from "../ui/Flex/Flex";
 import { Typography } from "../ui/Typography/Typography";
+import { signIn } from "next-auth/react";
+import { useSnackbar } from "../../containers/snackbar";
 
 export const AuthModal = () => {
-  const { isOpen, onClose, onLogin } = useAuthModal();
-  const handleLogin = useCallback(() => {
-    onLogin();
-    onClose();
-  }, [onClose, onLogin]);
+  const { isOpen, onClose } = useAuthModal();
+  const { onOpen: onOpenSnackbar } = useSnackbar();
+  const handleLogin = useCallback(async () => {
+    signIn("google").then(() => {
+      onClose();
+      onOpenSnackbar({ message: "ログインしました", status: "success" });
+    });
+  }, [onClose, onOpenSnackbar]);
 
   return (
     <Dialog isOpen={isOpen} onClose={onClose}>

@@ -28,7 +28,7 @@ const Search: NextPageWithLayout = () => {
         sx={{ width: "100%", borderRadius: "100%" }}
         data-testid="search"
       />
-      <Box sx={{ mt: 3 }}>
+      <Box sx={{ mt: 6 }}>
         <Grid
           sx={{
             gridTemplateColumns: { mobile: 1, tablet: 2, desktop: 3 },

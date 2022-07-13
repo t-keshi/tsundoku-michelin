@@ -6,7 +6,6 @@ import { useSnackbar } from "../../../containers/snackbar";
 import { useEventCallback } from "../../../hooks/useEventCallback";
 import { configs } from "../../system/configs/index.css";
 import { SystemProps } from "../../system/configs/type";
-import { ClickAwayListener } from "../ClickAwayListener/ClickAwayListener";
 import { Fade } from "../Fade/Fade";
 import {
   snackbar,

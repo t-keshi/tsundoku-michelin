@@ -1,28 +1,32 @@
-import type { ReactElement, ReactNode } from "react";
-import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 import "../components/system/configs/global.css";
-import { AuthModal } from "../components/ui-group/AuthModal";
+import { AuthModal } from "../components/organisms/AuthModal";
 import { Snackbar } from "../components/ui/Snackbar/Snackbar";
 import { AuthModalProvider } from "../containers/authModal";
 import { SnackbarProvider } from "../containers/snackbar";
 import { NextPageWithLayout } from "../type";
+import { SessionProvider } from "next-auth/react";
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
-const App = ({ Component, pageProps }: AppPropsWithLayout) => {
+const App = ({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppPropsWithLayout) => {
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
-    <SnackbarProvider>
-      <AuthModalProvider>
-        {getLayout(<Component {...pageProps} />)}
-        <Snackbar />
-        <AuthModal />
-      </AuthModalProvider>
-    </SnackbarProvider>
+    <SessionProvider session={session}>
+      <SnackbarProvider>
+        <AuthModalProvider>
+          {getLayout(<Component {...pageProps} />)}
+          <Snackbar />
+          <AuthModal />
+        </AuthModalProvider>
+      </SnackbarProvider>
+    </SessionProvider>
   );
 };
 

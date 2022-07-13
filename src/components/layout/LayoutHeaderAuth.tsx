@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Button } from "../ui/Button/Button";
 import { Flex } from "../ui/Flex/Flex";
 import { Avatar } from "../ui/Avatar/Avatar";
@@ -13,12 +13,21 @@ import { ListItemText } from "../ui/ListItemText/ListItemText";
 import { useAuthModal } from "../../containers/authModal";
 import Link from "next/link";
 import { Popover } from "../ui/Popover/Popover";
+import { useSession, signOut } from "next-auth/react";
+import { useSnackbar } from "../../containers/snackbar";
 
 export const LayoutHeaderAuth = () => {
-  const { onOpen, isLoggedIn, onLogout } = useAuthModal();
+  const { onOpen } = useAuthModal();
   const { anchorEl, onOpen: onMenuOpen, onClose: onMenuClose } = useAnchoEl();
+  const { status } = useSession();
+  const { onOpen: onOpenSnackbar } = useSnackbar();
+  const handleLogOut = useCallback(() => {
+    signOut().then(() =>
+      onOpenSnackbar({ message: "ログアウトしました", status: "success" })
+    );
+  }, [onOpenSnackbar]);
 
-  if (!isLoggedIn) {
+  if (status !== "authenticated") {
     return <Button onClick={onOpen}>Log in</Button>;
   }
 
@@ -53,7 +62,7 @@ export const LayoutHeaderAuth = () => {
             </Link>
           </ListItem>
           <ListItem>
-            <ListItemButton onClick={onLogout}>
+            <ListItemButton onClick={handleLogOut}>
               <ListItemIcon size="sm">
                 <MdLogout />
               </ListItemIcon>

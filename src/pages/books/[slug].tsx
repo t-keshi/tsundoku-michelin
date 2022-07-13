@@ -111,8 +111,11 @@ const Book: NextPageWithLayout = () => {
           </Paper>
           <Box sx={{ mt: 2 }} />
           <Paper sx={{ p: 3, width: "100%" }}>
-            <Flex sx={{ columnGap: 2, alignItems: "center" }}>
+            <Flex sx={{ alignItems: "center", columnGap: 1 }}>
               <Avatar src="/brand-icon.png" />
+              <Typography variant="body2" color="primary">
+                t-keshi
+              </Typography>
               <Typography variant="body2" color="secondary">
                 5ヶ月前に更新
               </Typography>

@@ -8,3 +8,10 @@ npm run typegen
 npm run codegen
 npm run generate
 ```
+
+```
+npm run dev
+
+started api on:
+http://localhost:3000/api/graphql
+```
