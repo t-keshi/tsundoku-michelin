@@ -1,4 +1,5 @@
 import { recipe } from "@vanilla-extract/recipes";
+import { vars } from "../../system/theme/index.css";
 
 export const stack = recipe({
   base: {
@@ -6,22 +7,149 @@ export const stack = recipe({
   },
   variants: {
     horizontal: {
-      true: {},
+      true: {
+        flexDirection: "row",
+      },
       false: {
         flexDirection: "column",
       },
     },
+    spacing: {
+      1: {},
+      2: {},
+      3: {},
+      4: {},
+      5: {},
+    },
+    hasDivider: {
+      true: {},
+      false: {},
+    },
   },
+  compoundVariants: [
+    // horizontal
+    {
+      variants: {
+        horizontal: true,
+        spacing: 1,
+        hasDivider: true,
+      },
+      style: {
+        columnGap: 1,
+      },
+    },
+    {
+      variants: {
+        horizontal: true,
+        spacing: 2,
+        hasDivider: true,
+      },
+      style: {
+        columnGap: 2,
+      },
+    },
+    {
+      variants: {
+        horizontal: true,
+        spacing: 3,
+        hasDivider: true,
+      },
+      style: {
+        columnGap: 3,
+      },
+    },
+    {
+      variants: {
+        horizontal: true,
+        spacing: 4,
+        hasDivider: true,
+      },
+      style: {
+        columnGap: 4,
+      },
+    },
+    {
+      variants: {
+        horizontal: true,
+        spacing: 5,
+        hasDivider: true,
+      },
+      style: {
+        columnGap: 5,
+      },
+    },
+    // vertical
+    {
+      variants: {
+        horizontal: false,
+        spacing: 1,
+        hasDivider: true,
+      },
+      style: {
+        rowGap: 1,
+      },
+    },
+    {
+      variants: {
+        horizontal: false,
+        spacing: 2,
+        hasDivider: true,
+      },
+      style: {
+        rowGap: 2,
+      },
+    },
+    {
+      variants: {
+        horizontal: false,
+        spacing: 3,
+        hasDivider: true,
+      },
+      style: {
+        rowGap: 3,
+      },
+    },
+    {
+      variants: {
+        horizontal: false,
+        spacing: 4,
+        hasDivider: true,
+      },
+      style: {
+        rowGap: 4,
+      },
+    },
+    {
+      variants: {
+        horizontal: false,
+        spacing: 5,
+        hasDivider: true,
+      },
+      style: {
+        rowGap: 5,
+      },
+    },
+  ],
 });
 
-export const stackMargin = recipe({
+export const stackDivider = recipe({
   base: {
-    display: "flex",
+    borderWidth: 0,
+    alignSelf: "stretch",
+    borderColor: vars.palette.lightMode.divider,
+    width: "auto",
+    height: "auto",
   },
   variants: {
     horizontal: {
-      true: {},
-      false: {},
+      true: {
+        borderLeftWidth: "1px",
+        borderBottomWidth: 0,
+      },
+      false: {
+        borderLeftWidth: 0,
+        borderBottomWidth: "1px",
+      },
     },
     spacing: {
       1: {},
@@ -32,13 +160,15 @@ export const stackMargin = recipe({
     },
   },
   compoundVariants: [
+    // horizontal
     {
       variants: {
         horizontal: true,
         spacing: 1,
       },
       style: {
-        marginLeft: 8,
+        marginRight: vars.spacing[0.5],
+        marginLeft: vars.spacing[0.5],
       },
     },
     {
@@ -47,7 +177,8 @@ export const stackMargin = recipe({
         spacing: 2,
       },
       style: {
-        marginLeft: 16,
+        marginRight: vars.spacing[1],
+        marginLeft: vars.spacing[1],
       },
     },
     {
@@ -56,7 +187,8 @@ export const stackMargin = recipe({
         spacing: 3,
       },
       style: {
-        marginLeft: 24,
+        marginRight: 12,
+        marginLeft: 12,
       },
     },
     {
@@ -65,7 +197,8 @@ export const stackMargin = recipe({
         spacing: 4,
       },
       style: {
-        marginLeft: 32,
+        marginRight: vars.spacing[2],
+        marginLeft: vars.spacing[2],
       },
     },
     {
@@ -74,52 +207,59 @@ export const stackMargin = recipe({
         spacing: 5,
       },
       style: {
-        marginLeft: 40,
+        marginRight: 20,
+        marginLeft: 20,
       },
     },
+    // vertial
     {
       variants: {
         horizontal: false,
         spacing: 1,
       },
       style: {
-        marginTop: 8,
+        marginTop: vars.spacing[0.5],
+        marginBottom: vars.spacing[0.5],
       },
     },
     {
       variants: {
-        horizontal: true,
+        horizontal: false,
         spacing: 2,
       },
       style: {
-        marginTop: 16,
+        marginTop: vars.spacing[1],
+        marginBottom: vars.spacing[1],
       },
     },
     {
       variants: {
-        horizontal: true,
+        horizontal: false,
         spacing: 3,
       },
       style: {
-        marginTop: 24,
+        marginTop: 12,
+        marginBottom: 12,
       },
     },
     {
       variants: {
-        horizontal: true,
+        horizontal: false,
         spacing: 4,
       },
       style: {
-        marginTop: 32,
+        marginTop: vars.spacing[2],
+        marginBottom: vars.spacing[2],
       },
     },
     {
       variants: {
-        horizontal: true,
+        horizontal: false,
         spacing: 5,
       },
       style: {
-        marginTop: 40,
+        marginTop: 20,
+        marginBottom: 20,
       },
     },
   ],

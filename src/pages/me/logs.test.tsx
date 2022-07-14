@@ -3,10 +3,10 @@ import { byText } from "testing-library-selector";
 import Profile from "./profile";
 
 const ui = {
-  pageTitle: byText(/Profile/),
+  pageTitle: byText(/Logs/),
 };
 
-test("ユーザーがログインしているケースで、ユーザーはプロフィールを変更し、その結果を見ることができる", async () => {
+test("ユーザーがログインしているケースで、ユーザーは自分の書いた読書ログの一覧を見ることができる", async () => {
   render(<Profile />);
 
   expect(ui.pageTitle.get()).toBeInTheDocument();

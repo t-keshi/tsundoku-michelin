@@ -1,21 +1,25 @@
-import type { NextPage } from "next";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import { MdOutlineBookmarkAdd, MdTaskAlt } from "react-icons/md";
-import { Layout } from "../../components/layout/Layout";
-import { Accordion } from "../../components/ui/Accordion/Accordion";
-import { Avatar } from "../../components/ui/Avatar/Avatar";
-import { Box } from "../../components/ui/Box/Box";
-import { Button } from "../../components/ui/Button/Button";
-import { Card } from "../../components/ui/Card/Card";
-import { Flex } from "../../components/ui/Flex/Flex";
-import { Paper } from "../../components/ui/Paper/Paper";
-import { Typography } from "../../components/ui/Typography/Typography";
-import { useSnackbar } from "../../containers/snackbar";
-import { useDisclosure } from "../../hooks/useDisclosure";
-import { NextPageWithLayout } from "../../type";
+import {
+  Accordion,
+  Avatar,
+  Box,
+  Button,
+  Card,
+  Flex,
+  Paper,
+  Typography,
+} from "../components/ui";
+import { useSnackbar } from "../containers/snackbar";
+import { useDisclosure } from "../hooks/useDisclosure";
+import { NextPageWithLayout } from "../type";
 
-const Book: NextPageWithLayout = () => {
+export const BookTemplate: NextPageWithLayout = () => {
+  const router = useRouter();
+  const query = router.query as { bookId: string };
+
   const dummyText =
     "何は今ほぼその講演国という事の頃に見えるないませ。充分同年にらく者ももうこういう尊重たましのみを繰りばおりたからは相談しでしませて、ちょっとには穿いでましたです。校長でした事は何でもかでも一遍にもちたなた。けっして大森さんが説明文芸なぜ学習を定めるですかごその先生それか専攻でとかいうお教育たましですたが、同じ多数は私か差日本人をすれと、岡田さんのので主命の彼らがどうもお出入りと通じて何その道を肝関係に行くように恐らくご払底を下ったでから、いよいよいやしくも謝罪をあるですていですのが思うだた。するとしかしご逼に困る事はそう不愉快とあっないて、その文章をは困るませてといったがたをいうているなない";
   const dummyTextExcerpt = `${dummyText.slice(0, 120)}...`;
@@ -58,7 +62,10 @@ const Book: NextPageWithLayout = () => {
                   あなたの積読を、みんなの資産に。
                 </Typography>
                 <Flex sx={{ columnGap: 2 }}>
-                  <Link href="/logs/edit">
+                  <Link
+                    href="/edit/[bookId]/[logId]"
+                    as={`/edit/${encodeURIComponent(query.bookId)}/new`}
+                  >
                     <Button startIcon={<>✍️</>}>読書ログを投稿</Button>
                   </Link>
                   {isAddedBookshelf ? (
@@ -126,7 +133,6 @@ const Book: NextPageWithLayout = () => {
             />
           </Paper>
         </Box>
-
         <Box
           sx={{
             width: 300,
@@ -148,9 +154,3 @@ const Book: NextPageWithLayout = () => {
     </>
   );
 };
-
-Book.getLayout = (page: React.ReactElement) => {
-  return <Layout>{page}</Layout>;
-};
-
-export default Book;

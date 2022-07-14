@@ -6,6 +6,10 @@ const prisma = new PrismaClient();
 
 const resetDB = async () => {
   await prisma.book.deleteMany();
+  await prisma.userBookLog.deleteMany();
+  await prisma.bookContent.deleteMany();
+  await prisma.account.deleteMany();
+  await prisma.user.deleteMany();
 };
 
 const setUpUser = async () => {
@@ -15,13 +19,9 @@ const setUpUser = async () => {
 };
 
 const setUpBook = async () => {
-  await Promise.all(
-    bookData.map((data) => {
-      prisma.book.create({
-        data,
-      });
-    })
-  );
+  await prisma.book.create({
+    data: bookData[0],
+  });
 };
 
 const load = async () => {

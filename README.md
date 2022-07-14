@@ -7,6 +7,7 @@ npm run connect
 npm run typegen
 npm run codegen
 npm run generate
+npm run seed
 ```
 
 ```

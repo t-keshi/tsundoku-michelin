@@ -33,9 +33,7 @@ export const flex = defineProperties({
       0: 0,
       1: 1,
     },
-    flexWrap: {
-      true: "wrap",
-    },
+    flexWrap: ["wrap"],
     gap: vars.spacing,
     rowGap: vars.spacing,
     columnGap: vars.spacing,

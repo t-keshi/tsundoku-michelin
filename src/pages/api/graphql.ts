@@ -1,3 +1,4 @@
+import { PrismaClient } from "@prisma/client";
 import { ApolloServer } from "apollo-server-micro";
 import { MicroRequest } from "apollo-server-micro/dist/types";
 import { ServerResponse } from "http";
@@ -6,8 +7,11 @@ import { schema } from "../../../server/schema";
 
 const cors = Cors();
 
+export const prisma = new PrismaClient();
+
 const server = new ApolloServer({
   schema,
+  context: () => ({ prisma }),
 });
 
 export const config = {

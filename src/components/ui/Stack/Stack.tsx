@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { configs } from "../../system/configs/index.css";
 import { SystemProps } from "../../system/configs/type";
-import { stack, stackMargin } from "./stack.css";
+import { stack, stackDivider } from "./stack.css";
 
 const getValidChildren = (children: React.ReactNode) =>
   Children.toArray(children).filter((child) =>
@@ -19,10 +19,12 @@ type StackProps = {
   className?: string;
   horizontal?: boolean;
   spacing?: 1 | 2 | 3 | 4 | 5;
+  hasDivider?: boolean;
 } & { sx?: Partial<SystemProps> } & JSX.IntrinsicElements["div"];
 
 const stackClasses = {
   root: "Vanilla-Stack-root",
+  divider: "Vanilla-Stack-divider",
 };
 
 export const Stack = forwardRef<HTMLDivElement, StackProps>((props, ref) => {
@@ -32,25 +34,32 @@ export const Stack = forwardRef<HTMLDivElement, StackProps>((props, ref) => {
     children,
     horizontal = false,
     spacing = 4,
+    hasDivider = false,
     ...rest
   } = props;
 
   const validChildren = getValidChildren(children);
-  const clones = validChildren.map((child, index) => {
-    const key = child.key !== undefined ? child.key : index;
-    const isLast = index + 1 === validChildren.length;
-    const clonedDivider = cloneElement(<div />, {
-      className: stackMargin({ horizontal, spacing }),
-    });
-    const renderDivider = isLast ? null : clonedDivider;
+  const clones = !hasDivider
+    ? validChildren
+    : validChildren.map((child, index) => {
+        const key = child.key !== undefined ? child.key : index;
+        const isLast = index + 1 === validChildren.length;
 
-    return (
-      <React.Fragment key={key}>
-        {child}
-        {renderDivider}
-      </React.Fragment>
-    );
-  });
+        return (
+          <React.Fragment key={key}>
+            {child}
+            {!isLast && (
+              <div
+                className={clsx(
+                  stackClasses.divider,
+                  stackDivider({ horizontal, spacing })
+                )}
+                {...rest}
+              />
+            )}
+          </React.Fragment>
+        );
+      });
 
   return (
     <div
@@ -58,7 +67,7 @@ export const Stack = forwardRef<HTMLDivElement, StackProps>((props, ref) => {
       className={clsx(
         stackClasses.root,
         sx && configs(sx as object),
-        stack({ horizontal }),
+        stack({ horizontal, spacing, hasDivider }),
         className
       )}
       {...rest}

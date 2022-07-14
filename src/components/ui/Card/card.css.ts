@@ -45,12 +45,36 @@ export const card = recipe({
       3: {
         boxShadow: vars.shadow[3],
       },
-      4: {
-        boxShadow: vars.shadow[4],
-      },
-      5: {
-        boxShadow: vars.shadow[5],
-      },
     },
+  },
+});
+
+const MEDIA_HEIGHT = 200;
+
+export const cardMedia = recipe({
+  base: {
+    height: 200,
+    width: "100%",
+    position: "relative",
+  },
+});
+
+export const cardContent = recipe({
+  base: {
+    paddingRight: vars.spacing[2],
+    paddingLeft: vars.spacing[2],
+    paddingTop: vars.spacing[2],
+    paddingBottom: vars.spacing[1],
+    marginTop: vars.spacing[1],
+    height: `calc(100% - ${MEDIA_HEIGHT}px)`,
+    display: "grid",
+    gridTemplateRows: "auto 1fr",
+  },
+});
+
+export const cardFooter = recipe({
+  base: {
+    marginTop: "auto",
+    paddingBottom: vars.spacing[1],
   },
 });

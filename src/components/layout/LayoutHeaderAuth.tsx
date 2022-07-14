@@ -8,7 +8,7 @@ import { List } from "../ui/List/List";
 import { ListItem } from "../ui/ListItem/ListItem";
 import { ListItemButton } from "../ui/ListItemButton/ListItemButton";
 import { ListItemIcon } from "../ui/ListItemIcon/ListItemIcon";
-import { MdLogout, MdManageAccounts } from "react-icons/md";
+import { MdLogout, MdManageAccounts, MdOutlineArticle } from "react-icons/md";
 import { ListItemText } from "../ui/ListItemText/ListItemText";
 import { useAuthModal } from "../../containers/authModal";
 import Link from "next/link";
@@ -32,13 +32,7 @@ export const LayoutHeaderAuth = () => {
   }
 
   return (
-    <Flex
-      sx={{
-        height: "100%",
-        alignItems: "center",
-        columnGap: 2,
-      }}
-    >
+    <>
       <IconButton onClick={onMenuOpen}>
         <Avatar src="/brand-icon.png" />
       </IconButton>
@@ -62,6 +56,16 @@ export const LayoutHeaderAuth = () => {
             </Link>
           </ListItem>
           <ListItem>
+            <Link href="/me/logs">
+              <ListItemButton>
+                <ListItemIcon size="sm">
+                  <MdOutlineArticle />
+                </ListItemIcon>
+                <ListItemText>読書ログの管理</ListItemText>
+              </ListItemButton>
+            </Link>
+          </ListItem>
+          <ListItem>
             <ListItemButton onClick={handleLogOut}>
               <ListItemIcon size="sm">
                 <MdLogout />
@@ -71,6 +75,6 @@ export const LayoutHeaderAuth = () => {
           </ListItem>
         </List>
       </Popover>
-    </Flex>
+    </>
   );
 };

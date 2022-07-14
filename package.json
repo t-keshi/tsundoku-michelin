@@ -13,7 +13,7 @@
     "prisma": "prisma generate",
     "typegen": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' --transpile-only server/schema",
     "codegen": "graphql-codegen",
-    "generate": "npm run typgen & npm run codegen",
+    "generate": "npm run typegen & npm run codegen",
     "seed": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed.ts"
   },
   "prisma": {

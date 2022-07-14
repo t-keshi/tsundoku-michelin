@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client";
+import { userId } from "./fixture";
 
 export const bookData: Prisma.BookCreateInput[] = [
   {
@@ -13,8 +14,16 @@ export const bookData: Prisma.BookCreateInput[] = [
       create: [
         {
           index: 1,
-          type: "section",
+          type: "SECTION",
           heading: "アーキテクチャ特性とは何か",
+        },
+      ],
+    },
+    userBookLog: {
+      create: [
+        {
+          userId,
+          log: "良き本",
         },
       ],
     },
@@ -30,8 +39,16 @@ export const bookData: Prisma.BookCreateInput[] = [
       create: [
         {
           index: 1,
-          type: "section",
+          type: "SECTION",
           heading: "一番わかりやすいIntelliJの使い方",
+        },
+      ],
+    },
+    userBookLog: {
+      create: [
+        {
+          userId,
+          log: "良き本",
         },
       ],
     },
@@ -47,8 +64,16 @@ export const bookData: Prisma.BookCreateInput[] = [
       create: [
         {
           index: 1,
-          type: "chapter",
+          type: "CHAPTER",
           heading: "アーキテクチャ特性とは何か",
+        },
+      ],
+    },
+    userBookLog: {
+      create: [
+        {
+          userId,
+          log: "良き本",
         },
       ],
     },

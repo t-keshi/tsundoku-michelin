@@ -10,7 +10,18 @@ type Flex =
   | "space-around"
   | "space-evenly";
 
-type Size = 100 | 200 | 300 | 400 | 500 | "100%" | "auto";
+type Size =
+  | 100
+  | 150
+  | 200
+  | 250
+  | 300
+  | 350
+  | 400
+  | 450
+  | 500
+  | "100%"
+  | "auto";
 
 type Space = 0.5 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | "auto";
 
@@ -90,7 +101,7 @@ export type SystemProps = BreakPoint<{
   alignSelf: Flex;
   flexGrow: 0 | 1;
   flexShrink: 0 | 1;
-  flexWrap: true;
+  flexWrap: "wrap";
   gap: Space;
   rowGap: Space;
   columnGap: Space;
