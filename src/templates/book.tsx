@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import { MdOutlineBookmarkAdd, MdTaskAlt } from "react-icons/md";
+import { FetchBookWithLogsQuery } from "../../generated/types";
 import {
   Accordion,
   Avatar,
@@ -10,20 +10,19 @@ import {
   Card,
   Flex,
   Paper,
+  Stack,
   Typography,
 } from "../components/ui";
 import { useSnackbar } from "../containers/snackbar";
-import { useDisclosure } from "../hooks/useDisclosure";
 import { NextPageWithLayout } from "../type";
+import { formatDistance } from "date-fns";
+import { ja } from "date-fns/locale";
 
-export const BookTemplate: NextPageWithLayout = () => {
-  const router = useRouter();
-  const query = router.query as { bookId: string };
+type Props = {
+  bookWithLogs: FetchBookWithLogsQuery["book"];
+};
 
-  const dummyText =
-    "何は今ほぼその講演国という事の頃に見えるないませ。充分同年にらく者ももうこういう尊重たましのみを繰りばおりたからは相談しでしませて、ちょっとには穿いでましたです。校長でした事は何でもかでも一遍にもちたなた。けっして大森さんが説明文芸なぜ学習を定めるですかごその先生それか専攻でとかいうお教育たましですたが、同じ多数は私か差日本人をすれと、岡田さんのので主命の彼らがどうもお出入りと通じて何その道を肝関係に行くように恐らくご払底を下ったでから、いよいよいやしくも謝罪をあるですていですのが思うだた。するとしかしご逼に困る事はそう不愉快とあっないて、その文章をは困るませてといったがたをいうているなない";
-  const dummyTextExcerpt = `${dummyText.slice(0, 120)}...`;
-  const { isOpen: isExtended, onOpen } = useDisclosure();
+export const BookTemplate: NextPageWithLayout<Props> = ({ bookWithLogs }) => {
   const { onOpen: onSnackbarOpen } = useSnackbar();
   const [isAddedBookshelf, setIsAddedBookshelf] = useState(false);
   const handleClickAddBookshelf = useCallback(() => {
@@ -46,7 +45,7 @@ export const BookTemplate: NextPageWithLayout = () => {
           fontWeight: "bold",
         }}
       >
-        IntelliJ IDEAハンズオン ――基本操作からプロジェクト管理までマスター
+        {bookWithLogs.title}
       </Typography>
       <Box sx={{ mt: 5 }} />
       <Flex sx={{ columnGap: 2 }}>
@@ -64,7 +63,7 @@ export const BookTemplate: NextPageWithLayout = () => {
                 <Flex sx={{ columnGap: 2 }}>
                   <Link
                     href="/edit/[bookId]/[logId]"
-                    as={`/edit/${encodeURIComponent(query.bookId)}/new`}
+                    as={`/edit/${encodeURIComponent(bookWithLogs.id)}/new`}
                   >
                     <Button startIcon={<>✍️</>}>読書ログを投稿</Button>
                   </Link>
@@ -91,47 +90,29 @@ export const BookTemplate: NextPageWithLayout = () => {
             </Flex>
           </Paper>
           <Box sx={{ mt: 2 }} />
-          <Paper sx={{ p: 3, width: "100%" }}>
-            <Flex sx={{ columnGap: 2, alignItems: "center" }}>
-              <Avatar src="/brand-icon.png" />
-              <Typography variant="body2" color="secondary">
-                5ヶ月前に更新
-              </Typography>
-            </Flex>
-            {!isExtended ? (
-              <>
-                <Typography>{dummyTextExcerpt}</Typography>
-                <Flex
-                  sx={{
-                    mt: 2,
-                    justifyContent: "center",
-                  }}
-                >
-                  <Button variant="text" onClick={onOpen}>
-                    もっと見る
-                  </Button>
+          <Stack spacing={2}>
+            {bookWithLogs.bookLogs.map((log, index) => (
+              <Paper key={log.id} sx={{ p: 3, width: "100%" }}>
+                <Flex sx={{ alignItems: "center", columnGap: 1 }}>
+                  <Avatar src="/brand-icon.png" />
+                  <Typography variant="body2" color="primary">
+                    {log.user.name}
+                  </Typography>
+                  <Typography variant="body2" color="secondary">
+                    {formatDistance(new Date(log.updatedAt), new Date(), {
+                      locale: ja,
+                    })}
+                    前
+                  </Typography>
                 </Flex>
-              </>
-            ) : (
-              <Typography>{dummyText}</Typography>
-            )}
-          </Paper>
-          <Box sx={{ mt: 2 }} />
-          <Paper sx={{ p: 3, width: "100%" }}>
-            <Flex sx={{ alignItems: "center", columnGap: 1 }}>
-              <Avatar src="/brand-icon.png" />
-              <Typography variant="body2" color="primary">
-                t-keshi
-              </Typography>
-              <Typography variant="body2" color="secondary">
-                5ヶ月前に更新
-              </Typography>
-            </Flex>
-            <Accordion
-              excerpt={<Typography>{dummyTextExcerpt}</Typography>}
-              fullContent={<Typography>{dummyText}</Typography>}
-            />
-          </Paper>
+                <Accordion
+                  initialIsOpen={index === 0}
+                  excerpt={<Typography>{log.log.slice(0, 200)}</Typography>}
+                  fullContent={<Typography>{log.log}</Typography>}
+                />
+              </Paper>
+            ))}
+          </Stack>
         </Box>
         <Box
           sx={{
@@ -145,8 +126,8 @@ export const BookTemplate: NextPageWithLayout = () => {
         >
           <Card
             outlined={false}
-            media="http://books.google.com/books/content?id=APq6swEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
-            title="IntelliJ IDEAハンズオン ――基本操作からプロジェクト管理までマスター"
+            media={bookWithLogs.image}
+            title={bookWithLogs.title}
             color="paper"
           />
         </Box>

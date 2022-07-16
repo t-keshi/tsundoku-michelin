@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { userId } from "./fixture";
+import { userIds } from "./fixture";
 
 export const bookData: Prisma.BookCreateInput[] = [
   {
@@ -10,7 +10,7 @@ export const bookData: Prisma.BookCreateInput[] = [
     url: "https://www.amazon.co.jp",
     bookLogCount: 1,
     bookshelfCount: 2,
-    bookContent: {
+    bookContents: {
       create: [
         {
           index: 1,
@@ -19,11 +19,28 @@ export const bookData: Prisma.BookCreateInput[] = [
         },
       ],
     },
-    userBookLog: {
+    bookLogs: {
       create: [
         {
-          userId,
-          log: "良き本",
+          userId: userIds[0],
+          log: `↑この子の名前は"emotion"。
+          styled-componentと並んで、最も有名なCSS-in-JSのライブラリの１つです。
+          CSS-in-JSとは、JavaScriptを使ってスタイルを書く方法です。CSS-in-JSを使うことにより、CSSにありがちな名前の衝突やスタイルの複雑な優先順位の問題に別れを告げることができます。そして、より宣言的に、より再利用可能な方法でスタイルを記述できます。
+          ところで、同じCSS-in-JSであっても人によって使い方は様々です。ある書き方はメンテナンスしやすくしますが、また、ある書き方はemotionのメリットを十分に引き出せません。
+          どうせなら、emotionを解き放ちたい...!`,
+        },
+        {
+          userId: userIds[1],
+          log: `目は最初に下まで行ってreturnの後に<StatWrapper>と書いてあるのを見ると、一番上のconst StatWrapper = styled('div')...と書いてあるところまで戻ってきます。それからまた下へ行き<StatHeader>と書いてあるのを見つけると、上のconst StatHeader = styled('div')...と書いてあるところに戻って...、と上限運動を繰り返します。
+          つまり、この書き方だと、上へ下へと行ったり来たりしながら読む必要があり、あまり直感的な書き方ではないと言えます。
+          加えて、コンポーネントの名前をつけるのにも難儀します。上記デザインサンプルのSessionsの文字にあたる箇所は、StatHeaderと呼ぼうか、それとも、StatTitleがいいだろうか。。。そのようなことをいちいち考えるのは、面倒です。`,
+        },
+      ],
+    },
+    bookshelfs: {
+      create: [
+        {
+          userId: userIds[0],
         },
       ],
     },
@@ -35,7 +52,7 @@ export const bookData: Prisma.BookCreateInput[] = [
     url: "https://www.amazon.co.jp",
     bookLogCount: 1,
     bookshelfCount: 2,
-    bookContent: {
+    bookContents: {
       create: [
         {
           index: 1,
@@ -44,11 +61,28 @@ export const bookData: Prisma.BookCreateInput[] = [
         },
       ],
     },
-    userBookLog: {
+    bookLogs: {
       create: [
         {
-          userId,
-          log: "良き本",
+          userId: userIds[0],
+          log: `↑この子の名前は"emotion"。
+          styled-componentと並んで、最も有名なCSS-in-JSのライブラリの１つです。
+          CSS-in-JSとは、JavaScriptを使ってスタイルを書く方法です。CSS-in-JSを使うことにより、CSSにありがちな名前の衝突やスタイルの複雑な優先順位の問題に別れを告げることができます。そして、より宣言的に、より再利用可能な方法でスタイルを記述できます。
+          ところで、同じCSS-in-JSであっても人によって使い方は様々です。ある書き方はメンテナンスしやすくしますが、また、ある書き方はemotionのメリットを十分に引き出せません。
+          どうせなら、emotionを解き放ちたい...!`,
+        },
+        {
+          userId: userIds[1],
+          log: `目は最初に下まで行ってreturnの後に<StatWrapper>と書いてあるのを見ると、一番上のconst StatWrapper = styled('div')...と書いてあるところまで戻ってきます。それからまた下へ行き<StatHeader>と書いてあるのを見つけると、上のconst StatHeader = styled('div')...と書いてあるところに戻って...、と上限運動を繰り返します。
+          つまり、この書き方だと、上へ下へと行ったり来たりしながら読む必要があり、あまり直感的な書き方ではないと言えます。
+          加えて、コンポーネントの名前をつけるのにも難儀します。上記デザインサンプルのSessionsの文字にあたる箇所は、StatHeaderと呼ぼうか、それとも、StatTitleがいいだろうか。。。そのようなことをいちいち考えるのは、面倒です。`,
+        },
+      ],
+    },
+    bookshelfs: {
+      create: [
+        {
+          userId: userIds[1],
         },
       ],
     },
@@ -60,7 +94,7 @@ export const bookData: Prisma.BookCreateInput[] = [
     url: "https://www.amazon.co.jp",
     bookLogCount: 1,
     bookshelfCount: 2,
-    bookContent: {
+    bookContents: {
       create: [
         {
           index: 1,
@@ -69,11 +103,21 @@ export const bookData: Prisma.BookCreateInput[] = [
         },
       ],
     },
-    userBookLog: {
+    bookLogs: {
       create: [
         {
-          userId,
+          userId: userIds[0],
           log: "良き本",
+        },
+      ],
+    },
+    bookshelfs: {
+      create: [
+        {
+          userId: userIds[0],
+        },
+        {
+          userId: userIds[1],
         },
       ],
     },

@@ -1,10 +1,9 @@
+import { formatDistance } from "date-fns";
+import { ja } from "date-fns/locale";
 import Link from "next/link";
 import React from "react";
-import {
-  MdModeEdit,
-  MdOutlineDelete,
-  MdPlayCircleFilled,
-} from "react-icons/md";
+import { MdModeEdit, MdOutlineDelete } from "react-icons/md";
+import { FetchUserBookLogsQuery } from "../../generated/types";
 import {
   Box,
   Flex,
@@ -15,7 +14,11 @@ import {
   Typography,
 } from "../components/ui";
 
-export const LogsTemplate: React.FC = () => {
+type Props = {
+  bookLogs: FetchUserBookLogsQuery["bookLogs"];
+};
+
+export const LogsTemplate: React.FC<Props> = ({ bookLogs }) => {
   const charCount = Number(10980).toLocaleString();
 
   return (
@@ -24,55 +27,46 @@ export const LogsTemplate: React.FC = () => {
       <Box sx={{ mt: 3 }} />
       <Paper sx={{ p: 3, width: "100%" }}>
         <Stack hasDivider spacing={4}>
-          <Flex sx={{ justifyContent: "space-between", flexWrap: "wrap" }}>
-            <Box sx={{ overflow: "hidden", minWidth: 200 }}>
-              <Link href={`/books/${encodeURIComponent("hey")}`}>
-                <Typography variant="h5" noWrap clickable>
-                  君のemotionを解き放て！
-                </Typography>
-              </Link>
-              <Flex inline sx={{ columnGap: 2, flexShrink: 1 }}>
-                <Typography variant="overline" color="secondary">
-                  {charCount}文字
-                </Typography>
-                <Typography variant="overline" color="secondary">
-                  5ヶ月前に更新
-                </Typography>
-              </Flex>
-            </Box>
-            <IconButtonGroup>
-              <Link href={`/logs/edit/${encodeURIComponent("hey")}`}>
+          {bookLogs.map((log) => (
+            <Flex
+              key={log.id}
+              sx={{ justifyContent: "space-between", flexWrap: "wrap" }}
+            >
+              <Box sx={{ overflow: "hidden", minWidth: 200 }}>
+                <Link href={`/books/${encodeURIComponent(log.book.id)}`}>
+                  <Typography variant="h5" noWrap clickable>
+                    {log.book.title}
+                  </Typography>
+                </Link>
+                <Flex inline sx={{ columnGap: 2, flexShrink: 1 }}>
+                  <Typography variant="overline" color="secondary">
+                    {log.log.length}文字
+                  </Typography>
+                  <Typography variant="overline" color="secondary">
+                    {formatDistance(new Date(log.updatedAt), new Date(), {
+                      locale: ja,
+                    })}
+                    前
+                  </Typography>
+                </Flex>
+              </Box>
+              <IconButtonGroup>
+                <Link
+                  href="/edit/[bookId]/[logId]"
+                  as={`/edit/${encodeURIComponent(
+                    log.book.id
+                  )}/${encodeURIComponent(log.id)}`}
+                >
+                  <IconButton>
+                    <MdModeEdit />
+                  </IconButton>
+                </Link>
                 <IconButton>
-                  <MdModeEdit />
+                  <MdOutlineDelete />
                 </IconButton>
-              </Link>
-              <IconButton>
-                <MdOutlineDelete />
-              </IconButton>
-            </IconButtonGroup>
-          </Flex>
-          <Box>
-            <Typography variant="h5">君のemotionを解き放て！</Typography>
-            <Flex inline sx={{ columnGap: 2 }}>
-              <Typography variant="overline" color="secondary">
-                {charCount}文字
-              </Typography>
-              <Typography variant="overline" color="secondary">
-                5ヶ月前に更新
-              </Typography>
+              </IconButtonGroup>
             </Flex>
-          </Box>
-          <Box>
-            <Typography variant="h5">君のemotionを解き放て！</Typography>
-            <Flex inline sx={{ columnGap: 2 }}>
-              <Typography variant="overline" color="secondary">
-                10980文字
-              </Typography>
-              <Typography variant="overline" color="secondary">
-                {charCount}文字
-              </Typography>
-            </Flex>
-          </Box>
+          ))}
         </Stack>
       </Paper>
     </>

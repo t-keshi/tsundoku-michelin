@@ -59,15 +59,15 @@ model Session {
 }
 
 model User {
-  id            String          @id @default(cuid())
+  id            String      @id @default(cuid())
   name          String?
-  email         String?         @unique
+  email         String?     @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
-  userBookLog   UserBookLog[]
-  userBookShelf UserBookShelf[]
+  bookLogs      BookLog[]
+  bookShelfs    Bookshelf[]
 }
 
 model VerificationToken {
@@ -79,17 +79,17 @@ model VerificationToken {
 }
 
 model Book {
-  id             String          @id @default(cuid())
+  id             String        @id @default(cuid())
   title          String
   image          String
-  url            String          @db.Text
+  url            String        @db.Text
   bookLogCount   Int
   bookshelfCount Int
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  bookContent    BookContent[]
-  userBookLog    UserBookLog[]
-  userBookShelf  UserBookShelf[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  bookContents   BookContent[]
+  bookLogs       BookLog[]
+  bookshelfs     Bookshelf[]
 }
 
 model BookContent {
@@ -104,7 +104,7 @@ model BookContent {
   book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
 }
 
-model UserBookLog {
+model BookLog {
   id        String   @id @default(cuid())
   bookId    String
   userId    String
@@ -112,17 +112,19 @@ model UserBookLog {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book Book @relation(fields: [bookId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 }
 
-model UserBookShelf {
+model Bookshelf {
   id        String   @id @default(cuid())
   bookId    String
   userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book Book @relation(fields: [bookId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([bookId, userId])
 }

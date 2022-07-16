@@ -83,50 +83,50 @@ export const stack = recipe({
       variants: {
         horizontal: false,
         spacing: 1,
-        hasDivider: true,
+        hasDivider: false,
       },
       style: {
-        rowGap: 1,
+        rowGap: vars.spacing[1],
       },
     },
     {
       variants: {
         horizontal: false,
         spacing: 2,
-        hasDivider: true,
+        hasDivider: false,
       },
       style: {
-        rowGap: 2,
+        rowGap: vars.spacing[2],
       },
     },
     {
       variants: {
         horizontal: false,
         spacing: 3,
-        hasDivider: true,
+        hasDivider: false,
       },
       style: {
-        rowGap: 3,
+        rowGap: vars.spacing[3],
       },
     },
     {
       variants: {
         horizontal: false,
         spacing: 4,
-        hasDivider: true,
+        hasDivider: false,
       },
       style: {
-        rowGap: 4,
+        rowGap: vars.spacing[4],
       },
     },
     {
       variants: {
         horizontal: false,
         spacing: 5,
-        hasDivider: true,
+        hasDivider: false,
       },
       style: {
-        rowGap: 5,
+        rowGap: vars.spacing[5],
       },
     },
   ],

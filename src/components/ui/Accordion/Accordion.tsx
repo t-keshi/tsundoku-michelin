@@ -6,11 +6,11 @@ import { SystemProps } from "../../system/configs/type";
 import { Button } from "../Button/Button";
 import { Flex } from "../Flex/Flex";
 import { Grow } from "../Grow/Grow";
-import { Typography } from "../Typography/Typography";
 import { accordion } from "./accordion.css";
 
 type AccordionProps = {
   className?: string;
+  initialIsOpen?: boolean;
   excerpt: React.ReactElement;
   fullContent: React.ReactElement;
 } & { sx?: Partial<SystemProps> } & Omit<
@@ -24,8 +24,15 @@ const accordionClasses = {
 
 export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
   (props, ref) => {
-    const { className, sx, excerpt, fullContent, ...rest } = props;
-    const { isOpen, onOpen } = useDisclosure();
+    const {
+      className,
+      sx,
+      initialIsOpen = false,
+      excerpt,
+      fullContent,
+      ...rest
+    } = props;
+    const { isOpen, onOpen } = useDisclosure(initialIsOpen);
 
     return (
       <div

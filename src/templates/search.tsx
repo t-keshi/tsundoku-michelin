@@ -1,19 +1,22 @@
 import { useDeferredValue, useEffect, useRef, useState } from "react";
+import { SearchBooksQuery } from "../../generated/types";
 import { Box } from "../components/ui/Box/Box";
 import { Card } from "../components/ui/Card/Card";
 import { Grid } from "../components/ui/Grid/Grid";
 import { TextField } from "../components/ui/TextField/TextField";
 
-export const SearchTemplate: React.FC = () => {
+type Props = {
+  booksSearch: SearchBooksQuery["booksSearch"] | undefined;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+export const SearchTemplate: React.FC<Props> = ({ booksSearch, onChange }) => {
   const textFieldRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     if (textFieldRef.current) {
       textFieldRef.current.focus();
     }
   }, []);
-
-  const [text, setText] = useState("");
-  const deferredText = useDeferredValue(text);
 
   return (
     <>
@@ -24,6 +27,7 @@ export const SearchTemplate: React.FC = () => {
         ref={textFieldRef}
         sx={{ width: "100%", borderRadius: "100%" }}
         data-testid="search"
+        onChange={onChange}
       />
       <Box sx={{ mt: 6 }}>
         <Grid
@@ -32,14 +36,15 @@ export const SearchTemplate: React.FC = () => {
             gridGap: 4,
           }}
         >
-          <Card
-            media="http://books.google.com/books/content?id=APq6swEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
-            title="IntelliJ IDEAハンズオン ――基本操作からプロジェクト管理までマスター"
-            href={`/books/${encodeURIComponent("hey")}`}
-          />
-          <Card>hey</Card>
-          <Card>hey</Card>
-          <Card>hey</Card>
+          {booksSearch &&
+            booksSearch.map((book) => (
+              <Card
+                key={book.id}
+                media={book.image}
+                title={book.title}
+                href={`/books/${encodeURIComponent(book.id)}`}
+              />
+            ))}
         </Grid>
       </Box>
     </>

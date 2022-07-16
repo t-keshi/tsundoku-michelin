@@ -11,11 +11,11 @@ import { MarkdownEditor } from "@react-libraries/markdown-editor";
 import { MdHelp, MdModeEdit, MdPlayCircleFilled } from "react-icons/md";
 import Link from "next/link";
 import { MarkdownRenderer } from "../components/organisms/MarkdownRenderer";
-import { FetchBookContentsQuery } from "../../generated/types";
+import { FetchBookWithContentsQuery } from "../../generated/types";
 
 type Props = {
   bookTitle: string;
-  bookContents: FetchBookContentsQuery["bookContents"];
+  bookContents: FetchBookWithContentsQuery["book"]["bookContents"];
 };
 
 const WRITTING_MODE = {

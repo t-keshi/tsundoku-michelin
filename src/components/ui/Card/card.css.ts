@@ -78,3 +78,12 @@ export const cardFooter = recipe({
     paddingBottom: vars.spacing[1],
   },
 });
+
+export const cardTitle = recipe({
+  base: {
+    display: "-webkit-box",
+    overflow: "hidden",
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: "vertical",
+  },
+});

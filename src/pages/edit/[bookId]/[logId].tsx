@@ -14,13 +14,13 @@ import { useRouter } from "next/router";
 import { EditTemplate } from "../../../templates/edit";
 import Head from "next/head";
 import { sdk, sdkHooks } from "../../../services/sdk";
-import { fetchBookContents } from "../../../services/query/fetchBookContent";
+import { fetchBookWithContents } from "../../../services/query/fetchBookWithContents";
 import { GetStaticPaths, GetStaticProps } from "next";
-import { FetchBookContentsQuery } from "../../../../generated/types";
+import { FetchBookWithContentsQuery } from "../../../../generated/types";
 import { SWRConfig } from "swr";
 
 type PageProps = {
-  fallback: { [key: typeof fetchBookContents]: FetchBookContentsQuery };
+  fallback: { [key: typeof fetchBookWithContents]: FetchBookWithContentsQuery };
 };
 
 export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
@@ -35,12 +35,12 @@ export const getStaticProps: GetStaticProps<
   { bookId: string }
 > = async (context) => {
   const bookId = context.params?.bookId ?? "";
-  const res = await sdk.FetchBookContents({ bookId });
+  const res = await sdk.FetchBookWithContents({ bookId });
 
   return {
     props: {
       fallback: {
-        [fetchBookContents]: res,
+        [fetchBookWithContents]: res,
       },
       revalidate: 3600,
     },
@@ -50,8 +50,8 @@ export const getStaticProps: GetStaticProps<
 const Edit: React.FC = () => {
   const router = useRouter();
   const query = router.query as { bookId: string };
-  const { data } = sdkHooks.useFetchBookContents(
-    fetchBookContents,
+  const { data } = sdkHooks.useFetchBookWithContents(
+    fetchBookWithContents,
     { bookId: query.bookId },
     { suspense: true }
   );
@@ -67,7 +67,7 @@ const Edit: React.FC = () => {
       </Head>
       <EditTemplate
         bookTitle={data.book.title}
-        bookContents={data.bookContents}
+        bookContents={data.book.bookContents}
       />
     </>
   );

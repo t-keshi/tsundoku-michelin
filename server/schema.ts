@@ -1,10 +1,11 @@
 import { makeSchema } from "nexus";
-import NexusPrismaScalars from "nexus-prisma/scalars";
 import path from "path";
 import * as AllTypes from "./graphql";
+import { paljs } from "@paljs/nexus";
 
 export const schema = makeSchema({
-  types: [AllTypes, NexusPrismaScalars],
+  types: [AllTypes],
+  plugins: [paljs()],
   outputs: {
     schema: path.join(process.cwd(), "generated/schema.graphql"),
   },

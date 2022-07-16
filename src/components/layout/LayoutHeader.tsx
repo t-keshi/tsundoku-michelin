@@ -44,7 +44,7 @@ export const LayoutHeader = () => {
                 sx={{
                   height: "100%",
                   alignItems: "center",
-                  columnGap: { mobile: 0, tablet: 2, desktop: 2 },
+                  columnGap: { mobile: 1, tablet: 2, desktop: 2 },
                 }}
               >
                 <Link href="/search">

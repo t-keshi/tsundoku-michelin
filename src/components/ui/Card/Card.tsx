@@ -6,7 +6,14 @@ import { configs } from "../../system/configs/index.css";
 import { SystemProps } from "../../system/configs/type";
 import { Box } from "../Box/Box";
 import { Typography } from "../Typography/Typography";
-import { card, cardContent, cardFooter, cardMedia } from "./card.css";
+import {
+  card,
+  cardContent,
+  cardFooter,
+  cardMedia,
+  cardTitle,
+} from "./card.css";
+import styles from "./card.module.css";
 
 type CardProps = {
   className?: string;
@@ -67,7 +74,11 @@ export const Card = forwardRef<HTMLDivElement, CardProps>((props, ref) => {
         )}
         <div className={clsx(cardClasses.content, cardContent())}>
           {title && (
-            <Typography variant="h5" clickable={Boolean(href)}>
+            <Typography
+              variant="h5"
+              clickable={Boolean(href)}
+              className={cardTitle()}
+            >
               {title}
             </Typography>
           )}

@@ -1,35 +1,78 @@
-import type { NextPage } from "next";
+import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
-import Link from "next/link";
-import { useCallback, useState } from "react";
-import { MdOutlineBookmarkAdd, MdTaskAlt } from "react-icons/md";
+import { useRouter } from "next/router";
+import { Suspense } from "react";
+import { SWRConfig } from "swr";
+import { FetchBookWithLogsQuery } from "../../../generated/types";
 import { Layout } from "../../components/layout/Layout";
-import { Accordion } from "../../components/ui/Accordion/Accordion";
-import { Avatar } from "../../components/ui/Avatar/Avatar";
-import { Box } from "../../components/ui/Box/Box";
-import { Button } from "../../components/ui/Button/Button";
-import { Card } from "../../components/ui/Card/Card";
-import { Flex } from "../../components/ui/Flex/Flex";
-import { Paper } from "../../components/ui/Paper/Paper";
-import { Typography } from "../../components/ui/Typography/Typography";
-import { useSnackbar } from "../../containers/snackbar";
-import { useDisclosure } from "../../hooks/useDisclosure";
+import { fetchBookWithLogs } from "../../services/query/fetchBookWithLogs";
+import { sdk, sdkHooks } from "../../services/sdk";
 import { BookTemplate } from "../../templates/book";
 import { NextPageWithLayout } from "../../type";
 
-const Book: NextPageWithLayout = () => {
+type PageProps = {
+  fallback: { [key: typeof fetchBookWithLogs]: FetchBookWithLogsQuery };
+};
+
+export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
+  return {
+    paths: [],
+    fallback: "blocking",
+  };
+};
+
+export const getStaticProps: GetStaticProps<
+  PageProps,
+  { bookId: string }
+> = async (context) => {
+  const bookId = context.params?.bookId ?? "";
+  const res = await sdk.FetchBookWithLogs({ bookId });
+
+  return {
+    props: {
+      fallback: {
+        [fetchBookWithLogs]: res,
+      },
+      revalidate: 3600,
+    },
+  };
+};
+
+const Book: React.FC = () => {
+  const router = useRouter();
+  const query = router.query as { bookId: string };
+  const { data } = sdkHooks.useFetchBookWithLogs(
+    fetchBookWithLogs,
+    { bookId: query.bookId },
+    { suspense: true }
+  );
+
+  if (!data) {
+    throw new Error("");
+  }
+
   return (
     <>
       <Head>
         <title>積読ミシュラン</title>
       </Head>
-      <BookTemplate />
+      <BookTemplate bookWithLogs={data.book} />
     </>
   );
 };
 
-Book.getLayout = (page: React.ReactElement) => {
+const BookPage: NextPageWithLayout<PageProps> = ({ fallback }) => {
+  return (
+    <SWRConfig value={{ fallback }}>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Book />
+      </Suspense>
+    </SWRConfig>
+  );
+};
+
+BookPage.getLayout = (page: React.ReactElement) => {
   return <Layout>{page}</Layout>;
 };
 
-export default Book;
+export default BookPage;
