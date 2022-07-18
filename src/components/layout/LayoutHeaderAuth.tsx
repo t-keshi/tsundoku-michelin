@@ -11,12 +11,12 @@ import {
   ListItemText,
   Popover,
 } from "../ui";
-import { useAnchoEl } from "../../hooks/useAnchoEl";
+import { useAnchoEl } from "../../helpers/hooks/useAnchoEl";
 import { MdLogout, MdManageAccounts, MdOutlineArticle } from "react-icons/md";
-import { useAuthModal } from "../../containers/authModal";
+import { useAuthModal } from "../../containers/contexts/authModal";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
-import { useSnackbar } from "../../containers/snackbar";
+import { useSnackbar } from "../../containers//contexts/snackbar";
 
 export const LayoutHeaderAuth = () => {
   const { onOpen } = useAuthModal();
@@ -29,18 +29,19 @@ export const LayoutHeaderAuth = () => {
     );
   }, [onOpenSnackbar]);
 
-  if (status === "loading") {
-    return <Typography variant="overline">loading...</Typography>;
+  if (status === "unauthenticated") {
+    return <Button onClick={onOpen}>Log in</Button>;
   }
 
-  if (status !== "authenticated") {
-    return <Button onClick={onOpen}>Log in</Button>;
+  if (status === "loading" || !session) {
+    return <Typography variant="overline">loading...</Typography>;
   }
 
   return (
     <>
       <IconButton onClick={onMenuOpen}>
         <Avatar
+          priority
           src={session.user?.image ? session.user.image : "/brand-icon.png"}
         />
       </IconButton>

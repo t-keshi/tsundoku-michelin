@@ -1,8 +1,8 @@
 import Head from "next/head";
 import { Suspense, useCallback, useDeferredValue, useState } from "react";
 import { Layout } from "../components/layout/Layout";
-import { useDebounce } from "../hooks/useDebounce";
-import { sdkHooks } from "../services/sdk";
+import { useDebounce } from "../helpers/hooks/useDebounce";
+import { sdkHooks } from "../containers/services/sdk";
 import { SearchTemplate } from "../templates/search";
 import { NextPageWithLayout } from "../type";
 

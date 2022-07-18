@@ -10,7 +10,7 @@ import {
   Typography,
   Dialog,
 } from "../components/ui";
-import { useImageUpload } from "../hooks/useImageUpload";
+import { useImageUpload } from "../helpers/hooks/useImageUpload";
 
 export const ProfileTemplate: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
@@ -32,7 +32,8 @@ export const ProfileTemplate: React.FC = () => {
 
   return (
     <>
-      <Typography variant="h2">Profile</Typography>
+      <Typography variant="h2">Profile ⚠︎開発中のページです</Typography>
+      <Typography variant="body1">動作しません</Typography>
       <Box sx={{ mt: 3 }} />
       <Flex sx={{ columnGap: { mobile: 2, tablet: 4, desktop: 6 } }}>
         <Box>

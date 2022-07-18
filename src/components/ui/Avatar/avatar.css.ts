@@ -31,3 +31,11 @@ export const avatar = recipe({
     },
   },
 });
+
+export const avatarImg = recipe({
+  base: {
+    objectFit: "contain",
+    height: "auto",
+    width: "100%",
+  },
+});

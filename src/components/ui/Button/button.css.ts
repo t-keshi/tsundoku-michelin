@@ -29,6 +29,10 @@ export const button = recipe({
         ...vars.typography.button,
         color: vars.palette.lightMode.text.secondary,
       },
+      disabled: {
+        color: vars.palette.lightMode.action.disabled,
+        backgroundColor: vars.palette.lightMode.action.disabledBackground,
+      },
     },
   },
   compoundVariants: [

@@ -47,3 +47,10 @@ export const textField = recipe({
     },
   },
 });
+
+export const textFieldErrorMessage = recipe({
+  base: {
+    ...vars.typography.body2,
+    color: vars.palette.error.main,
+  },
+});

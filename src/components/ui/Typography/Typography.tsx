@@ -24,7 +24,7 @@ type TypogrqphyProps = {
   clickable?: boolean;
   display?: "inline" | "block";
   responsive?: boolean;
-  color?: "primary" | "secondary";
+  color?: "primary" | "secondary" | "error";
 } & { sx?: Partial<SystemProps> } & JSX.IntrinsicElements["p"];
 
 const typogrqphyClasses = {

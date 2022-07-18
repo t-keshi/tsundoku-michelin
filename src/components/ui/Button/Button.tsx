@@ -7,7 +7,7 @@ import { button, buttonEndIcon, buttonStartIcon } from "./button.css";
 type ButtonProps = {
   children: React.ReactNode;
   className?: string;
-  variant?: "contained" | "outlined" | "text";
+  variant?: "contained" | "outlined" | "text" | "disabled";
   color?: "inherit" | "primary" | "secondary";
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
@@ -29,6 +29,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       color = "primary",
       startIcon,
       endIcon,
+      type = "button",
       ...rest
     } = props;
 
@@ -52,6 +53,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           sx && configs(sx as object),
           className
         )}
+        type={type}
         {...rest}
       >
         {renderStartIcon}

@@ -3,7 +3,6 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism } from "react-syntax-highlighter";
 import { dark } from "react-syntax-highlighter/dist/cjs/styles/prism";
-import { Box } from "../ui/Box/Box";
 import { Typography } from "../ui/Typography/Typography";
 
 export const MarkdownRenderer: React.FC<{ children: string }> = ({

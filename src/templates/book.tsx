@@ -13,8 +13,7 @@ import {
   Stack,
   Typography,
 } from "../components/ui";
-import { useSnackbar } from "../containers/snackbar";
-import { NextPageWithLayout } from "../type";
+import { useSnackbar } from "../containers/contexts/snackbar";
 import { formatDistance } from "date-fns";
 import { ja } from "date-fns/locale";
 
@@ -22,7 +21,7 @@ type Props = {
   bookWithLogs: FetchBookWithLogsQuery["book"];
 };
 
-export const BookTemplate: NextPageWithLayout<Props> = ({ bookWithLogs }) => {
+export const BookTemplate: React.FC<Props> = ({ bookWithLogs }) => {
   const { onOpen: onSnackbarOpen } = useSnackbar();
   const [isAddedBookshelf, setIsAddedBookshelf] = useState(false);
   const handleClickAddBookshelf = useCallback(() => {

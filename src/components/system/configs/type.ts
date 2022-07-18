@@ -21,7 +21,10 @@ type Size =
   | 450
   | 500
   | "100%"
-  | "auto";
+  | "auto"
+  | "fit-content"
+  | "max-content"
+  | "min-content";
 
 type Space = 0.5 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | "auto";
 
@@ -106,7 +109,7 @@ export type SystemProps = BreakPoint<{
   rowGap: Space;
   columnGap: Space;
   color: Color;
-  bgColor: Color;
+  bgColor: Color | "default";
   position: "relative" | "absolute" | "fixed";
   top: Space;
   right: Space;

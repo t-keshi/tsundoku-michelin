@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { forwardRef } from "react";
-import { useDisclosure } from "../../../hooks/useDisclosure";
+import { useDisclosure } from "../../../helpers/hooks/useDisclosure";
 import { configs } from "../../system/configs/index.css";
 import { SystemProps } from "../../system/configs/type";
 import { Button } from "../Button/Button";

@@ -1,15 +1,17 @@
 import { PrismaClient } from "@prisma/client";
+import { prisma } from "./prisma";
 import { accountData } from "./data/accountData";
 import { bookData } from "./data/bookData";
-
-const prisma = new PrismaClient();
 
 const resetDB = async () => {
   await prisma.book.deleteMany();
   await prisma.bookLog.deleteMany();
   await prisma.bookContent.deleteMany();
+  await prisma.bookshelf.deleteMany();
   await prisma.account.deleteMany();
   await prisma.user.deleteMany();
+  await prisma.session.deleteMany();
+  await prisma.verificationToken.deleteMany();
 };
 
 const setUpUser = async () => {

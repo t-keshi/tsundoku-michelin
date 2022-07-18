@@ -1,23 +1,12 @@
-import {
-  Box,
-  Flex,
-  IconButton,
-  Container,
-  Toolbar,
-  AppBar,
-  Button,
-} from "../../../components/ui";
-import React, { Suspense, useCallback } from "react";
-import { MdChevronLeft } from "react-icons/md";
-import { NextPageWithLayout } from "../../../type";
-import { useRouter } from "next/router";
+import React, { Suspense } from "react";
 import { EditTemplate } from "../../../templates/edit";
 import Head from "next/head";
-import { sdk, sdkHooks } from "../../../services/sdk";
-import { fetchBookWithContents } from "../../../services/query/fetchBookWithContents";
-import { GetStaticPaths, GetStaticProps } from "next";
+import { sdk } from "../../../containers/services/sdk";
+import { fetchBookWithContents } from "../../../containers/services/query/fetchBookWithContents";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { FetchBookWithContentsQuery } from "../../../../generated/types";
 import { SWRConfig } from "swr";
+import { useBookLog } from "../../../containers/presenters/useBookLog";
 
 type PageProps = {
   fallback: { [key: typeof fetchBookWithContents]: FetchBookWithContentsQuery };
@@ -48,13 +37,7 @@ export const getStaticProps: GetStaticProps<
 };
 
 const Edit: React.FC = () => {
-  const router = useRouter();
-  const query = router.query as { bookId: string };
-  const { data } = sdkHooks.useFetchBookWithContents(
-    fetchBookWithContents,
-    { bookId: query.bookId },
-    { suspense: true }
-  );
+  const { data, onSubmit } = useBookLog();
 
   if (!data) {
     throw new Error("");
@@ -68,12 +51,13 @@ const Edit: React.FC = () => {
       <EditTemplate
         bookTitle={data.book.title}
         bookContents={data.book.bookContents}
+        onSubmit={onSubmit}
       />
     </>
   );
 };
 
-const EditPage: NextPageWithLayout<PageProps> = ({ fallback }) => {
+const EditPage: NextPage<PageProps> = ({ fallback }) => {
   return (
     <SWRConfig value={{ fallback }}>
       <Suspense fallback={<div>Loading...</div>}>
@@ -81,43 +65,6 @@ const EditPage: NextPageWithLayout<PageProps> = ({ fallback }) => {
       </Suspense>
     </SWRConfig>
   );
-};
-
-const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const router = useRouter();
-  const handleGoBack = useCallback(() => router.back(), [router]);
-
-  return (
-    <Box sx={{ bgColor: "primary-light", minHeight: "100vh" }}>
-      <AppBar color="primary" shadow="neumorphism">
-        <Toolbar>
-          <Container disablePadding maxWidth="desktop" sx={{ height: "100%" }}>
-            <Flex
-              sx={{
-                height: "100%",
-                justifyContent: "space-between",
-                alignItems: "center",
-                width: "100%",
-              }}
-            >
-              <IconButton transparent onClick={handleGoBack}>
-                <MdChevronLeft />
-              </IconButton>
-              <Button>保存して公開</Button>
-            </Flex>
-          </Container>
-        </Toolbar>
-      </AppBar>
-      <Toolbar />
-      <Container as="main" maxWidth="tablet" sx={{ p: 2, pt: 7 }}>
-        {children}
-      </Container>
-    </Box>
-  );
-};
-
-EditPage.getLayout = (page: React.ReactElement) => {
-  return <Layout>{page}</Layout>;
 };
 
 export default EditPage;

@@ -3,8 +3,8 @@ import Head from "next/head";
 import { SWRConfig } from "swr";
 import { FetchBooksQuery } from "../../generated/types";
 import { Layout } from "../components/layout/Layout";
-import { fetchBooks } from "../services/query/fetchBooks";
-import { sdk, sdkHooks } from "../services/sdk";
+import { fetchBooks } from "../containers/services/query/fetchBooks";
+import { sdk, sdkHooks } from "../containers/services/sdk";
 import { HomeTemplate } from "../templates";
 import { NextPageWithLayout } from "../type";
 

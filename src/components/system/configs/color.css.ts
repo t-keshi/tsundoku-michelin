@@ -28,6 +28,7 @@ export const color = defineProperties({
       "secondary-contrastText": vars.palette.secondary.contrastText,
       "text-primary": vars.palette.lightMode.text.primary,
       "text-secondary": vars.palette.lightMode.text.secondary,
+      default: vars.palette.lightMode.background,
     },
   },
   shorthands: {

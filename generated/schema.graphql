@@ -1927,7 +1927,7 @@ input BookshelfCreateInput {
   createdAt: DateTime
   id: String
   updatedAt: DateTime
-  user: UserCreateNestedOneWithoutBookShelfsInput!
+  user: UserCreateNestedOneWithoutBookshelfsInput!
 }
 
 input BookshelfCreateManyBookInput {
@@ -1990,7 +1990,7 @@ input BookshelfCreateWithoutBookInput {
   createdAt: DateTime
   id: String
   updatedAt: DateTime
-  user: UserCreateNestedOneWithoutBookShelfsInput!
+  user: UserCreateNestedOneWithoutBookshelfsInput!
 }
 
 input BookshelfCreateWithoutUserInput {
@@ -2159,18 +2159,11 @@ input BookshelfUncheckedUpdateManyWithoutBookInput {
   upsert: [BookshelfUpsertWithWhereUniqueWithoutBookInput]
 }
 
-input BookshelfUncheckedUpdateManyWithoutBookShelfsInput {
+input BookshelfUncheckedUpdateManyWithoutBookshelfsInput {
   bookId: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-}
-
-input BookshelfUncheckedUpdateManyWithoutBookshelfsInput {
-  createdAt: DateTimeFieldUpdateOperationsInput
-  id: StringFieldUpdateOperationsInput
-  updatedAt: DateTimeFieldUpdateOperationsInput
-  userId: StringFieldUpdateOperationsInput
 }
 
 input BookshelfUncheckedUpdateManyWithoutUserInput {
@@ -2206,7 +2199,7 @@ input BookshelfUpdateInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-  user: UserUpdateOneRequiredWithoutBookShelfsInput
+  user: UserUpdateOneRequiredWithoutBookshelfsInput
 }
 
 input BookshelfUpdateManyMutationInput {
@@ -2221,7 +2214,7 @@ input BookshelfUpdateManyWithWhereWithoutBookInput {
 }
 
 input BookshelfUpdateManyWithWhereWithoutUserInput {
-  data: BookshelfUncheckedUpdateManyWithoutBookShelfsInput!
+  data: BookshelfUncheckedUpdateManyWithoutBookshelfsInput!
   where: BookshelfScalarWhereInput!
 }
 
@@ -2267,7 +2260,7 @@ input BookshelfUpdateWithoutBookInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-  user: UserUpdateOneRequiredWithoutBookShelfsInput
+  user: UserUpdateOneRequiredWithoutBookshelfsInput
 }
 
 input BookshelfUpdateWithoutUserInput {
@@ -2366,6 +2359,14 @@ input DateTimeWithAggregatesFilter {
 
 """Decimal custom scalar type"""
 scalar Decimal
+
+type File {
+  encoding: String!
+  filename: String!
+  id: ID!
+  mimetype: String!
+  path: String!
+}
 
 input FloatFieldUpdateOperationsInput {
   decrement: Float
@@ -2466,6 +2467,14 @@ input IntWithAggregatesFilter {
 
 """Json custom scalar type"""
 scalar Json
+
+type Mutation {
+  createBookLog(bookId: String!, log: String!): BookLog!
+  image(image: Upload): File!
+  onboardUser(image: String, name: String!, userId: String!): User!
+  resetUser(userId: String!): User!
+  updateBookLog(bookLogId: String!, log: String!): BookLog!
+}
 
 input NestedDateTimeFilter {
   equals: DateTime
@@ -2693,6 +2702,7 @@ type Query {
   books: [Book!]!
   booksSearch(keyword: String!): [Book!]!
   bookshelfs(userId: String!): [Bookshelf!]!
+  user(userId: String!): User!
 }
 
 type Session {
@@ -3075,16 +3085,19 @@ type TopicsSumAggregateOutputType {
   likes: Int
 }
 
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
 type User {
-  accounts: [Account!]!
   bookLogs: [BookLog!]!
-  bookShelfs: [Bookshelf!]!
+  bookshelfs: [Bookshelf!]!
   email: String
   emailVerified: DateTime
   id: ID!
   image: String
   name: String
-  sessions: [Session!]!
+  onboarding: String
+  profile: String
 }
 
 type UserCountAggregateOutputType {
@@ -3094,6 +3107,8 @@ type UserCountAggregateOutputType {
   id: Int!
   image: Int!
   name: Int!
+  onboarding: Int!
+  profile: Int!
 }
 
 input UserCountOrderByAggregateInput {
@@ -3102,24 +3117,28 @@ input UserCountOrderByAggregateInput {
   id: SortOrder
   image: SortOrder
   name: SortOrder
+  onboarding: SortOrder
+  profile: SortOrder
 }
 
 type UserCountOutputType {
   accounts: Int!
   bookLogs: Int!
-  bookShelfs: Int!
+  bookshelfs: Int!
   sessions: Int!
 }
 
 input UserCreateInput {
   accounts: AccountCreateNestedManyWithoutUserInput
   bookLogs: BookLogCreateNestedManyWithoutUserInput
-  bookShelfs: BookshelfCreateNestedManyWithoutUserInput
+  bookshelfs: BookshelfCreateNestedManyWithoutUserInput
   email: String
   emailVerified: DateTime
   id: String
   image: String
   name: String
+  onboarding: String
+  profile: String
   sessions: SessionCreateNestedManyWithoutUserInput
 }
 
@@ -3129,6 +3148,8 @@ input UserCreateManyInput {
   id: String
   image: String
   name: String
+  onboarding: String
+  profile: String
 }
 
 input UserCreateNestedOneWithoutAccountsInput {
@@ -3143,10 +3164,10 @@ input UserCreateNestedOneWithoutBookLogsInput {
   create: UserUncheckedCreateWithoutBookLogsInput
 }
 
-input UserCreateNestedOneWithoutBookShelfsInput {
+input UserCreateNestedOneWithoutBookshelfsInput {
   connect: UserWhereUniqueInput
-  connectOrCreate: UserCreateOrConnectWithoutBookShelfsInput
-  create: UserUncheckedCreateWithoutBookShelfsInput
+  connectOrCreate: UserCreateOrConnectWithoutBookshelfsInput
+  create: UserUncheckedCreateWithoutBookshelfsInput
 }
 
 input UserCreateNestedOneWithoutSessionsInput {
@@ -3165,8 +3186,8 @@ input UserCreateOrConnectWithoutBookLogsInput {
   where: UserWhereUniqueInput!
 }
 
-input UserCreateOrConnectWithoutBookShelfsInput {
-  create: UserUncheckedCreateWithoutBookShelfsInput!
+input UserCreateOrConnectWithoutBookshelfsInput {
+  create: UserUncheckedCreateWithoutBookshelfsInput!
   where: UserWhereUniqueInput!
 }
 
@@ -3177,27 +3198,31 @@ input UserCreateOrConnectWithoutSessionsInput {
 
 input UserCreateWithoutAccountsInput {
   bookLogs: BookLogCreateNestedManyWithoutUserInput
-  bookShelfs: BookshelfCreateNestedManyWithoutUserInput
+  bookshelfs: BookshelfCreateNestedManyWithoutUserInput
   email: String
   emailVerified: DateTime
   id: String
   image: String
   name: String
+  onboarding: String
+  profile: String
   sessions: SessionCreateNestedManyWithoutUserInput
 }
 
 input UserCreateWithoutBookLogsInput {
   accounts: AccountCreateNestedManyWithoutUserInput
-  bookShelfs: BookshelfCreateNestedManyWithoutUserInput
+  bookshelfs: BookshelfCreateNestedManyWithoutUserInput
   email: String
   emailVerified: DateTime
   id: String
   image: String
   name: String
+  onboarding: String
+  profile: String
   sessions: SessionCreateNestedManyWithoutUserInput
 }
 
-input UserCreateWithoutBookShelfsInput {
+input UserCreateWithoutBookshelfsInput {
   accounts: AccountCreateNestedManyWithoutUserInput
   bookLogs: BookLogCreateNestedManyWithoutUserInput
   email: String
@@ -3205,18 +3230,22 @@ input UserCreateWithoutBookShelfsInput {
   id: String
   image: String
   name: String
+  onboarding: String
+  profile: String
   sessions: SessionCreateNestedManyWithoutUserInput
 }
 
 input UserCreateWithoutSessionsInput {
   accounts: AccountCreateNestedManyWithoutUserInput
   bookLogs: BookLogCreateNestedManyWithoutUserInput
-  bookShelfs: BookshelfCreateNestedManyWithoutUserInput
+  bookshelfs: BookshelfCreateNestedManyWithoutUserInput
   email: String
   emailVerified: DateTime
   id: String
   image: String
   name: String
+  onboarding: String
+  profile: String
 }
 
 type UserMaxAggregateOutputType {
@@ -3225,6 +3254,8 @@ type UserMaxAggregateOutputType {
   id: String
   image: String
   name: String
+  onboarding: String
+  profile: String
 }
 
 input UserMaxOrderByAggregateInput {
@@ -3233,6 +3264,8 @@ input UserMaxOrderByAggregateInput {
   id: SortOrder
   image: SortOrder
   name: SortOrder
+  onboarding: SortOrder
+  profile: SortOrder
 }
 
 type UserMinAggregateOutputType {
@@ -3241,6 +3274,8 @@ type UserMinAggregateOutputType {
   id: String
   image: String
   name: String
+  onboarding: String
+  profile: String
 }
 
 input UserMinOrderByAggregateInput {
@@ -3249,6 +3284,8 @@ input UserMinOrderByAggregateInput {
   id: SortOrder
   image: SortOrder
   name: SortOrder
+  onboarding: SortOrder
+  profile: SortOrder
 }
 
 input UserOrderByWithAggregationInput {
@@ -3260,17 +3297,21 @@ input UserOrderByWithAggregationInput {
   id: SortOrder
   image: SortOrder
   name: SortOrder
+  onboarding: SortOrder
+  profile: SortOrder
 }
 
 input UserOrderByWithRelationInput {
   accounts: AccountOrderByRelationAggregateInput
   bookLogs: BookLogOrderByRelationAggregateInput
-  bookShelfs: BookshelfOrderByRelationAggregateInput
+  bookshelfs: BookshelfOrderByRelationAggregateInput
   email: SortOrder
   emailVerified: SortOrder
   id: SortOrder
   image: SortOrder
   name: SortOrder
+  onboarding: SortOrder
+  profile: SortOrder
   sessions: SessionOrderByRelationAggregateInput
 }
 
@@ -3285,6 +3326,8 @@ enum UserScalarFieldEnum {
   id
   image
   name
+  onboarding
+  profile
 }
 
 input UserScalarWhereWithAggregatesInput {
@@ -3296,43 +3339,51 @@ input UserScalarWhereWithAggregatesInput {
   id: StringWithAggregatesFilter
   image: StringNullableWithAggregatesFilter
   name: StringNullableWithAggregatesFilter
+  onboarding: StringNullableWithAggregatesFilter
+  profile: StringNullableWithAggregatesFilter
 }
 
 input UserUncheckedCreateInput {
   accounts: AccountUncheckedCreateNestedManyWithoutUserInput
   bookLogs: BookLogUncheckedCreateNestedManyWithoutUserInput
-  bookShelfs: BookshelfUncheckedCreateNestedManyWithoutUserInput
+  bookshelfs: BookshelfUncheckedCreateNestedManyWithoutUserInput
   email: String
   emailVerified: DateTime
   id: String
   image: String
   name: String
+  onboarding: String
+  profile: String
   sessions: SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 input UserUncheckedCreateWithoutAccountsInput {
   bookLogs: BookLogUncheckedCreateNestedManyWithoutUserInput
-  bookShelfs: BookshelfUncheckedCreateNestedManyWithoutUserInput
+  bookshelfs: BookshelfUncheckedCreateNestedManyWithoutUserInput
   email: String
   emailVerified: DateTime
   id: String
   image: String
   name: String
+  onboarding: String
+  profile: String
   sessions: SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 input UserUncheckedCreateWithoutBookLogsInput {
   accounts: AccountUncheckedCreateNestedManyWithoutUserInput
-  bookShelfs: BookshelfUncheckedCreateNestedManyWithoutUserInput
+  bookshelfs: BookshelfUncheckedCreateNestedManyWithoutUserInput
   email: String
   emailVerified: DateTime
   id: String
   image: String
   name: String
+  onboarding: String
+  profile: String
   sessions: SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
-input UserUncheckedCreateWithoutBookShelfsInput {
+input UserUncheckedCreateWithoutBookshelfsInput {
   accounts: AccountUncheckedCreateNestedManyWithoutUserInput
   bookLogs: BookLogUncheckedCreateNestedManyWithoutUserInput
   email: String
@@ -3340,29 +3391,35 @@ input UserUncheckedCreateWithoutBookShelfsInput {
   id: String
   image: String
   name: String
+  onboarding: String
+  profile: String
   sessions: SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 input UserUncheckedCreateWithoutSessionsInput {
   accounts: AccountUncheckedCreateNestedManyWithoutUserInput
   bookLogs: BookLogUncheckedCreateNestedManyWithoutUserInput
-  bookShelfs: BookshelfUncheckedCreateNestedManyWithoutUserInput
+  bookshelfs: BookshelfUncheckedCreateNestedManyWithoutUserInput
   email: String
   emailVerified: DateTime
   id: String
   image: String
   name: String
+  onboarding: String
+  profile: String
 }
 
 input UserUncheckedUpdateInput {
   accounts: AccountUncheckedUpdateManyWithoutUserInput
   bookLogs: BookLogUncheckedUpdateManyWithoutUserInput
-  bookShelfs: BookshelfUncheckedUpdateManyWithoutUserInput
+  bookshelfs: BookshelfUncheckedUpdateManyWithoutUserInput
   email: NullableStringFieldUpdateOperationsInput
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   image: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  onboarding: NullableStringFieldUpdateOperationsInput
+  profile: NullableStringFieldUpdateOperationsInput
   sessions: SessionUncheckedUpdateManyWithoutUserInput
 }
 
@@ -3372,31 +3429,37 @@ input UserUncheckedUpdateManyInput {
   id: StringFieldUpdateOperationsInput
   image: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  onboarding: NullableStringFieldUpdateOperationsInput
+  profile: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUncheckedUpdateWithoutAccountsInput {
   bookLogs: BookLogUncheckedUpdateManyWithoutUserInput
-  bookShelfs: BookshelfUncheckedUpdateManyWithoutUserInput
+  bookshelfs: BookshelfUncheckedUpdateManyWithoutUserInput
   email: NullableStringFieldUpdateOperationsInput
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   image: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  onboarding: NullableStringFieldUpdateOperationsInput
+  profile: NullableStringFieldUpdateOperationsInput
   sessions: SessionUncheckedUpdateManyWithoutUserInput
 }
 
 input UserUncheckedUpdateWithoutBookLogsInput {
   accounts: AccountUncheckedUpdateManyWithoutUserInput
-  bookShelfs: BookshelfUncheckedUpdateManyWithoutUserInput
+  bookshelfs: BookshelfUncheckedUpdateManyWithoutUserInput
   email: NullableStringFieldUpdateOperationsInput
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   image: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  onboarding: NullableStringFieldUpdateOperationsInput
+  profile: NullableStringFieldUpdateOperationsInput
   sessions: SessionUncheckedUpdateManyWithoutUserInput
 }
 
-input UserUncheckedUpdateWithoutBookShelfsInput {
+input UserUncheckedUpdateWithoutBookshelfsInput {
   accounts: AccountUncheckedUpdateManyWithoutUserInput
   bookLogs: BookLogUncheckedUpdateManyWithoutUserInput
   email: NullableStringFieldUpdateOperationsInput
@@ -3404,29 +3467,35 @@ input UserUncheckedUpdateWithoutBookShelfsInput {
   id: StringFieldUpdateOperationsInput
   image: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  onboarding: NullableStringFieldUpdateOperationsInput
+  profile: NullableStringFieldUpdateOperationsInput
   sessions: SessionUncheckedUpdateManyWithoutUserInput
 }
 
 input UserUncheckedUpdateWithoutSessionsInput {
   accounts: AccountUncheckedUpdateManyWithoutUserInput
   bookLogs: BookLogUncheckedUpdateManyWithoutUserInput
-  bookShelfs: BookshelfUncheckedUpdateManyWithoutUserInput
+  bookshelfs: BookshelfUncheckedUpdateManyWithoutUserInput
   email: NullableStringFieldUpdateOperationsInput
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   image: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  onboarding: NullableStringFieldUpdateOperationsInput
+  profile: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUpdateInput {
   accounts: AccountUpdateManyWithoutUserInput
   bookLogs: BookLogUpdateManyWithoutUserInput
-  bookShelfs: BookshelfUpdateManyWithoutUserInput
+  bookshelfs: BookshelfUpdateManyWithoutUserInput
   email: NullableStringFieldUpdateOperationsInput
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   image: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  onboarding: NullableStringFieldUpdateOperationsInput
+  profile: NullableStringFieldUpdateOperationsInput
   sessions: SessionUpdateManyWithoutUserInput
 }
 
@@ -3436,6 +3505,8 @@ input UserUpdateManyMutationInput {
   id: StringFieldUpdateOperationsInput
   image: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  onboarding: NullableStringFieldUpdateOperationsInput
+  profile: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUpdateOneRequiredWithoutAccountsInput {
@@ -3454,12 +3525,12 @@ input UserUpdateOneRequiredWithoutBookLogsInput {
   upsert: UserUpsertWithoutBookLogsInput
 }
 
-input UserUpdateOneRequiredWithoutBookShelfsInput {
+input UserUpdateOneRequiredWithoutBookshelfsInput {
   connect: UserWhereUniqueInput
-  connectOrCreate: UserCreateOrConnectWithoutBookShelfsInput
-  create: UserUncheckedCreateWithoutBookShelfsInput
-  update: UserUncheckedUpdateWithoutBookShelfsInput
-  upsert: UserUpsertWithoutBookShelfsInput
+  connectOrCreate: UserCreateOrConnectWithoutBookshelfsInput
+  create: UserUncheckedCreateWithoutBookshelfsInput
+  update: UserUncheckedUpdateWithoutBookshelfsInput
+  upsert: UserUpsertWithoutBookshelfsInput
 }
 
 input UserUpdateOneRequiredWithoutSessionsInput {
@@ -3472,27 +3543,31 @@ input UserUpdateOneRequiredWithoutSessionsInput {
 
 input UserUpdateWithoutAccountsInput {
   bookLogs: BookLogUpdateManyWithoutUserInput
-  bookShelfs: BookshelfUpdateManyWithoutUserInput
+  bookshelfs: BookshelfUpdateManyWithoutUserInput
   email: NullableStringFieldUpdateOperationsInput
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   image: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  onboarding: NullableStringFieldUpdateOperationsInput
+  profile: NullableStringFieldUpdateOperationsInput
   sessions: SessionUpdateManyWithoutUserInput
 }
 
 input UserUpdateWithoutBookLogsInput {
   accounts: AccountUpdateManyWithoutUserInput
-  bookShelfs: BookshelfUpdateManyWithoutUserInput
+  bookshelfs: BookshelfUpdateManyWithoutUserInput
   email: NullableStringFieldUpdateOperationsInput
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   image: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  onboarding: NullableStringFieldUpdateOperationsInput
+  profile: NullableStringFieldUpdateOperationsInput
   sessions: SessionUpdateManyWithoutUserInput
 }
 
-input UserUpdateWithoutBookShelfsInput {
+input UserUpdateWithoutBookshelfsInput {
   accounts: AccountUpdateManyWithoutUserInput
   bookLogs: BookLogUpdateManyWithoutUserInput
   email: NullableStringFieldUpdateOperationsInput
@@ -3500,18 +3575,22 @@ input UserUpdateWithoutBookShelfsInput {
   id: StringFieldUpdateOperationsInput
   image: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  onboarding: NullableStringFieldUpdateOperationsInput
+  profile: NullableStringFieldUpdateOperationsInput
   sessions: SessionUpdateManyWithoutUserInput
 }
 
 input UserUpdateWithoutSessionsInput {
   accounts: AccountUpdateManyWithoutUserInput
   bookLogs: BookLogUpdateManyWithoutUserInput
-  bookShelfs: BookshelfUpdateManyWithoutUserInput
+  bookshelfs: BookshelfUpdateManyWithoutUserInput
   email: NullableStringFieldUpdateOperationsInput
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   image: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  onboarding: NullableStringFieldUpdateOperationsInput
+  profile: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUpsertWithoutAccountsInput {
@@ -3524,9 +3603,9 @@ input UserUpsertWithoutBookLogsInput {
   update: UserUncheckedUpdateWithoutBookLogsInput!
 }
 
-input UserUpsertWithoutBookShelfsInput {
-  create: UserUncheckedCreateWithoutBookShelfsInput!
-  update: UserUncheckedUpdateWithoutBookShelfsInput!
+input UserUpsertWithoutBookshelfsInput {
+  create: UserUncheckedCreateWithoutBookshelfsInput!
+  update: UserUncheckedUpdateWithoutBookshelfsInput!
 }
 
 input UserUpsertWithoutSessionsInput {
@@ -3540,12 +3619,14 @@ input UserWhereInput {
   OR: [UserWhereInput]
   accounts: AccountListRelationFilter
   bookLogs: BookLogListRelationFilter
-  bookShelfs: BookshelfListRelationFilter
+  bookshelfs: BookshelfListRelationFilter
   email: StringNullableFilter
   emailVerified: DateTimeNullableFilter
   id: StringFilter
   image: StringNullableFilter
   name: StringNullableFilter
+  onboarding: StringNullableFilter
+  profile: StringNullableFilter
   sessions: SessionListRelationFilter
 }
 

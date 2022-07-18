@@ -2,8 +2,8 @@ import type { AppProps } from "next/app";
 import "../components/system/configs/global.css";
 import { AuthModal } from "../components/organisms/AuthModal";
 import { Snackbar } from "../components/ui/Snackbar/Snackbar";
-import { AuthModalProvider } from "../containers/authModal";
-import { SnackbarProvider } from "../containers/snackbar";
+import { AuthModalProvider } from "../containers/contexts/authModal";
+import { SnackbarProvider } from "../containers/contexts/snackbar";
 import { NextPageWithLayout } from "../type";
 import { SessionProvider } from "next-auth/react";
 

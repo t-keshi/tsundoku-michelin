@@ -9,9 +9,9 @@ export const user = objectType({
     t.field(User.email);
     t.field(User.emailVerified);
     t.field(User.image);
-    t.field(User.accounts);
-    t.field(User.sessions);
+    t.field(User.profile);
+    t.field(User.onboarding);
     t.field(User.bookLogs);
-    t.field(User.bookShelfs);
+    t.field(User.bookshelfs);
   },
 });

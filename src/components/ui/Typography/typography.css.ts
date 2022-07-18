@@ -55,6 +55,9 @@ export const typography = recipe({
       secondary: {
         color: vars.palette.lightMode.text.secondary,
       },
+      error: {
+        color: vars.palette.error.main,
+      },
     },
   },
   compoundVariants: [

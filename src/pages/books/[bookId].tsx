@@ -5,8 +5,8 @@ import { Suspense } from "react";
 import { SWRConfig } from "swr";
 import { FetchBookWithLogsQuery } from "../../../generated/types";
 import { Layout } from "../../components/layout/Layout";
-import { fetchBookWithLogs } from "../../services/query/fetchBookWithLogs";
-import { sdk, sdkHooks } from "../../services/sdk";
+import { fetchBookWithLogs } from "../../containers/services/query/fetchBookWithLogs";
+import { sdk, sdkHooks } from "../../containers/services/sdk";
 import { BookTemplate } from "../../templates/book";
 import { NextPageWithLayout } from "../../type";
 

@@ -19,6 +19,7 @@ export type Scalars = {
   DateTime: any;
   Decimal: any;
   Json: any;
+  Upload: any;
 };
 
 export type Account = {
@@ -1979,7 +1980,7 @@ export type BookshelfCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
-  user: UserCreateNestedOneWithoutBookShelfsInput;
+  user: UserCreateNestedOneWithoutBookshelfsInput;
 };
 
 export type BookshelfCreateManyBookInput = {
@@ -2042,7 +2043,7 @@ export type BookshelfCreateWithoutBookInput = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
-  user: UserCreateNestedOneWithoutBookShelfsInput;
+  user: UserCreateNestedOneWithoutBookshelfsInput;
 };
 
 export type BookshelfCreateWithoutUserInput = {
@@ -2213,18 +2214,11 @@ export type BookshelfUncheckedUpdateManyWithoutBookInput = {
   upsert?: InputMaybe<Array<InputMaybe<BookshelfUpsertWithWhereUniqueWithoutBookInput>>>;
 };
 
-export type BookshelfUncheckedUpdateManyWithoutBookShelfsInput = {
+export type BookshelfUncheckedUpdateManyWithoutBookshelfsInput = {
   bookId?: InputMaybe<StringFieldUpdateOperationsInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
   updatedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
-};
-
-export type BookshelfUncheckedUpdateManyWithoutBookshelfsInput = {
-  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
-  id?: InputMaybe<StringFieldUpdateOperationsInput>;
-  updatedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
-  userId?: InputMaybe<StringFieldUpdateOperationsInput>;
 };
 
 export type BookshelfUncheckedUpdateManyWithoutUserInput = {
@@ -2260,7 +2254,7 @@ export type BookshelfUpdateInput = {
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
   updatedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
-  user?: InputMaybe<UserUpdateOneRequiredWithoutBookShelfsInput>;
+  user?: InputMaybe<UserUpdateOneRequiredWithoutBookshelfsInput>;
 };
 
 export type BookshelfUpdateManyMutationInput = {
@@ -2275,7 +2269,7 @@ export type BookshelfUpdateManyWithWhereWithoutBookInput = {
 };
 
 export type BookshelfUpdateManyWithWhereWithoutUserInput = {
-  data: BookshelfUncheckedUpdateManyWithoutBookShelfsInput;
+  data: BookshelfUncheckedUpdateManyWithoutBookshelfsInput;
   where: BookshelfScalarWhereInput;
 };
 
@@ -2321,7 +2315,7 @@ export type BookshelfUpdateWithoutBookInput = {
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
   updatedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
-  user?: InputMaybe<UserUpdateOneRequiredWithoutBookShelfsInput>;
+  user?: InputMaybe<UserUpdateOneRequiredWithoutBookshelfsInput>;
 };
 
 export type BookshelfUpdateWithoutUserInput = {
@@ -2413,6 +2407,15 @@ export type DateTimeWithAggregatesFilter = {
   lte?: InputMaybe<Scalars['DateTime']>;
   not?: InputMaybe<NestedDateTimeWithAggregatesFilter>;
   notIn?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+};
+
+export type File = {
+  __typename?: 'File';
+  encoding: Scalars['String'];
+  filename: Scalars['String'];
+  id: Scalars['ID'];
+  mimetype: Scalars['String'];
+  path: Scalars['String'];
 };
 
 export type FloatFieldUpdateOperationsInput = {
@@ -2510,6 +2513,44 @@ export type IntWithAggregatesFilter = {
   lte?: InputMaybe<Scalars['Int']>;
   not?: InputMaybe<NestedIntWithAggregatesFilter>;
   notIn?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  createBookLog: BookLog;
+  image: File;
+  onboardUser: User;
+  resetUser: User;
+  updateBookLog: BookLog;
+};
+
+
+export type MutationCreateBookLogArgs = {
+  bookId: Scalars['String'];
+  log: Scalars['String'];
+};
+
+
+export type MutationImageArgs = {
+  image?: InputMaybe<Scalars['Upload']>;
+};
+
+
+export type MutationOnboardUserArgs = {
+  image?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+  userId: Scalars['String'];
+};
+
+
+export type MutationResetUserArgs = {
+  userId: Scalars['String'];
+};
+
+
+export type MutationUpdateBookLogArgs = {
+  bookLogId: Scalars['String'];
+  log: Scalars['String'];
 };
 
 export type NestedDateTimeFilter = {
@@ -2739,6 +2780,7 @@ export type Query = {
   books: Array<Book>;
   booksSearch: Array<Book>;
   bookshelfs: Array<Bookshelf>;
+  user: User;
 };
 
 
@@ -2758,6 +2800,11 @@ export type QueryBooksSearchArgs = {
 
 
 export type QueryBookshelfsArgs = {
+  userId: Scalars['String'];
+};
+
+
+export type QueryUserArgs = {
   userId: Scalars['String'];
 };
 
@@ -3152,15 +3199,15 @@ export type TopicsSumAggregateOutputType = {
 
 export type User = {
   __typename?: 'User';
-  accounts: Array<Account>;
   bookLogs: Array<BookLog>;
-  bookShelfs: Array<Bookshelf>;
+  bookshelfs: Array<Bookshelf>;
   email?: Maybe<Scalars['String']>;
   emailVerified?: Maybe<Scalars['DateTime']>;
   id: Scalars['ID'];
   image?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-  sessions: Array<Session>;
+  onboarding?: Maybe<Scalars['String']>;
+  profile?: Maybe<Scalars['String']>;
 };
 
 export type UserCountAggregateOutputType = {
@@ -3171,6 +3218,8 @@ export type UserCountAggregateOutputType = {
   id: Scalars['Int'];
   image: Scalars['Int'];
   name: Scalars['Int'];
+  onboarding: Scalars['Int'];
+  profile: Scalars['Int'];
 };
 
 export type UserCountOrderByAggregateInput = {
@@ -3179,25 +3228,29 @@ export type UserCountOrderByAggregateInput = {
   id?: InputMaybe<SortOrder>;
   image?: InputMaybe<SortOrder>;
   name?: InputMaybe<SortOrder>;
+  onboarding?: InputMaybe<SortOrder>;
+  profile?: InputMaybe<SortOrder>;
 };
 
 export type UserCountOutputType = {
   __typename?: 'UserCountOutputType';
   accounts: Scalars['Int'];
   bookLogs: Scalars['Int'];
-  bookShelfs: Scalars['Int'];
+  bookshelfs: Scalars['Int'];
   sessions: Scalars['Int'];
 };
 
 export type UserCreateInput = {
   accounts?: InputMaybe<AccountCreateNestedManyWithoutUserInput>;
   bookLogs?: InputMaybe<BookLogCreateNestedManyWithoutUserInput>;
-  bookShelfs?: InputMaybe<BookshelfCreateNestedManyWithoutUserInput>;
+  bookshelfs?: InputMaybe<BookshelfCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   emailVerified?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['String']>;
   image?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
+  onboarding?: InputMaybe<Scalars['String']>;
+  profile?: InputMaybe<Scalars['String']>;
   sessions?: InputMaybe<SessionCreateNestedManyWithoutUserInput>;
 };
 
@@ -3207,6 +3260,8 @@ export type UserCreateManyInput = {
   id?: InputMaybe<Scalars['String']>;
   image?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
+  onboarding?: InputMaybe<Scalars['String']>;
+  profile?: InputMaybe<Scalars['String']>;
 };
 
 export type UserCreateNestedOneWithoutAccountsInput = {
@@ -3221,10 +3276,10 @@ export type UserCreateNestedOneWithoutBookLogsInput = {
   create?: InputMaybe<UserUncheckedCreateWithoutBookLogsInput>;
 };
 
-export type UserCreateNestedOneWithoutBookShelfsInput = {
+export type UserCreateNestedOneWithoutBookshelfsInput = {
   connect?: InputMaybe<UserWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutBookShelfsInput>;
-  create?: InputMaybe<UserUncheckedCreateWithoutBookShelfsInput>;
+  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutBookshelfsInput>;
+  create?: InputMaybe<UserUncheckedCreateWithoutBookshelfsInput>;
 };
 
 export type UserCreateNestedOneWithoutSessionsInput = {
@@ -3243,8 +3298,8 @@ export type UserCreateOrConnectWithoutBookLogsInput = {
   where: UserWhereUniqueInput;
 };
 
-export type UserCreateOrConnectWithoutBookShelfsInput = {
-  create: UserUncheckedCreateWithoutBookShelfsInput;
+export type UserCreateOrConnectWithoutBookshelfsInput = {
+  create: UserUncheckedCreateWithoutBookshelfsInput;
   where: UserWhereUniqueInput;
 };
 
@@ -3255,27 +3310,31 @@ export type UserCreateOrConnectWithoutSessionsInput = {
 
 export type UserCreateWithoutAccountsInput = {
   bookLogs?: InputMaybe<BookLogCreateNestedManyWithoutUserInput>;
-  bookShelfs?: InputMaybe<BookshelfCreateNestedManyWithoutUserInput>;
+  bookshelfs?: InputMaybe<BookshelfCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   emailVerified?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['String']>;
   image?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
+  onboarding?: InputMaybe<Scalars['String']>;
+  profile?: InputMaybe<Scalars['String']>;
   sessions?: InputMaybe<SessionCreateNestedManyWithoutUserInput>;
 };
 
 export type UserCreateWithoutBookLogsInput = {
   accounts?: InputMaybe<AccountCreateNestedManyWithoutUserInput>;
-  bookShelfs?: InputMaybe<BookshelfCreateNestedManyWithoutUserInput>;
+  bookshelfs?: InputMaybe<BookshelfCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   emailVerified?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['String']>;
   image?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
+  onboarding?: InputMaybe<Scalars['String']>;
+  profile?: InputMaybe<Scalars['String']>;
   sessions?: InputMaybe<SessionCreateNestedManyWithoutUserInput>;
 };
 
-export type UserCreateWithoutBookShelfsInput = {
+export type UserCreateWithoutBookshelfsInput = {
   accounts?: InputMaybe<AccountCreateNestedManyWithoutUserInput>;
   bookLogs?: InputMaybe<BookLogCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
@@ -3283,18 +3342,22 @@ export type UserCreateWithoutBookShelfsInput = {
   id?: InputMaybe<Scalars['String']>;
   image?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
+  onboarding?: InputMaybe<Scalars['String']>;
+  profile?: InputMaybe<Scalars['String']>;
   sessions?: InputMaybe<SessionCreateNestedManyWithoutUserInput>;
 };
 
 export type UserCreateWithoutSessionsInput = {
   accounts?: InputMaybe<AccountCreateNestedManyWithoutUserInput>;
   bookLogs?: InputMaybe<BookLogCreateNestedManyWithoutUserInput>;
-  bookShelfs?: InputMaybe<BookshelfCreateNestedManyWithoutUserInput>;
+  bookshelfs?: InputMaybe<BookshelfCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   emailVerified?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['String']>;
   image?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
+  onboarding?: InputMaybe<Scalars['String']>;
+  profile?: InputMaybe<Scalars['String']>;
 };
 
 export type UserMaxAggregateOutputType = {
@@ -3304,6 +3367,8 @@ export type UserMaxAggregateOutputType = {
   id?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+  onboarding?: Maybe<Scalars['String']>;
+  profile?: Maybe<Scalars['String']>;
 };
 
 export type UserMaxOrderByAggregateInput = {
@@ -3312,6 +3377,8 @@ export type UserMaxOrderByAggregateInput = {
   id?: InputMaybe<SortOrder>;
   image?: InputMaybe<SortOrder>;
   name?: InputMaybe<SortOrder>;
+  onboarding?: InputMaybe<SortOrder>;
+  profile?: InputMaybe<SortOrder>;
 };
 
 export type UserMinAggregateOutputType = {
@@ -3321,6 +3388,8 @@ export type UserMinAggregateOutputType = {
   id?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+  onboarding?: Maybe<Scalars['String']>;
+  profile?: Maybe<Scalars['String']>;
 };
 
 export type UserMinOrderByAggregateInput = {
@@ -3329,6 +3398,8 @@ export type UserMinOrderByAggregateInput = {
   id?: InputMaybe<SortOrder>;
   image?: InputMaybe<SortOrder>;
   name?: InputMaybe<SortOrder>;
+  onboarding?: InputMaybe<SortOrder>;
+  profile?: InputMaybe<SortOrder>;
 };
 
 export type UserOrderByWithAggregationInput = {
@@ -3340,17 +3411,21 @@ export type UserOrderByWithAggregationInput = {
   id?: InputMaybe<SortOrder>;
   image?: InputMaybe<SortOrder>;
   name?: InputMaybe<SortOrder>;
+  onboarding?: InputMaybe<SortOrder>;
+  profile?: InputMaybe<SortOrder>;
 };
 
 export type UserOrderByWithRelationInput = {
   accounts?: InputMaybe<AccountOrderByRelationAggregateInput>;
   bookLogs?: InputMaybe<BookLogOrderByRelationAggregateInput>;
-  bookShelfs?: InputMaybe<BookshelfOrderByRelationAggregateInput>;
+  bookshelfs?: InputMaybe<BookshelfOrderByRelationAggregateInput>;
   email?: InputMaybe<SortOrder>;
   emailVerified?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   image?: InputMaybe<SortOrder>;
   name?: InputMaybe<SortOrder>;
+  onboarding?: InputMaybe<SortOrder>;
+  profile?: InputMaybe<SortOrder>;
   sessions?: InputMaybe<SessionOrderByRelationAggregateInput>;
 };
 
@@ -3364,7 +3439,9 @@ export enum UserScalarFieldEnum {
   EmailVerified = 'emailVerified',
   Id = 'id',
   Image = 'image',
-  Name = 'name'
+  Name = 'name',
+  Onboarding = 'onboarding',
+  Profile = 'profile'
 }
 
 export type UserScalarWhereWithAggregatesInput = {
@@ -3376,43 +3453,51 @@ export type UserScalarWhereWithAggregatesInput = {
   id?: InputMaybe<StringWithAggregatesFilter>;
   image?: InputMaybe<StringNullableWithAggregatesFilter>;
   name?: InputMaybe<StringNullableWithAggregatesFilter>;
+  onboarding?: InputMaybe<StringNullableWithAggregatesFilter>;
+  profile?: InputMaybe<StringNullableWithAggregatesFilter>;
 };
 
 export type UserUncheckedCreateInput = {
   accounts?: InputMaybe<AccountUncheckedCreateNestedManyWithoutUserInput>;
   bookLogs?: InputMaybe<BookLogUncheckedCreateNestedManyWithoutUserInput>;
-  bookShelfs?: InputMaybe<BookshelfUncheckedCreateNestedManyWithoutUserInput>;
+  bookshelfs?: InputMaybe<BookshelfUncheckedCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   emailVerified?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['String']>;
   image?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
+  onboarding?: InputMaybe<Scalars['String']>;
+  profile?: InputMaybe<Scalars['String']>;
   sessions?: InputMaybe<SessionUncheckedCreateNestedManyWithoutUserInput>;
 };
 
 export type UserUncheckedCreateWithoutAccountsInput = {
   bookLogs?: InputMaybe<BookLogUncheckedCreateNestedManyWithoutUserInput>;
-  bookShelfs?: InputMaybe<BookshelfUncheckedCreateNestedManyWithoutUserInput>;
+  bookshelfs?: InputMaybe<BookshelfUncheckedCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   emailVerified?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['String']>;
   image?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
+  onboarding?: InputMaybe<Scalars['String']>;
+  profile?: InputMaybe<Scalars['String']>;
   sessions?: InputMaybe<SessionUncheckedCreateNestedManyWithoutUserInput>;
 };
 
 export type UserUncheckedCreateWithoutBookLogsInput = {
   accounts?: InputMaybe<AccountUncheckedCreateNestedManyWithoutUserInput>;
-  bookShelfs?: InputMaybe<BookshelfUncheckedCreateNestedManyWithoutUserInput>;
+  bookshelfs?: InputMaybe<BookshelfUncheckedCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   emailVerified?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['String']>;
   image?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
+  onboarding?: InputMaybe<Scalars['String']>;
+  profile?: InputMaybe<Scalars['String']>;
   sessions?: InputMaybe<SessionUncheckedCreateNestedManyWithoutUserInput>;
 };
 
-export type UserUncheckedCreateWithoutBookShelfsInput = {
+export type UserUncheckedCreateWithoutBookshelfsInput = {
   accounts?: InputMaybe<AccountUncheckedCreateNestedManyWithoutUserInput>;
   bookLogs?: InputMaybe<BookLogUncheckedCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
@@ -3420,29 +3505,35 @@ export type UserUncheckedCreateWithoutBookShelfsInput = {
   id?: InputMaybe<Scalars['String']>;
   image?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
+  onboarding?: InputMaybe<Scalars['String']>;
+  profile?: InputMaybe<Scalars['String']>;
   sessions?: InputMaybe<SessionUncheckedCreateNestedManyWithoutUserInput>;
 };
 
 export type UserUncheckedCreateWithoutSessionsInput = {
   accounts?: InputMaybe<AccountUncheckedCreateNestedManyWithoutUserInput>;
   bookLogs?: InputMaybe<BookLogUncheckedCreateNestedManyWithoutUserInput>;
-  bookShelfs?: InputMaybe<BookshelfUncheckedCreateNestedManyWithoutUserInput>;
+  bookshelfs?: InputMaybe<BookshelfUncheckedCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   emailVerified?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['String']>;
   image?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
+  onboarding?: InputMaybe<Scalars['String']>;
+  profile?: InputMaybe<Scalars['String']>;
 };
 
 export type UserUncheckedUpdateInput = {
   accounts?: InputMaybe<AccountUncheckedUpdateManyWithoutUserInput>;
   bookLogs?: InputMaybe<BookLogUncheckedUpdateManyWithoutUserInput>;
-  bookShelfs?: InputMaybe<BookshelfUncheckedUpdateManyWithoutUserInput>;
+  bookshelfs?: InputMaybe<BookshelfUncheckedUpdateManyWithoutUserInput>;
   email?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   emailVerified?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
   image?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  onboarding?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  profile?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   sessions?: InputMaybe<SessionUncheckedUpdateManyWithoutUserInput>;
 };
 
@@ -3452,31 +3543,37 @@ export type UserUncheckedUpdateManyInput = {
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
   image?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  onboarding?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  profile?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
   bookLogs?: InputMaybe<BookLogUncheckedUpdateManyWithoutUserInput>;
-  bookShelfs?: InputMaybe<BookshelfUncheckedUpdateManyWithoutUserInput>;
+  bookshelfs?: InputMaybe<BookshelfUncheckedUpdateManyWithoutUserInput>;
   email?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   emailVerified?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
   image?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  onboarding?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  profile?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   sessions?: InputMaybe<SessionUncheckedUpdateManyWithoutUserInput>;
 };
 
 export type UserUncheckedUpdateWithoutBookLogsInput = {
   accounts?: InputMaybe<AccountUncheckedUpdateManyWithoutUserInput>;
-  bookShelfs?: InputMaybe<BookshelfUncheckedUpdateManyWithoutUserInput>;
+  bookshelfs?: InputMaybe<BookshelfUncheckedUpdateManyWithoutUserInput>;
   email?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   emailVerified?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
   image?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  onboarding?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  profile?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   sessions?: InputMaybe<SessionUncheckedUpdateManyWithoutUserInput>;
 };
 
-export type UserUncheckedUpdateWithoutBookShelfsInput = {
+export type UserUncheckedUpdateWithoutBookshelfsInput = {
   accounts?: InputMaybe<AccountUncheckedUpdateManyWithoutUserInput>;
   bookLogs?: InputMaybe<BookLogUncheckedUpdateManyWithoutUserInput>;
   email?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
@@ -3484,29 +3581,35 @@ export type UserUncheckedUpdateWithoutBookShelfsInput = {
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
   image?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  onboarding?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  profile?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   sessions?: InputMaybe<SessionUncheckedUpdateManyWithoutUserInput>;
 };
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
   accounts?: InputMaybe<AccountUncheckedUpdateManyWithoutUserInput>;
   bookLogs?: InputMaybe<BookLogUncheckedUpdateManyWithoutUserInput>;
-  bookShelfs?: InputMaybe<BookshelfUncheckedUpdateManyWithoutUserInput>;
+  bookshelfs?: InputMaybe<BookshelfUncheckedUpdateManyWithoutUserInput>;
   email?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   emailVerified?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
   image?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  onboarding?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  profile?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type UserUpdateInput = {
   accounts?: InputMaybe<AccountUpdateManyWithoutUserInput>;
   bookLogs?: InputMaybe<BookLogUpdateManyWithoutUserInput>;
-  bookShelfs?: InputMaybe<BookshelfUpdateManyWithoutUserInput>;
+  bookshelfs?: InputMaybe<BookshelfUpdateManyWithoutUserInput>;
   email?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   emailVerified?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
   image?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  onboarding?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  profile?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   sessions?: InputMaybe<SessionUpdateManyWithoutUserInput>;
 };
 
@@ -3516,6 +3619,8 @@ export type UserUpdateManyMutationInput = {
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
   image?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  onboarding?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  profile?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type UserUpdateOneRequiredWithoutAccountsInput = {
@@ -3534,12 +3639,12 @@ export type UserUpdateOneRequiredWithoutBookLogsInput = {
   upsert?: InputMaybe<UserUpsertWithoutBookLogsInput>;
 };
 
-export type UserUpdateOneRequiredWithoutBookShelfsInput = {
+export type UserUpdateOneRequiredWithoutBookshelfsInput = {
   connect?: InputMaybe<UserWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutBookShelfsInput>;
-  create?: InputMaybe<UserUncheckedCreateWithoutBookShelfsInput>;
-  update?: InputMaybe<UserUncheckedUpdateWithoutBookShelfsInput>;
-  upsert?: InputMaybe<UserUpsertWithoutBookShelfsInput>;
+  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutBookshelfsInput>;
+  create?: InputMaybe<UserUncheckedCreateWithoutBookshelfsInput>;
+  update?: InputMaybe<UserUncheckedUpdateWithoutBookshelfsInput>;
+  upsert?: InputMaybe<UserUpsertWithoutBookshelfsInput>;
 };
 
 export type UserUpdateOneRequiredWithoutSessionsInput = {
@@ -3552,27 +3657,31 @@ export type UserUpdateOneRequiredWithoutSessionsInput = {
 
 export type UserUpdateWithoutAccountsInput = {
   bookLogs?: InputMaybe<BookLogUpdateManyWithoutUserInput>;
-  bookShelfs?: InputMaybe<BookshelfUpdateManyWithoutUserInput>;
+  bookshelfs?: InputMaybe<BookshelfUpdateManyWithoutUserInput>;
   email?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   emailVerified?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
   image?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  onboarding?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  profile?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   sessions?: InputMaybe<SessionUpdateManyWithoutUserInput>;
 };
 
 export type UserUpdateWithoutBookLogsInput = {
   accounts?: InputMaybe<AccountUpdateManyWithoutUserInput>;
-  bookShelfs?: InputMaybe<BookshelfUpdateManyWithoutUserInput>;
+  bookshelfs?: InputMaybe<BookshelfUpdateManyWithoutUserInput>;
   email?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   emailVerified?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
   image?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  onboarding?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  profile?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   sessions?: InputMaybe<SessionUpdateManyWithoutUserInput>;
 };
 
-export type UserUpdateWithoutBookShelfsInput = {
+export type UserUpdateWithoutBookshelfsInput = {
   accounts?: InputMaybe<AccountUpdateManyWithoutUserInput>;
   bookLogs?: InputMaybe<BookLogUpdateManyWithoutUserInput>;
   email?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
@@ -3580,18 +3689,22 @@ export type UserUpdateWithoutBookShelfsInput = {
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
   image?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  onboarding?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  profile?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   sessions?: InputMaybe<SessionUpdateManyWithoutUserInput>;
 };
 
 export type UserUpdateWithoutSessionsInput = {
   accounts?: InputMaybe<AccountUpdateManyWithoutUserInput>;
   bookLogs?: InputMaybe<BookLogUpdateManyWithoutUserInput>;
-  bookShelfs?: InputMaybe<BookshelfUpdateManyWithoutUserInput>;
+  bookshelfs?: InputMaybe<BookshelfUpdateManyWithoutUserInput>;
   email?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   emailVerified?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
   image?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  onboarding?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  profile?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type UserUpsertWithoutAccountsInput = {
@@ -3604,9 +3717,9 @@ export type UserUpsertWithoutBookLogsInput = {
   update: UserUncheckedUpdateWithoutBookLogsInput;
 };
 
-export type UserUpsertWithoutBookShelfsInput = {
-  create: UserUncheckedCreateWithoutBookShelfsInput;
-  update: UserUncheckedUpdateWithoutBookShelfsInput;
+export type UserUpsertWithoutBookshelfsInput = {
+  create: UserUncheckedCreateWithoutBookshelfsInput;
+  update: UserUncheckedUpdateWithoutBookshelfsInput;
 };
 
 export type UserUpsertWithoutSessionsInput = {
@@ -3620,12 +3733,14 @@ export type UserWhereInput = {
   OR?: InputMaybe<Array<InputMaybe<UserWhereInput>>>;
   accounts?: InputMaybe<AccountListRelationFilter>;
   bookLogs?: InputMaybe<BookLogListRelationFilter>;
-  bookShelfs?: InputMaybe<BookshelfListRelationFilter>;
+  bookshelfs?: InputMaybe<BookshelfListRelationFilter>;
   email?: InputMaybe<StringNullableFilter>;
   emailVerified?: InputMaybe<DateTimeNullableFilter>;
   id?: InputMaybe<StringFilter>;
   image?: InputMaybe<StringNullableFilter>;
   name?: InputMaybe<StringNullableFilter>;
+  onboarding?: InputMaybe<StringNullableFilter>;
+  profile?: InputMaybe<StringNullableFilter>;
   sessions?: InputMaybe<SessionListRelationFilter>;
 };
 
@@ -4038,6 +4153,45 @@ export type UsersWhereUniqueInput = {
   id?: InputMaybe<Scalars['Int']>;
 };
 
+export type CreateBookLogMutationVariables = Exact<{
+  bookId: Scalars['String'];
+  log: Scalars['String'];
+}>;
+
+
+export type CreateBookLogMutation = { __typename?: 'Mutation', createBookLog: { __typename?: 'BookLog', id: string } };
+
+export type OnboardUserMutationVariables = Exact<{
+  userId: Scalars['String'];
+  name: Scalars['String'];
+  image?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type OnboardUserMutation = { __typename?: 'Mutation', onboardUser: { __typename?: 'User', id: string } };
+
+export type ResetUsernameMutationVariables = Exact<{
+  userId: Scalars['String'];
+}>;
+
+
+export type ResetUsernameMutation = { __typename?: 'Mutation', resetUser: { __typename?: 'User', id: string } };
+
+export type UpdateBookLogMutationVariables = Exact<{
+  bookLogId: Scalars['String'];
+  log: Scalars['String'];
+}>;
+
+
+export type UpdateBookLogMutation = { __typename?: 'Mutation', updateBookLog: { __typename?: 'BookLog', id: string } };
+
+export type UpdateProfileImageMutationVariables = Exact<{
+  image?: InputMaybe<Scalars['Upload']>;
+}>;
+
+
+export type UpdateProfileImageMutation = { __typename?: 'Mutation', image: { __typename?: 'File', id: string, path: string, filename: string, mimetype: string, encoding: string } };
+
 export type FetchBookWithContentsQueryVariables = Exact<{
   bookId: Scalars['String'];
 }>;
@@ -4064,12 +4218,26 @@ export type FetchBookshelfBooksQueryVariables = Exact<{
 
 export type FetchBookshelfBooksQuery = { __typename?: 'Query', bookshelfs: Array<{ __typename?: 'Bookshelf', id: string, userId: string, book: { __typename?: 'Book', id: string, title: string, image: string, bookLogCount: number, bookshelfCount: number } }> };
 
+export type FetchUserQueryVariables = Exact<{
+  userId: Scalars['String'];
+}>;
+
+
+export type FetchUserQuery = { __typename?: 'Query', user: { __typename?: 'User', id: string, name?: string | null, image?: string | null, bookshelfs: Array<{ __typename?: 'Bookshelf', id: string, book: { __typename?: 'Book', id: string, title: string, image: string, bookLogCount: number, bookshelfCount: number } }> } };
+
 export type FetchUserBookLogsQueryVariables = Exact<{
   userId: Scalars['String'];
 }>;
 
 
 export type FetchUserBookLogsQuery = { __typename?: 'Query', bookLogs: Array<{ __typename?: 'BookLog', id: string, log: string, updatedAt: any, book: { __typename?: 'Book', id: string, title: string } }> };
+
+export type FetchUserOnboardQueryVariables = Exact<{
+  userId: Scalars['String'];
+}>;
+
+
+export type FetchUserOnboardQuery = { __typename?: 'Query', user: { __typename?: 'User', id: string, name?: string | null, image?: string | null, onboarding?: string | null } };
 
 export type SearchBooksQueryVariables = Exact<{
   keyword: Scalars['String'];
@@ -4079,6 +4247,45 @@ export type SearchBooksQueryVariables = Exact<{
 export type SearchBooksQuery = { __typename?: 'Query', booksSearch: Array<{ __typename?: 'Book', id: string, title: string, image: string, url: string, bookLogCount: number, bookshelfCount: number, createdAt: any, updatedAt: any }> };
 
 
+export const CreateBookLogDocument = gql`
+    mutation CreateBookLog($bookId: String!, $log: String!) {
+  createBookLog(bookId: $bookId, log: $log) {
+    id
+  }
+}
+    `;
+export const OnboardUserDocument = gql`
+    mutation OnboardUser($userId: String!, $name: String!, $image: String) {
+  onboardUser(userId: $userId, name: $name, image: $image) {
+    id
+  }
+}
+    `;
+export const ResetUsernameDocument = gql`
+    mutation ResetUsername($userId: String!) {
+  resetUser(userId: $userId) {
+    id
+  }
+}
+    `;
+export const UpdateBookLogDocument = gql`
+    mutation UpdateBookLog($bookLogId: String!, $log: String!) {
+  updateBookLog(bookLogId: $bookLogId, log: $log) {
+    id
+  }
+}
+    `;
+export const UpdateProfileImageDocument = gql`
+    mutation UpdateProfileImage($image: Upload) {
+  image(image: $image) {
+    id
+    path
+    filename
+    mimetype
+    encoding
+  }
+}
+    `;
 export const FetchBookWithContentsDocument = gql`
     query FetchBookWithContents($bookId: String!) {
   book(id: $bookId) {
@@ -4143,6 +4350,25 @@ export const FetchBookshelfBooksDocument = gql`
   }
 }
     `;
+export const FetchUserDocument = gql`
+    query FetchUser($userId: String!) {
+  user(userId: $userId) {
+    id
+    name
+    image
+    bookshelfs {
+      id
+      book {
+        id
+        title
+        image
+        bookLogCount
+        bookshelfCount
+      }
+    }
+  }
+}
+    `;
 export const FetchUserBookLogsDocument = gql`
     query FetchUserBookLogs($userId: String!) {
   bookLogs(userId: $userId) {
@@ -4153,6 +4379,16 @@ export const FetchUserBookLogsDocument = gql`
       id
       title
     }
+  }
+}
+    `;
+export const FetchUserOnboardDocument = gql`
+    query FetchUserOnboard($userId: String!) {
+  user(userId: $userId) {
+    id
+    name
+    image
+    onboarding
   }
 }
     `;
@@ -4178,6 +4414,21 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    CreateBookLog(variables: CreateBookLogMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateBookLogMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateBookLogMutation>(CreateBookLogDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateBookLog', 'mutation');
+    },
+    OnboardUser(variables: OnboardUserMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<OnboardUserMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<OnboardUserMutation>(OnboardUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'OnboardUser', 'mutation');
+    },
+    ResetUsername(variables: ResetUsernameMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<ResetUsernameMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<ResetUsernameMutation>(ResetUsernameDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'ResetUsername', 'mutation');
+    },
+    UpdateBookLog(variables: UpdateBookLogMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateBookLogMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateBookLogMutation>(UpdateBookLogDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateBookLog', 'mutation');
+    },
+    UpdateProfileImage(variables?: UpdateProfileImageMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateProfileImageMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateProfileImageMutation>(UpdateProfileImageDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateProfileImage', 'mutation');
+    },
     FetchBookWithContents(variables: FetchBookWithContentsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FetchBookWithContentsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<FetchBookWithContentsQuery>(FetchBookWithContentsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'FetchBookWithContents', 'query');
     },
@@ -4190,8 +4441,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     FetchBookshelfBooks(variables: FetchBookshelfBooksQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FetchBookshelfBooksQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<FetchBookshelfBooksQuery>(FetchBookshelfBooksDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'FetchBookshelfBooks', 'query');
     },
+    FetchUser(variables: FetchUserQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FetchUserQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<FetchUserQuery>(FetchUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'FetchUser', 'query');
+    },
     FetchUserBookLogs(variables: FetchUserBookLogsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FetchUserBookLogsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<FetchUserBookLogsQuery>(FetchUserBookLogsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'FetchUserBookLogs', 'query');
+    },
+    FetchUserOnboard(variables: FetchUserOnboardQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FetchUserOnboardQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<FetchUserOnboardQuery>(FetchUserOnboardDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'FetchUserOnboard', 'query');
     },
     SearchBooks(variables: SearchBooksQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<SearchBooksQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<SearchBooksQuery>(SearchBooksDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'SearchBooks', 'query');
@@ -4215,8 +4472,14 @@ export function getSdkWithHooks(client: GraphQLClient, withWrapper: SdkFunctionW
     useFetchBookshelfBooks(key: SWRKeyInterface, variables: FetchBookshelfBooksQueryVariables, config?: SWRConfigInterface<FetchBookshelfBooksQuery, ClientError>) {
       return useSWR<FetchBookshelfBooksQuery, ClientError>(key, () => sdk.FetchBookshelfBooks(variables), config);
     },
+    useFetchUser(key: SWRKeyInterface, variables: FetchUserQueryVariables, config?: SWRConfigInterface<FetchUserQuery, ClientError>) {
+      return useSWR<FetchUserQuery, ClientError>(key, () => sdk.FetchUser(variables), config);
+    },
     useFetchUserBookLogs(key: SWRKeyInterface, variables: FetchUserBookLogsQueryVariables, config?: SWRConfigInterface<FetchUserBookLogsQuery, ClientError>) {
       return useSWR<FetchUserBookLogsQuery, ClientError>(key, () => sdk.FetchUserBookLogs(variables), config);
+    },
+    useFetchUserOnboard(key: SWRKeyInterface, variables: FetchUserOnboardQueryVariables, config?: SWRConfigInterface<FetchUserOnboardQuery, ClientError>) {
+      return useSWR<FetchUserOnboardQuery, ClientError>(key, () => sdk.FetchUserOnboard(variables), config);
     },
     useSearchBooks(key: SWRKeyInterface, variables: SearchBooksQueryVariables, config?: SWRConfigInterface<SearchBooksQuery, ClientError>) {
       return useSWR<SearchBooksQuery, ClientError>(key, () => sdk.SearchBooks(variables), config);

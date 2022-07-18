@@ -63,11 +63,13 @@ model User {
   name          String?
   email         String?     @unique
   emailVerified DateTime?
-  image         String?
+  image         String?     @db.VarChar(512)
+  profile       String?
+  onboarding    String?
   accounts      Account[]
   sessions      Session[]
   bookLogs      BookLog[]
-  bookShelfs    Bookshelf[]
+  bookshelfs    Bookshelf[]
 }
 
 model VerificationToken {
@@ -81,8 +83,8 @@ model VerificationToken {
 model Book {
   id             String        @id @default(cuid())
   title          String
-  image          String
-  url            String        @db.Text
+  image          String        @db.VarChar(512)
+  url            String        @db.VarChar(512)
   bookLogCount   Int
   bookshelfCount Int
   createdAt      DateTime      @default(now())
@@ -114,6 +116,8 @@ model BookLog {
 
   book Book @relation(fields: [bookId], references: [id])
   user User @relation(fields: [userId], references: [id])
+
+  @@unique([bookId, userId])
 }
 
 model Bookshelf {

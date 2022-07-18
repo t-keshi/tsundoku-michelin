@@ -2,11 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { MdSearch } from "react-icons/md";
-import { AppBar } from "../ui/AppBar/AppBar";
-import { Box } from "../ui/Box/Box";
-import { Container } from "../ui/Container/Container";
-import { Flex } from "../ui/Flex/Flex";
-import { Toolbar } from "../ui/Toolbar/Toolbar";
+import { AppBar, Box, Container, Flex, Toolbar } from "../ui";
 import { LayoutHeaderAuth } from "./LayoutHeaderAuth";
 
 export const LayoutHeader = () => {

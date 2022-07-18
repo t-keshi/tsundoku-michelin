@@ -22,10 +22,12 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
     const {
       className,
       sx,
+      children,
       active = false,
       size = "md",
       disabled = false,
       transparent = false,
+      type = "button",
       ...rest
     } = props;
 
@@ -38,8 +40,11 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
           iconButton({ active, size, disabled, transparent }),
           className
         )}
+        type={type}
         {...rest}
-      />
+      >
+        {children}
+      </button>
     );
   }
 );
