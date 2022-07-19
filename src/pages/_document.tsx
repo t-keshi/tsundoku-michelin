@@ -1,7 +1,6 @@
 import { Html, Head, Main, NextScript } from "next/document";
 
-const Document = () => {
-  return (
+const Document = () => (
     <Html lang="ja">
       <Head>
         <link
@@ -41,6 +40,5 @@ const Document = () => {
       </body>
     </Html>
   );
-};
 
 export default Document;

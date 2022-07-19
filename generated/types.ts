@@ -1156,6 +1156,11 @@ export type BookLog = {
   userId: Scalars['String'];
 };
 
+export type BookLogBookUserIdCompoundUniqueInput = {
+  bookId: Scalars['String'];
+  userId: Scalars['String'];
+};
+
 export type BookLogCountAggregateOutputType = {
   __typename?: 'BookLogCountAggregateOutputType';
   _all: Scalars['Int'];
@@ -1580,6 +1585,7 @@ export type BookLogWhereInput = {
 };
 
 export type BookLogWhereUniqueInput = {
+  bookUserId?: InputMaybe<BookLogBookUserIdCompoundUniqueInput>;
   id?: InputMaybe<Scalars['String']>;
 };
 
@@ -2776,16 +2782,28 @@ export type NullableStringFieldUpdateOperationsInput = {
 export type Query = {
   __typename?: 'Query';
   book: Book;
+  bookContents: Array<BookContent>;
+  bookLog?: Maybe<BookLog>;
   bookLogs: Array<BookLog>;
   books: Array<Book>;
-  booksSearch: Array<Book>;
   bookshelfs: Array<Bookshelf>;
   user: User;
 };
 
 
 export type QueryBookArgs = {
-  id: Scalars['String'];
+  bookId: Scalars['String'];
+};
+
+
+export type QueryBookContentsArgs = {
+  bookId: Scalars['String'];
+};
+
+
+export type QueryBookLogArgs = {
+  bookId: Scalars['String'];
+  userId: Scalars['String'];
 };
 
 
@@ -2794,8 +2812,8 @@ export type QueryBookLogsArgs = {
 };
 
 
-export type QueryBooksSearchArgs = {
-  keyword: Scalars['String'];
+export type QueryBooksArgs = {
+  keyword?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -4192,19 +4210,12 @@ export type UpdateProfileImageMutationVariables = Exact<{
 
 export type UpdateProfileImageMutation = { __typename?: 'Mutation', image: { __typename?: 'File', id: string, path: string, filename: string, mimetype: string, encoding: string } };
 
-export type FetchBookWithContentsQueryVariables = Exact<{
-  bookId: Scalars['String'];
-}>;
-
-
-export type FetchBookWithContentsQuery = { __typename?: 'Query', book: { __typename?: 'Book', id: string, title: string, bookContents: Array<{ __typename?: 'BookContent', id: string, bookId: string, index: number, type: string, heading: string }> } };
-
 export type FetchBookWithLogsQueryVariables = Exact<{
   bookId: Scalars['String'];
 }>;
 
 
-export type FetchBookWithLogsQuery = { __typename?: 'Query', book: { __typename?: 'Book', id: string, title: string, image: string, url: string, bookLogs: Array<{ __typename?: 'BookLog', id: string, log: string, updatedAt: any, user: { __typename?: 'User', id: string, name?: string | null, image?: string | null } }> } };
+export type FetchBookWithLogsQuery = { __typename?: 'Query', book: { __typename?: 'Book', id: string, title: string, image: string, url: string, bookLogs: Array<{ __typename?: 'BookLog', id: string, log: string, updatedAt: any }> } };
 
 export type FetchBooksQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -4217,6 +4228,14 @@ export type FetchBookshelfBooksQueryVariables = Exact<{
 
 
 export type FetchBookshelfBooksQuery = { __typename?: 'Query', bookshelfs: Array<{ __typename?: 'Bookshelf', id: string, userId: string, book: { __typename?: 'Book', id: string, title: string, image: string, bookLogCount: number, bookshelfCount: number } }> };
+
+export type FetchEditBookLogInfoQueryVariables = Exact<{
+  bookId: Scalars['String'];
+  userId: Scalars['String'];
+}>;
+
+
+export type FetchEditBookLogInfoQuery = { __typename?: 'Query', bookLog?: { __typename?: 'BookLog', id: string, log: string } | null, book: { __typename?: 'Book', id: string, title: string, bookContents: Array<{ __typename?: 'BookContent', id: string, bookId: string, index: number, type: string, heading: string }> } };
 
 export type FetchUserQueryVariables = Exact<{
   userId: Scalars['String'];
@@ -4244,7 +4263,7 @@ export type SearchBooksQueryVariables = Exact<{
 }>;
 
 
-export type SearchBooksQuery = { __typename?: 'Query', booksSearch: Array<{ __typename?: 'Book', id: string, title: string, image: string, url: string, bookLogCount: number, bookshelfCount: number, createdAt: any, updatedAt: any }> };
+export type SearchBooksQuery = { __typename?: 'Query', books: Array<{ __typename?: 'Book', id: string, title: string, image: string, url: string, bookLogCount: number, bookshelfCount: number, createdAt: any, updatedAt: any }> };
 
 
 export const CreateBookLogDocument = gql`
@@ -4286,24 +4305,9 @@ export const UpdateProfileImageDocument = gql`
   }
 }
     `;
-export const FetchBookWithContentsDocument = gql`
-    query FetchBookWithContents($bookId: String!) {
-  book(id: $bookId) {
-    id
-    title
-    bookContents {
-      id
-      bookId
-      index
-      type
-      heading
-    }
-  }
-}
-    `;
 export const FetchBookWithLogsDocument = gql`
     query FetchBookWithLogs($bookId: String!) {
-  book(id: $bookId) {
+  book(bookId: $bookId) {
     id
     title
     image
@@ -4312,11 +4316,6 @@ export const FetchBookWithLogsDocument = gql`
       id
       log
       updatedAt
-      user {
-        id
-        name
-        image
-      }
     }
   }
 }
@@ -4346,6 +4345,25 @@ export const FetchBookshelfBooksDocument = gql`
       image
       bookLogCount
       bookshelfCount
+    }
+  }
+}
+    `;
+export const FetchEditBookLogInfoDocument = gql`
+    query FetchEditBookLogInfo($bookId: String!, $userId: String!) {
+  bookLog(bookId: $bookId, userId: $userId) {
+    id
+    log
+  }
+  book(bookId: $bookId) {
+    id
+    title
+    bookContents {
+      id
+      bookId
+      index
+      type
+      heading
     }
   }
 }
@@ -4394,7 +4412,7 @@ export const FetchUserOnboardDocument = gql`
     `;
 export const SearchBooksDocument = gql`
     query SearchBooks($keyword: String!) {
-  booksSearch(keyword: $keyword) {
+  books(keyword: $keyword) {
     id
     title
     image
@@ -4429,9 +4447,6 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     UpdateProfileImage(variables?: UpdateProfileImageMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateProfileImageMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdateProfileImageMutation>(UpdateProfileImageDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateProfileImage', 'mutation');
     },
-    FetchBookWithContents(variables: FetchBookWithContentsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FetchBookWithContentsQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<FetchBookWithContentsQuery>(FetchBookWithContentsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'FetchBookWithContents', 'query');
-    },
     FetchBookWithLogs(variables: FetchBookWithLogsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FetchBookWithLogsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<FetchBookWithLogsQuery>(FetchBookWithLogsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'FetchBookWithLogs', 'query');
     },
@@ -4440,6 +4455,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     FetchBookshelfBooks(variables: FetchBookshelfBooksQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FetchBookshelfBooksQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<FetchBookshelfBooksQuery>(FetchBookshelfBooksDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'FetchBookshelfBooks', 'query');
+    },
+    FetchEditBookLogInfo(variables: FetchEditBookLogInfoQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FetchEditBookLogInfoQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<FetchEditBookLogInfoQuery>(FetchEditBookLogInfoDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'FetchEditBookLogInfo', 'query');
     },
     FetchUser(variables: FetchUserQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FetchUserQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<FetchUserQuery>(FetchUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'FetchUser', 'query');
@@ -4460,9 +4478,6 @@ export function getSdkWithHooks(client: GraphQLClient, withWrapper: SdkFunctionW
   const sdk = getSdk(client, withWrapper);
   return {
     ...sdk,
-    useFetchBookWithContents(key: SWRKeyInterface, variables: FetchBookWithContentsQueryVariables, config?: SWRConfigInterface<FetchBookWithContentsQuery, ClientError>) {
-      return useSWR<FetchBookWithContentsQuery, ClientError>(key, () => sdk.FetchBookWithContents(variables), config);
-    },
     useFetchBookWithLogs(key: SWRKeyInterface, variables: FetchBookWithLogsQueryVariables, config?: SWRConfigInterface<FetchBookWithLogsQuery, ClientError>) {
       return useSWR<FetchBookWithLogsQuery, ClientError>(key, () => sdk.FetchBookWithLogs(variables), config);
     },
@@ -4471,6 +4486,9 @@ export function getSdkWithHooks(client: GraphQLClient, withWrapper: SdkFunctionW
     },
     useFetchBookshelfBooks(key: SWRKeyInterface, variables: FetchBookshelfBooksQueryVariables, config?: SWRConfigInterface<FetchBookshelfBooksQuery, ClientError>) {
       return useSWR<FetchBookshelfBooksQuery, ClientError>(key, () => sdk.FetchBookshelfBooks(variables), config);
+    },
+    useFetchEditBookLogInfo(key: SWRKeyInterface, variables: FetchEditBookLogInfoQueryVariables, config?: SWRConfigInterface<FetchEditBookLogInfoQuery, ClientError>) {
+      return useSWR<FetchEditBookLogInfoQuery, ClientError>(key, () => sdk.FetchEditBookLogInfo(variables), config);
     },
     useFetchUser(key: SWRKeyInterface, variables: FetchUserQueryVariables, config?: SWRConfigInterface<FetchUserQuery, ClientError>) {
       return useSWR<FetchUserQuery, ClientError>(key, () => sdk.FetchUser(variables), config);

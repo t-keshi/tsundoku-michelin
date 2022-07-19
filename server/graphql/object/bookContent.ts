@@ -1,4 +1,4 @@
-import { objectType, enumType } from "nexus";
+import { objectType } from "nexus";
 import { BookContent } from "nexus-prisma";
 
 export const bookContent = objectType({

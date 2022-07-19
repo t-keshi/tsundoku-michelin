@@ -1,4 +1,7 @@
 import React, { useCallback } from "react";
+import { MdLogout, MdManageAccounts, MdOutlineArticle } from "react-icons/md";
+import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
 import {
   Button,
   Typography,
@@ -12,11 +15,8 @@ import {
   Popover,
 } from "../ui";
 import { useAnchoEl } from "../../helpers/hooks/useAnchoEl";
-import { MdLogout, MdManageAccounts, MdOutlineArticle } from "react-icons/md";
 import { useAuthModal } from "../../containers/contexts/authModal";
-import Link from "next/link";
-import { useSession, signOut } from "next-auth/react";
-import { useSnackbar } from "../../containers//contexts/snackbar";
+import { useSnackbar } from "../../containers/contexts/snackbar";
 
 export const LayoutHeaderAuth = () => {
   const { onOpen } = useAuthModal();

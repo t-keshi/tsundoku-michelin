@@ -42,16 +42,12 @@ const Home: React.FC = () => {
   );
 };
 
-const HomePage: NextPageWithLayout<PageProps> = ({ fallback }) => {
-  return (
+const HomePage: NextPageWithLayout<PageProps> = ({ fallback }) => (
     <SWRConfig value={{ fallback }}>
       <Home />
     </SWRConfig>
   );
-};
 
-HomePage.getLayout = (page: React.ReactElement) => {
-  return <Layout>{page}</Layout>;
-};
+HomePage.getLayout = (page: React.ReactElement) => <Layout>{page}</Layout>;
 
 export default HomePage;

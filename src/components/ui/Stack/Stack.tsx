@@ -1,18 +1,11 @@
-import clsx from "clsx";
-import React, {
-  Children,
-  cloneElement,
-  forwardRef,
-  isValidElement,
-} from "react";
-import { configs } from "../../system/configs/index.css";
-import { SystemProps } from "../../system/configs/type";
-import { stack, stackDivider } from "./stack.css";
+import clsx from 'clsx';
+import React, { Children, forwardRef, isValidElement } from 'react';
+import { configs } from '../../system/configs/index.css';
+import { SystemProps } from '../../system/configs/type';
+import { stack, stackDivider } from './stack.css';
 
 const getValidChildren = (children: React.ReactNode) =>
-  Children.toArray(children).filter((child) =>
-    isValidElement(child)
-  ) as React.ReactElement[];
+  Children.toArray(children).filter((child) => isValidElement(child)) as React.ReactElement[];
 
 type StackProps = {
   children?: React.ReactNode;
@@ -20,11 +13,11 @@ type StackProps = {
   horizontal?: boolean;
   spacing?: 1 | 2 | 3 | 4 | 5;
   hasDivider?: boolean;
-} & { sx?: Partial<SystemProps> } & JSX.IntrinsicElements["div"];
+} & { sx?: Partial<SystemProps> } & JSX.IntrinsicElements['div'];
 
 const stackClasses = {
-  root: "Vanilla-Stack-root",
-  divider: "Vanilla-Stack-divider",
+  root: 'Vanilla-Stack-root',
+  divider: 'Vanilla-Stack-divider',
 };
 
 export const Stack = forwardRef<HTMLDivElement, StackProps>((props, ref) => {
@@ -50,10 +43,7 @@ export const Stack = forwardRef<HTMLDivElement, StackProps>((props, ref) => {
             {child}
             {!isLast && (
               <div
-                className={clsx(
-                  stackClasses.divider,
-                  stackDivider({ horizontal, spacing })
-                )}
+                className={clsx(stackClasses.divider, stackDivider({ horizontal, spacing }))}
                 {...rest}
               />
             )}
@@ -68,7 +58,7 @@ export const Stack = forwardRef<HTMLDivElement, StackProps>((props, ref) => {
         stackClasses.root,
         sx && configs(sx as object),
         stack({ horizontal, spacing, hasDivider }),
-        className
+        className,
       )}
       {...rest}
     >

@@ -1,18 +1,17 @@
-import { recipe } from "@vanilla-extract/recipes";
-import { vars } from "../../system/theme/index.css";
+import { recipe } from '@vanilla-extract/recipes';
 
 export const avatar = recipe({
   base: {
-    position: "relative",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     flexShrink: 0,
     fontSize: 20,
     lineHeight: 1,
-    borderRadius: "50%",
-    overflow: "hidden",
-    userSelect: "none",
+    borderRadius: '50%',
+    overflow: 'hidden',
+    userSelect: 'none',
   },
   variants: {
     size: {
@@ -34,8 +33,8 @@ export const avatar = recipe({
 
 export const avatarImg = recipe({
   base: {
-    objectFit: "contain",
-    height: "auto",
-    width: "100%",
+    objectFit: 'contain',
+    height: 'auto',
+    width: '100%',
   },
 });

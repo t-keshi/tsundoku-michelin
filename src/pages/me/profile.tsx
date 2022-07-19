@@ -1,11 +1,10 @@
 import React from "react";
+import Head from "next/head";
 import { Layout } from "../../components/layout/Layout";
 import { NextPageWithLayout } from "../../type";
 import { ProfileTemplate } from "../../templates/profile";
-import Head from "next/head";
 
-const Profile: NextPageWithLayout = () => {
-  return (
+const Profile: NextPageWithLayout = () => (
     <>
       <Head>
         <title>積読ミシュラン | Profile</title>
@@ -13,10 +12,7 @@ const Profile: NextPageWithLayout = () => {
       <ProfileTemplate />
     </>
   );
-};
 
-Profile.getLayout = (page: React.ReactElement) => {
-  return <Layout>{page}</Layout>;
-};
+Profile.getLayout = (page: React.ReactElement) => <Layout>{page}</Layout>;
 
 export default Profile;

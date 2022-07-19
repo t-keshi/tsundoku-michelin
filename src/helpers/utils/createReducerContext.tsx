@@ -1,8 +1,9 @@
-import { createContext, useContext, createElement, useReducer } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { createContext, useContext, createElement, useReducer } from 'react';
 
 type UseReducerContextReturnType<R extends React.Reducer<any, any>> = () => [
   React.ReducerState<R>,
-  React.Dispatch<React.ReducerAction<R>>
+  React.Dispatch<React.ReducerAction<R>>,
 ];
 type ReducerProviderReturnType<R extends React.Reducer<any, any>> = React.FC<{
   initialState?: React.ReducerState<R>;
@@ -14,13 +15,9 @@ type ContextReturnType<R extends React.Reducer<any, any>> = React.Context<
 
 export const createReducerContext = <R extends React.Reducer<any, any>>(
   reducer: R,
-  defaultInitialState: React.ReducerState<R>
+  defaultInitialState: React.ReducerState<R>,
 ): Readonly<
-  [
-    UseReducerContextReturnType<R>,
-    ReducerProviderReturnType<R>,
-    ContextReturnType<R>
-  ]
+  [UseReducerContextReturnType<R>, ReducerProviderReturnType<R>, ContextReturnType<R>]
 > => {
   const context = createContext<
     [React.ReducerState<R>, React.Dispatch<React.ReducerAction<R>>] | undefined
@@ -29,7 +26,7 @@ export const createReducerContext = <R extends React.Reducer<any, any>>(
     props: {
       value: [React.ReducerState<R>, React.Dispatch<React.ReducerAction<R>>];
     },
-    children: React.ReactNode
+    children: React.ReactNode,
   ) => createElement(context.Provider, props, children);
   const ReducerProvider: React.FC<{
     initialState?: React.ReducerState<R>;
@@ -37,7 +34,7 @@ export const createReducerContext = <R extends React.Reducer<any, any>>(
   }> = ({ children, initialState }) => {
     const state = useReducer<R>(
       reducer,
-      initialState !== undefined ? initialState : defaultInitialState
+      initialState !== undefined ? initialState : defaultInitialState,
     );
 
     return providerFactory({ value: state }, children);
@@ -45,9 +42,7 @@ export const createReducerContext = <R extends React.Reducer<any, any>>(
   const useReducerContext = () => {
     const state = useContext(context);
     if (state == null) {
-      throw new Error(
-        "useReducerContext must be used inside a ReducerProvider"
-      );
+      throw new Error('useReducerContext must be used inside a ReducerProvider');
     }
 
     return state;

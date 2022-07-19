@@ -49,7 +49,7 @@ export const appBar = recipe({
         boxShadow: vars.shadow[3],
       },
       neumorphism: {
-        boxShadow: vars.shadow["neumorphism"],
+        boxShadow: vars.shadow.neumorphism,
       },
     },
   },

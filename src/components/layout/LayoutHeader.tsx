@@ -5,8 +5,7 @@ import { MdSearch } from "react-icons/md";
 import { AppBar, Box, Container, Flex, Toolbar } from "../ui";
 import { LayoutHeaderAuth } from "./LayoutHeaderAuth";
 
-export const LayoutHeader = () => {
-  return (
+export const LayoutHeader = () => (
     <>
       <AppBar>
         <Toolbar>
@@ -55,4 +54,3 @@ export const LayoutHeader = () => {
       <Toolbar />
     </>
   );
-};

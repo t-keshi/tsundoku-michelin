@@ -1,7 +1,7 @@
-import { render } from "../../testUtils";
 import { byRole } from "testing-library-selector";
 import userEvent from "@testing-library/user-event";
-import EditPage from "./[bookId]/[logId]";
+import { render } from "../../testUtils";
+import EditPage from "./[bookId]";
 
 const ui = {
   publishButton: byRole("button", { name: /保存して公開/ }),

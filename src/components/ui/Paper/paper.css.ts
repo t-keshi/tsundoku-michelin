@@ -1,13 +1,12 @@
-import { style } from "@vanilla-extract/css";
-import { recipe } from "@vanilla-extract/recipes";
-import { vars } from "../../system/theme/index.css";
-import { createTransition } from "../../system/utils/transition";
+import { recipe } from '@vanilla-extract/recipes';
+import { vars } from '../../system/theme/index.css';
+import { createTransition } from '../../system/utils/transition';
 
 export const paper = recipe({
   base: {
     backgroundColor: vars.palette.lightMode.background,
     color: vars.palette.lightMode.text.primary,
-    transition: createTransition(["box-shadow"]),
+    transition: createTransition(['box-shadow']),
     borderRadius: vars.radius,
   },
   variants: {

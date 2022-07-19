@@ -1,9 +1,9 @@
 import clsx from "clsx";
 import { forwardRef } from "react";
+import Image from "next/image";
 import { configs } from "../../system/configs/index.css";
 import { SystemProps } from "../../system/configs/type";
 import { avatar, avatarImg } from "./avatar.css";
-import Image from "next/image";
 
 type AvatarProps = {
   src: string;

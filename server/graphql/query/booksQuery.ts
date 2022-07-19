@@ -1,5 +1,5 @@
 import { Prisma, PrismaClient } from "@prisma/client";
-import { extendType } from "nexus";
+import { extendType, nullable, stringArg } from "nexus";
 import { Book } from "nexus-prisma";
 
 export const booksQuery = extendType({
@@ -7,9 +7,10 @@ export const booksQuery = extendType({
   definition: (t) => {
     t.list.field("books", {
       type: Book.$name,
+      args: { keyword: nullable(stringArg()) },
       resolve: async (
         _,
-        __,
+        args: { keyword: string },
         ctx: {
           prisma: PrismaClient;
           select: Pick<
@@ -21,7 +22,10 @@ export const booksQuery = extendType({
           >;
         }
       ) => {
-        const res = await ctx.prisma.book.findMany({ ...ctx.select });
+        const res = await ctx.prisma.book.findMany({
+          ...(args.keyword && { where: { title: { contains: args.keyword } } }),
+          ...ctx.select,
+        });
         return res;
       },
     });

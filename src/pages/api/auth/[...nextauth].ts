@@ -15,6 +15,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     session: ({ session, user }) => {
       const extendSession = { ...session, user: { ...user, uid: user.id } };
+
       return Promise.resolve(extendSession);
     },
   },

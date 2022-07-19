@@ -18,6 +18,7 @@ export const useImageUpload = () => {
         if (typeof reader.result !== "string") {
           throw new Error("アップロードされた画像が読み込めません");
         }
+
         return setImageDataUrl(reader.result);
       };
     }

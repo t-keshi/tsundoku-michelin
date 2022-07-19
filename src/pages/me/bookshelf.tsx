@@ -1,54 +1,49 @@
-import { GetStaticProps } from "next";
-import { Session } from "next-auth";
-import { getSession, useSession } from "next-auth/react";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import React from "react";
-import { SWRConfig } from "swr";
-import { FetchBookshelfBooksQuery } from "../../../generated/types";
-import { Layout } from "../../components/layout/Layout";
-import { Typography } from "../../components/ui";
-import { fetchBookshelfBooks } from "../../containers/services/query/fetchBookshelfBooks";
-import { sdk, sdkHooks } from "../../containers/services/sdk";
-import { BookshelfTemplate } from "../../templates/bookshelf";
-import { NextPageWithLayout } from "../../type";
+import { GetServerSideProps } from 'next';
+import { Session, unstable_getServerSession } from 'next-auth';
+import Head from 'next/head';
+import React, { Suspense } from 'react';
+import { SWRConfig } from 'swr';
+import { Layout } from '../../components/layout/Layout';
+import { Typography } from '../../components/ui';
+import { fetchBookshelfBooks } from '../../containers/services/query/fetchBookshelfBooks';
+import { sdkHooks } from '../../containers/services/sdk';
+import { BookshelfTemplate } from '../../templates/bookshelf';
+import { NextPageWithLayout } from '../../type';
+import { authOptions } from '../api/auth/[...nextauth]';
 
 type PageProps = {
-  fallback?: { [key: typeof fetchBookshelfBooks]: FetchBookshelfBooksQuery };
+  session: Session;
 };
 
-export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
-  const session = await getSession();
-  const uid = session?.user.uid;
-  const res = await sdk.FetchBookshelfBooks({ userId: uid ?? "" });
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await unstable_getServerSession(context.req, context.res, authOptions);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
 
   return {
     props: {
-      fallback: {
-        [fetchBookshelfBooks]: res,
-      },
-      revalidate: 3600,
+      uid: session.user.uid,
     },
   };
 };
 
-const Bookshelf: React.FC = () => {
-  const router = useRouter();
-  const { status, data: session } = useSession({
-    required: true,
-    onUnauthenticated: () => {
-      router.push("/");
-    },
-  });
-  const uid = session?.user ? session.user.uid : undefined;
+const Bookshelf: React.FC<PageProps> = ({ session }) => {
+  const { uid } = session.user;
   const { data } = sdkHooks.useFetchBookshelfBooks(
     uid ? fetchBookshelfBooks : null,
-    { userId: uid ?? "" },
-    { suspense: true }
+    { userId: uid ?? '' },
+    { suspense: true },
   );
 
-  if (!data || status === "loading") {
-    return <Typography variant="overline">loading...</Typography>;
+  if (!data) {
+    throw new Error('');
   }
 
   return (
@@ -61,16 +56,14 @@ const Bookshelf: React.FC = () => {
   );
 };
 
-const BookshelfPage: NextPageWithLayout<PageProps> = ({ fallback }) => {
-  return (
-    <SWRConfig value={{ fallback }}>
-      <Bookshelf />
-    </SWRConfig>
-  );
-};
+const BookshelfPage: NextPageWithLayout<PageProps> = ({ session }) => (
+  <SWRConfig>
+    <Suspense fallback={<Typography variant="overline">loading...</Typography>}>
+      <Bookshelf session={session} />
+    </Suspense>
+  </SWRConfig>
+);
 
-BookshelfPage.getLayout = (page: React.ReactElement) => {
-  return <Layout>{page}</Layout>;
-};
+BookshelfPage.getLayout = (page: React.ReactElement) => <Layout>{page}</Layout>;
 
 export default BookshelfPage;

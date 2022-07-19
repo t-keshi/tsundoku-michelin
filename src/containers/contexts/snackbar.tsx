@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import { createReducerContext } from "../../helpers/utils/createReducerContext";
 import { produce } from "immer";
+import { createReducerContext } from "../../helpers/utils/createReducerContext";
 
 type State = {
   isOpen: boolean;
@@ -33,12 +33,14 @@ const reducer = produce((draft: State, action: Action): void => {
       draft.isOpen = true;
       draft.status = action.payload.status;
       draft.message = action.payload.message;
+
       return;
 
     case "close":
       draft.isOpen = false;
       draft.message = "";
       draft.status = "success";
+
       return;
 
     default:
@@ -57,14 +59,10 @@ export const SnackbarProvider = SnackbarContext[1];
 export const useSnackbar = () => {
   const [{ isOpen, message, status }, dispatch] = useSnackbarBase();
 
-  const onClose = useCallback(() => {
-    return dispatch({ type: "close" });
-  }, [dispatch]);
+  const onClose = useCallback(() => dispatch({ type: "close" }), [dispatch]);
 
   const onOpen = useCallback(
-    ({ message, status }: { message: string; status: "success" | "error" }) => {
-      return dispatch({ type: "open", payload: { message, status } });
-    },
+    ({ message, status }: { message: string; status: "success" | "error" }) => dispatch({ type: "open", payload: { message, status } }),
     [dispatch]
   );
 

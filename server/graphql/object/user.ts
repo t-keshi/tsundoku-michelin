@@ -15,3 +15,30 @@ export const user = objectType({
     t.field(User.bookshelfs);
   },
 });
+
+export const Userr = objectType({
+  name: "Userr",
+  definition(t) {
+    t.int("id");
+    t.string("name");
+    t.string("email");
+    t.list.field("posts", {
+      type: "Post",
+      resolve: (parent) => {},
+    });
+  },
+});
+
+export const Post = objectType({
+  name: "Post",
+  definition(t) {
+    t.int("id");
+    t.string("title");
+    t.nullable.string("content");
+    t.boolean("published");
+    t.nullable.field("author", {
+      type: "Userr",
+      resolve: (parent) => {},
+    });
+  },
+});

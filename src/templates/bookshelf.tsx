@@ -46,7 +46,7 @@ export const BookshelfTemplate: React.FC<Props> = ({ bookshelfs }) => {
             sx={{ position: "relative" }}
             media={book.image}
             title={book.title}
-            href={`/books/${encodeURIComponent(book.id)}`}
+            href={`/books/${book.id}`}
           >
             <Box sx={{ position: "absolute", bottom: 0, right: 0 }}>
               <IconButton transparent onClick={handleClickMore}>

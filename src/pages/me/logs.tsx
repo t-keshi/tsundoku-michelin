@@ -1,34 +1,47 @@
-import React, { Suspense } from "react";
-import { Layout } from "../../components/layout/Layout";
-import { NextPageWithLayout } from "../../type";
-import Head from "next/head";
-import { LogsTemplate } from "../../templates/logs";
-import { SWRConfig } from "swr";
-import { fetchUserBookLogs } from "../../containers/services/query/fetchUserBookLogs";
-import { FetchUserBookLogsQuery } from "../../../generated/types";
-import { GetStaticProps } from "next";
-import { getSession, useSession } from "next-auth/react";
-import { Session } from "next-auth";
-import { sdk, sdkHooks } from "../../containers/services/sdk";
-import { Typography } from "../../components/ui";
-import { useRouter } from "next/router";
+import React, { Suspense } from 'react';
+import Head from 'next/head';
+import { Session, unstable_getServerSession } from 'next-auth';
+import { GetServerSideProps } from 'next';
+import { Layout } from '../../components/layout/Layout';
+import { NextPageWithLayout } from '../../type';
+import { LogsTemplate } from '../../templates/logs';
+import { fetchUserBookLogs } from '../../containers/services/query/fetchUserBookLogs';
+import { sdkHooks } from '../../containers/services/sdk';
+import { Typography } from '../../components/ui';
+import { authOptions } from '../api/auth/[...nextauth]';
 
-const Logs: React.FC = () => {
-  const router = useRouter();
-  const { status, data: session } = useSession({
-    required: true,
-    onUnauthenticated: () => {
-      router.push("/");
+type PageProps = {
+  session: Session;
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await unstable_getServerSession(context.req, context.res, authOptions);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session,
     },
-  });
-  const uid = session?.user ? session.user.uid : undefined;
+  };
+};
+
+const Logs: React.FC<PageProps> = ({ session }) => {
+  const { uid } = session.user;
   const { data } = sdkHooks.useFetchUserBookLogs(
     uid ? fetchUserBookLogs : null,
-    { userId: uid ?? "" },
-    { suspense: true }
+    { userId: uid ?? '' },
+    { suspense: true },
   );
 
-  if (!data || status === "loading") {
+  if (!data) {
     return <Typography variant="overline">loading...</Typography>;
   }
 
@@ -42,16 +55,12 @@ const Logs: React.FC = () => {
   );
 };
 
-const LogsPage: NextPageWithLayout = () => {
-  return (
-    <Suspense fallback={<Typography variant="overline">loading...</Typography>}>
-      <Logs />
-    </Suspense>
-  );
-};
+const LogsPage: NextPageWithLayout<PageProps> = ({ session }) => (
+  <Suspense fallback={<Typography variant="overline">loading...</Typography>}>
+    <Logs session={session} />
+  </Suspense>
+);
 
-LogsPage.getLayout = (page: React.ReactElement) => {
-  return <Layout>{page}</Layout>;
-};
+LogsPage.getLayout = (page: React.ReactElement) => <Layout>{page}</Layout>;
 
 export default LogsPage;

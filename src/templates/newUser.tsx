@@ -1,9 +1,11 @@
-import React, { useCallback, useState } from "react";
+import React from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
 import {
   FetchUserOnboardQuery,
   OnboardUserMutation,
   OnboardUserMutationVariables,
-} from "../../generated/types";
+} from '../../generated/types';
 import {
   Avatar,
   Box,
@@ -15,14 +17,12 @@ import {
   Paper,
   TextField,
   Typography,
-} from "../components/ui";
-import { SchemaOf, yup } from "../helpers/utils/yupExtend";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
-import { useImageUpload } from "../helpers/hooks/useImageUpload";
+} from '../components/ui';
+import { SchemaOf, yup } from '../helpers/utils/yupExtend';
+import { useImageUpload } from '../helpers/hooks/useImageUpload';
 
 type Props = {
-  user: FetchUserOnboardQuery["user"];
+  user: FetchUserOnboardQuery['user'];
   onSubmit: ({
     userId,
     name,
@@ -35,7 +35,7 @@ type Props = {
 };
 
 type FormValues = {
-  name: OnboardUserMutationVariables["name"];
+  name: OnboardUserMutationVariables['name'];
 };
 
 const schema: SchemaOf<FormValues> = yup.object().shape({
@@ -44,7 +44,7 @@ const schema: SchemaOf<FormValues> = yup.object().shape({
     .required()
     .min(2)
     .max(30)
-    .matches(/^[a-zA-Z0-9-_]+$/, "半角英数字または_, -で入力してください"),
+    .matches(/^[a-zA-Z0-9-_]+$/, '半角英数字または_, -で入力してください'),
 });
 
 export const NewUserTemplate: React.FC<Props> = ({ user, onSubmit }) => {
@@ -54,7 +54,7 @@ export const NewUserTemplate: React.FC<Props> = ({ user, onSubmit }) => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: { name: "", image: "" },
+    defaultValues: { name: '', image: '' },
   });
   const { image, imageDataUrl, onUpload } = useImageUpload();
 
@@ -66,27 +66,23 @@ export const NewUserTemplate: React.FC<Props> = ({ user, onSubmit }) => {
     <Form onSubmit={handleClickSubmti}>
       <Paper sx={{ p: 3, width: 300 }}>
         <input hidden type="file" onChange={onUpload} />
-        <Typography variant="h3" sx={{ textAlign: "center" }}>
+        <Typography variant="h3" sx={{ textAlign: 'center' }}>
           Welcome!!🎉
         </Typography>
-        <Flex sx={{ alignItems: "center", justifyContent: "center", py: 5 }}>
+        <Flex sx={{ alignItems: 'center', justifyContent: 'center', py: 5 }}>
           <IconButton>
-            <Avatar
-              size="lg"
-              src={imageDataUrl || user?.image || "/brand-icon.png"}
-              priority
-            />
+            <Avatar size="lg" src={imageDataUrl || user?.image || '/brand-icon.png'} priority />
           </IconButton>
         </Flex>
         <Label>表示名(半角英数字または_, -)</Label>
         <TextField
           variant="outlined"
-          sx={{ width: "100%" }}
-          {...register("name")}
+          sx={{ width: '100%' }}
+          {...register('name')}
           errorMessage={errors.name?.message}
         />
         <Box sx={{ mt: 3 }} />
-        <Button variant={"contained"} sx={{ width: "100%" }} type="submit">
+        <Button variant="contained" sx={{ width: '100%' }} type="submit">
           登録完了
         </Button>
       </Paper>

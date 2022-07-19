@@ -1,9 +1,9 @@
-import { sdk, sdkHooks } from "../services/sdk";
-import { fetchUserOnboard } from "../services/query/fetchUserOnboard";
-import { useMutation } from "../../helpers/hooks/useMutation";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { sdk, sdkHooks } from "../services/sdk";
+import { fetchUserOnboard } from "../services/query/fetchUserOnboard";
+import { useMutation } from "../../helpers/hooks/useMutation";
 
 export const useOnboarding = () => {
   const router = useRouter();
@@ -46,6 +46,7 @@ export const useOnboarding = () => {
       const imageUrl = imgRes.image;
 
       const res = await sdk.OnboardUser({ userId, name, image: imageUrl });
+
       return res;
     },
     {

@@ -22,12 +22,11 @@ const popOverClasses = {
 
 const defaultTimeout = 225;
 
-const ownerDocument = (node: Node | null | undefined): Document => {
-  return (node && node.ownerDocument) || document;
-};
+const ownerDocument = (node: Node | null | undefined): Document => (node && node.ownerDocument) || document;
 
 const ownerWindow = (node: Node | undefined): Window => {
   const doc = ownerDocument(node);
+
   return doc.defaultView || window;
 };
 

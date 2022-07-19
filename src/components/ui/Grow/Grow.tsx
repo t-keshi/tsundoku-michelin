@@ -1,6 +1,6 @@
-import { cloneElement, forwardRef } from "react";
-import { Transition, TransitionStatus } from "react-transition-group";
-import { TransitionProps } from "react-transition-group/Transition";
+import { cloneElement } from 'react';
+import { Transition, TransitionStatus } from 'react-transition-group';
+import { TransitionProps } from 'react-transition-group/Transition';
 
 type GrowProps = {
   children: React.ReactElement;
@@ -11,14 +11,12 @@ type GrowProps = {
         exit: number;
       }
     | number;
-  style?: TransitionProps["style"];
+  style?: TransitionProps['style'];
 };
 
 const defaultTimeout = 300;
 
-const getScale = (value: number) => {
-  return `scale(${value}, ${value ** 2})`;
-};
+const getScale = (value: number) => `scale(${value}, ${value ** 2})`;
 
 const styles = {
   entering: {
@@ -27,43 +25,31 @@ const styles = {
   },
   entered: {
     opacity: 1,
-    transform: "none",
+    transform: 'none',
   },
 };
 
 export const Grow: React.FC<GrowProps> = (props) => {
-  const {
-    children,
-    inProp = false,
-    timeout = defaultTimeout,
-    style,
-    ...rest
-  } = props;
+  const { children, inProp = false, timeout = defaultTimeout, style, ...rest } = props;
 
   return (
-    <Transition
-      appear
-      in={inProp}
-      timeout={timeout}
-      role="presentation"
-      {...rest}
-    >
-      {(status: TransitionStatus) => {
-        return cloneElement(children, {
+    <Transition appear in={inProp} timeout={timeout} role="presentation" {...rest}>
+      {(status: TransitionStatus) =>
+        cloneElement(children, {
           style: {
             opacity: 0,
             transform: getScale(0.75),
-            ...((status === "exited" || !inProp) && {
-              display: "none",
+            ...((status === 'exited' || !inProp) && {
+              display: 'none',
             }),
-            ...((status === "entering" || status === "entered") && {
+            ...((status === 'entering' || status === 'entered') && {
               ...styles[status],
             }),
             ...style,
             ...children.props.style,
           },
-        });
-      }}
+        })
+      }
     </Transition>
   );
 };

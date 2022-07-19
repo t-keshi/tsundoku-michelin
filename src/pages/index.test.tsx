@@ -1,6 +1,6 @@
+import { byText } from "testing-library-selector";
 import { render } from "../testUtils";
 import Home from "./index";
-import { byText } from "testing-library-selector";
 
 const ui = {
   pageTitle: byText(/Books/),

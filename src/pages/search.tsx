@@ -39,8 +39,6 @@ const Search: NextPageWithLayout = () => {
   );
 };
 
-Search.getLayout = (page: React.ReactElement) => {
-  return <Layout>{page}</Layout>;
-};
+Search.getLayout = (page: React.ReactElement) => <Layout>{page}</Layout>;
 
 export default Search;

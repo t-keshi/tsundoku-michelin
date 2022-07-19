@@ -15,5 +15,6 @@ export const useDebounce = (timeout: number): Debounce => {
     },
     [timeout]
   );
+
   return debounce;
 };

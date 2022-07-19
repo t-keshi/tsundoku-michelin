@@ -1,14 +1,16 @@
+import { useRouter } from "next/router";
 import { sdk, sdkHooks } from "../services/sdk";
 import { useMutation } from "../../helpers/hooks/useMutation";
-import { useRouter } from "next/router";
-import { fetchBookWithContents } from "../services/query/fetchBookWithContents";
+import { fetchEditBookLogInfo } from "../services/query/fetchEditBookLogInfo";
 
-export const useBookLog = () => {
+export const useBookLog = (uid: string) => {
   const router = useRouter();
-  const query = router.query as { bookId: string; logId: string };
-  const { data, error } = sdkHooks.useFetchBookWithContents(
-    fetchBookWithContents,
+  const query = router.query as { bookId: string };
+
+  const { data, error } = sdkHooks.useFetchEditBookLogInfo(
+    fetchEditBookLogInfo,
     {
+      userId: uid,
       bookId: query.bookId,
     },
     { suspense: true }
@@ -22,7 +24,8 @@ export const useBookLog = () => {
   );
 
   const { mutate: updateBookLog } = useMutation(
-    (log: string) => sdk.UpdateBookLog({ bookLogId: query.logId, log }),
+    (log: string) =>
+      sdk.UpdateBookLog({ bookLogId: data?.bookLog?.id || "", log }),
     {
       successMessage: "読書ログを更新しました",
     }
@@ -31,6 +34,6 @@ export const useBookLog = () => {
   return {
     data,
     isLoading: !error && !data,
-    onSubmit: router.pathname.includes("new") ? createBookLog : updateBookLog,
+    onSubmit: data?.bookLog?.id ? updateBookLog : createBookLog,
   };
 };

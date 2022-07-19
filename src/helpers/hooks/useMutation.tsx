@@ -1,5 +1,6 @@
-import { useCallback } from "react";
-import { useSnackbar } from "../../containers/contexts/snackbar";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useCallback } from 'react';
+import { useSnackbar } from '../../containers/contexts/snackbar';
 
 type Options = {
   onSuccess?: () => void;
@@ -9,11 +10,9 @@ type Options = {
   successMessage?: string;
 };
 
-export const useMutation = <
-  TMutateFn extends (...args: any) => Promise<unknown>
->(
+export const useMutation = <TMutateFn extends (...args: any) => Promise<unknown>>(
   mutateFn: TMutateFn,
-  options?: Options
+  options?: Options,
 ) => {
   const { onOpen } = useSnackbar();
 
@@ -21,23 +20,30 @@ export const useMutation = <
     (args: any) =>
       mutateFn(args)
         .then(() => {
-          options?.successMessage &&
-            onOpen({ message: options.successMessage, status: "success" });
-          options?.onSuccess && options?.onSuccess();
+          if (options?.successMessage) {
+            onOpen({ message: options.successMessage, status: 'success' });
+          }
+          if (options?.onSuccess) {
+            options?.onSuccess();
+          }
         })
         .catch((error) => {
           // eslint-disable-next-line no-console
-          console.log(error);
+          console.log(`######### ${error} #########`);
           onOpen({
-            message: options?.errorMessage || "エラーが発生しました",
-            status: "error",
+            message: options?.errorMessage || 'エラーが発生しました',
+            status: 'error',
           });
-          options?.onError && options?.onError();
+          if (options?.onError) {
+            options?.onError();
+          }
         })
         .finally(() => {
-          options?.onSettled && options?.onSettled();
+          if (options?.onSettled) {
+            options?.onSettled();
+          }
         }),
-    [mutateFn, onOpen, options]
+    [mutateFn, onOpen, options],
   );
 
   return { mutate: fn as TMutateFn };

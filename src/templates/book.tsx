@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { useCallback, useState } from "react";
 import { MdOutlineBookmarkAdd, MdTaskAlt } from "react-icons/md";
+import { formatDistance } from "date-fns";
+import { ja } from "date-fns/locale";
 import { FetchBookWithLogsQuery } from "../../generated/types";
 import {
   Accordion,
@@ -14,8 +16,6 @@ import {
   Typography,
 } from "../components/ui";
 import { useSnackbar } from "../containers/contexts/snackbar";
-import { formatDistance } from "date-fns";
-import { ja } from "date-fns/locale";
 
 type Props = {
   bookWithLogs: FetchBookWithLogsQuery["book"];
@@ -23,11 +23,14 @@ type Props = {
 
 export const BookTemplate: React.FC<Props> = ({ bookWithLogs }) => {
   const { onOpen: onSnackbarOpen } = useSnackbar();
+
   const [isAddedBookshelf, setIsAddedBookshelf] = useState(false);
+
   const handleClickAddBookshelf = useCallback(() => {
     setIsAddedBookshelf(true);
     onSnackbarOpen({ message: "MY本棚に追加しました", status: "success" });
   }, [onSnackbarOpen]);
+
   const handleClickRemoveBookshelf = useCallback(() => {
     setIsAddedBookshelf(false);
     onSnackbarOpen({ message: "MY本棚から削除しました", status: "success" });
@@ -60,10 +63,7 @@ export const BookTemplate: React.FC<Props> = ({ bookWithLogs }) => {
                   あなたの積読を、みんなの資産に。
                 </Typography>
                 <Flex sx={{ columnGap: 2 }}>
-                  <Link
-                    href="/edit/[bookId]/[logId]"
-                    as={`/edit/${encodeURIComponent(bookWithLogs.id)}/new`}
-                  >
+                  <Link href={`/edit/${bookWithLogs.id}`}>
                     <Button startIcon={<>✍️</>}>読書ログを投稿</Button>
                   </Link>
                   {isAddedBookshelf ? (

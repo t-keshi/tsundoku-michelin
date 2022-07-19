@@ -1,31 +1,26 @@
-import { GetStaticPaths, GetStaticProps } from "next";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import { Suspense } from "react";
-import { SWRConfig } from "swr";
-import { FetchBookWithLogsQuery } from "../../../generated/types";
-import { Layout } from "../../components/layout/Layout";
-import { fetchBookWithLogs } from "../../containers/services/query/fetchBookWithLogs";
-import { sdk, sdkHooks } from "../../containers/services/sdk";
-import { BookTemplate } from "../../templates/book";
-import { NextPageWithLayout } from "../../type";
+import { GetStaticPaths, GetStaticProps } from 'next';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import React, { Suspense } from 'react';
+import { SWRConfig } from 'swr';
+import { FetchBookWithLogsQuery } from '../../../generated/types';
+import { Layout } from '../../components/layout/Layout';
+import { fetchBookWithLogs } from '../../containers/services/query/fetchBookWithLogs';
+import { sdk, sdkHooks } from '../../containers/services/sdk';
+import { BookTemplate } from '../../templates/book';
+import { NextPageWithLayout } from '../../type';
 
 type PageProps = {
   fallback: { [key: typeof fetchBookWithLogs]: FetchBookWithLogsQuery };
 };
 
-export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
-  return {
-    paths: [],
-    fallback: "blocking",
-  };
-};
+export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => ({
+  paths: [],
+  fallback: 'blocking',
+});
 
-export const getStaticProps: GetStaticProps<
-  PageProps,
-  { bookId: string }
-> = async (context) => {
-  const bookId = context.params?.bookId ?? "";
+export const getStaticProps: GetStaticProps<PageProps, { bookId: string }> = async (context) => {
+  const bookId = context.params?.bookId ?? '';
   const res = await sdk.FetchBookWithLogs({ bookId });
 
   return {
@@ -33,7 +28,7 @@ export const getStaticProps: GetStaticProps<
       fallback: {
         [fetchBookWithLogs]: res,
       },
-      revalidate: 3600,
+      revalidate: 10,
     },
   };
 };
@@ -44,11 +39,11 @@ const Book: React.FC = () => {
   const { data } = sdkHooks.useFetchBookWithLogs(
     fetchBookWithLogs,
     { bookId: query.bookId },
-    { suspense: true }
+    { suspense: true },
   );
 
   if (!data) {
-    throw new Error("");
+    throw new Error('');
   }
 
   return (
@@ -61,18 +56,14 @@ const Book: React.FC = () => {
   );
 };
 
-const BookPage: NextPageWithLayout<PageProps> = ({ fallback }) => {
-  return (
-    <SWRConfig value={{ fallback }}>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Book />
-      </Suspense>
-    </SWRConfig>
-  );
-};
+const BookPage: NextPageWithLayout<PageProps> = ({ fallback }) => (
+  <SWRConfig value={{ fallback }}>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Book />
+    </Suspense>
+  </SWRConfig>
+);
 
-BookPage.getLayout = (page: React.ReactElement) => {
-  return <Layout>{page}</Layout>;
-};
+BookPage.getLayout = (page: React.ReactElement) => <Layout>{page}</Layout>;
 
 export default BookPage;

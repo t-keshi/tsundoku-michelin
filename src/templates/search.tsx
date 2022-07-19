@@ -1,17 +1,18 @@
-import { useDeferredValue, useEffect, useRef, useState } from "react";
-import { SearchBooksQuery } from "../../generated/types";
-import { Box } from "../components/ui/Box/Box";
-import { Card } from "../components/ui/Card/Card";
-import { Grid } from "../components/ui/Grid/Grid";
-import { TextField } from "../components/ui/TextField/TextField";
+import { useEffect, useRef } from 'react';
+import { SearchBooksQuery } from '../../generated/types';
+import { Box } from '../components/ui/Box/Box';
+import { Card } from '../components/ui/Card/Card';
+import { Grid } from '../components/ui/Grid/Grid';
+import { TextField } from '../components/ui/TextField/TextField';
 
 type Props = {
-  booksSearch: SearchBooksQuery["booksSearch"] | undefined;
+  books: SearchBooksQuery['books'] | undefined;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export const SearchTemplate: React.FC<Props> = ({ booksSearch, onChange }) => {
+export const SearchTemplate: React.FC<Props> = ({ books, onChange }) => {
   const textFieldRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     if (textFieldRef.current) {
       textFieldRef.current.focus();
@@ -25,7 +26,7 @@ export const SearchTemplate: React.FC<Props> = ({ booksSearch, onChange }) => {
         rounded
         autoFocus
         ref={textFieldRef}
-        sx={{ width: "100%", borderRadius: "100%" }}
+        sx={{ width: '100%', borderRadius: '100%' }}
         data-testid="search"
         onChange={onChange}
       />
@@ -36,13 +37,13 @@ export const SearchTemplate: React.FC<Props> = ({ booksSearch, onChange }) => {
             gridGap: 4,
           }}
         >
-          {booksSearch &&
-            booksSearch.map((book) => (
+          {books &&
+            books.map((book) => (
               <Card
                 key={book.id}
                 media={book.image}
                 title={book.title}
-                href={`/books/${encodeURIComponent(book.id)}`}
+                href={`/books/${book.id}`}
               />
             ))}
         </Grid>

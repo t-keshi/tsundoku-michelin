@@ -2,7 +2,7 @@ import { gql } from "graphql-request";
 
 export const fetchBookWithLogs = gql`
   query FetchBookWithLogs($bookId: String!) {
-    book(id: $bookId) {
+    book(bookId: $bookId) {
       id
       title
       image
@@ -11,11 +11,6 @@ export const fetchBookWithLogs = gql`
         id
         log
         updatedAt
-        user {
-          id
-          name
-          image
-        }
       }
     }
   }

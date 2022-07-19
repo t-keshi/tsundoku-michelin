@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useCallback } from "react";
 import { FcGoogle } from "react-icons/fc";
+import { signIn } from "next-auth/react";
 import { useAuthModal } from "../../containers/contexts/authModal";
 import { h50 } from "../system/style/style.css";
 import { Box } from "../ui/Box/Box";
@@ -9,7 +10,6 @@ import { Button } from "../ui/Button/Button";
 import { Dialog } from "../ui/Dialog/Dialog";
 import { Flex } from "../ui/Flex/Flex";
 import { Typography } from "../ui/Typography/Typography";
-import { signIn } from "next-auth/react";
 import { useSnackbar } from "../../containers/contexts/snackbar";
 
 export const AuthModal = () => {

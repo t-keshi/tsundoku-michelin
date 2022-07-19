@@ -1,7 +1,7 @@
-import { render } from "../testUtils";
-import About from "./about";
 import { byRole, byTestId } from "testing-library-selector";
 import userEvent from "@testing-library/user-event";
+import { render } from "../testUtils";
+import About from "./about";
 
 const ui = {
   loginButton: byRole("button", { name: /Log in/ }),

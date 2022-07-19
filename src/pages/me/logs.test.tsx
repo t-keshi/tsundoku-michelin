@@ -1,5 +1,5 @@
-import { render } from "../../testUtils";
 import { byText } from "testing-library-selector";
+import { render } from "../../testUtils";
 import Profile from "./profile";
 
 const ui = {

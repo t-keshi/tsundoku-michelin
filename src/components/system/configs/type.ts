@@ -1,14 +1,14 @@
 type Flex =
-  | "start"
-  | "end"
-  | "flex-start"
-  | "flex-end"
-  | "center"
-  | "normal"
-  | "baseline"
-  | "space-between"
-  | "space-around"
-  | "space-evenly";
+  | 'start'
+  | 'end'
+  | 'flex-start'
+  | 'flex-end'
+  | 'center'
+  | 'normal'
+  | 'baseline'
+  | 'space-between'
+  | 'space-around'
+  | 'space-evenly';
 
 type Size =
   | 100
@@ -20,50 +20,44 @@ type Size =
   | 400
   | 450
   | 500
-  | "100%"
-  | "auto"
-  | "fit-content"
-  | "max-content"
-  | "min-content";
+  | '100%'
+  | 'auto'
+  | 'fit-content'
+  | 'max-content'
+  | 'min-content';
 
-type Space = 0.5 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | "auto";
+type Space = 0.5 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 'auto';
 
-type Display =
-  | "none"
-  | "flex"
-  | "inine-flex"
-  | "block"
-  | "inline-block"
-  | "inline";
+type Display = 'none' | 'flex' | 'inine-flex' | 'block' | 'inline-block' | 'inline';
 
 type Color =
-  | "primary-light"
-  | "primary-main"
-  | "primary-dark"
-  | "primary-contrastText"
-  | "secondary-light"
-  | "secondary-main"
-  | "secondary-dark"
-  | "secondary-contrastText"
-  | "text-primary"
-  | "text-secondary";
+  | 'primary-light'
+  | 'primary-main'
+  | 'primary-dark'
+  | 'primary-contrastText'
+  | 'secondary-light'
+  | 'secondary-main'
+  | 'secondary-dark'
+  | 'secondary-contrastText'
+  | 'text-primary'
+  | 'text-secondary';
 
 type Typography =
-  | "h1"
-  | "h2"
-  | "h3"
-  | "h4"
-  | "h5"
-  | "h6"
-  | "subtitle1"
-  | "subtitle2"
-  | "body1"
-  | "body2"
-  | "button"
-  | "caption"
-  | "overline";
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'h4'
+  | 'h5'
+  | 'h6'
+  | 'subtitle1'
+  | 'subtitle2'
+  | 'body1'
+  | 'body2'
+  | 'button'
+  | 'caption'
+  | 'overline';
 
-type BreakPoint<T extends Record<string, any>> = {
+type BreakPoint<T extends Record<string, unknown>> = {
   [P in keyof T]:
     | T[keyof T]
     | {
@@ -75,12 +69,12 @@ type BreakPoint<T extends Record<string, any>> = {
 
 export type SystemProps = BreakPoint<{
   display: Display;
-  width: Size | "100vw";
-  maxWidth: Size | "100vw";
-  minWidth: Size | "100vw";
-  height: Size | "100vh";
-  maxHeight: Size | "100vh";
-  minHeight: Size | "100vh";
+  width: Size | '100vw';
+  maxWidth: Size | '100vw';
+  minWidth: Size | '100vw';
+  height: Size | '100vh';
+  maxHeight: Size | '100vh';
+  minHeight: Size | '100vh';
   p: Space;
   pt: Space;
   pr: Space;
@@ -95,7 +89,7 @@ export type SystemProps = BreakPoint<{
   ml: Space;
   mx: Space;
   my: Space;
-  flexDirection: "row" | "column";
+  flexDirection: 'row' | 'column';
   justifyContent: Flex;
   justifyItems: Flex;
   justifySelf: Flex;
@@ -104,18 +98,18 @@ export type SystemProps = BreakPoint<{
   alignSelf: Flex;
   flexGrow: 0 | 1;
   flexShrink: 0 | 1;
-  flexWrap: "wrap";
+  flexWrap: 'wrap';
   gap: Space;
   rowGap: Space;
   columnGap: Space;
   color: Color;
-  bgColor: Color | "default";
-  position: "relative" | "absolute" | "fixed";
+  bgColor: Color | 'default';
+  position: 'relative' | 'absolute' | 'fixed';
   top: Space;
   right: Space;
   bottom: Space;
   left: Space;
-  borderRadius: "100%";
+  borderRadius: '100%';
   border: 1;
   borderTop: 1;
   borderRight: 1;
@@ -123,24 +117,24 @@ export type SystemProps = BreakPoint<{
   borderLeft: 1;
   borderColor: Color;
   textDecoration: Color;
-  textAlign: "right" | "left" | "center";
-  fontWeight: "bold" | "bolder";
+  textAlign: 'right' | 'left' | 'center';
+  fontWeight: 'bold' | 'bolder';
   fontSize: Typography;
   lineHeight: Typography;
   letterSpacing: Typography;
-  cursor: "pointer" | "default";
-  overflowX: "scroll" | "hidden";
-  overflowY: "scroll" | "hidden";
-  overflow: "scroll" | "hidden";
+  cursor: 'pointer' | 'default';
+  overflowX: 'scroll' | 'hidden';
+  overflowY: 'scroll' | 'hidden';
+  overflow: 'scroll' | 'hidden';
   gridGap: Space;
   gridColumnGap: Space;
   gridRowGap: Space;
   gridColumn: 1 | 2 | 3 | 4 | 5;
   gridRow: 1 | 2 | 3 | 4 | 5;
-  gridAutoFlow: "row" | "column" | "dense" | "row dense" | "column dense";
-  gridAutoColumns: "min-content" | "max-content" | "auto";
-  gridAutoRows: "min-content" | "max-content" | "auto";
+  gridAutoFlow: 'row' | 'column' | 'dense' | 'row dense' | 'column dense';
+  gridAutoColumns: 'min-content' | 'max-content' | 'auto';
+  gridAutoRows: 'min-content' | 'max-content' | 'auto';
   gridTemplateColumns: 1 | 2 | 3 | 4 | 5;
   gridTemplateRows: 1 | 2 | 3 | 4 | 5;
-  boxShadow: 0 | 1 | 2 | 3 | "neumorphism";
+  boxShadow: 0 | 1 | 2 | 3 | 'neumorphism';
 }>;
