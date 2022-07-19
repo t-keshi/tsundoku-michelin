@@ -49,7 +49,7 @@ const Book: React.FC = () => {
   return (
     <>
       <Head>
-        <title>積読ミシュラン</title>
+        <title>積読ミシュラン | {data.book.title}</title>
       </Head>
       <BookTemplate bookWithLogs={data.book} />
     </>

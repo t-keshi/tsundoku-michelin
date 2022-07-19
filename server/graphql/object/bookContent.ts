@@ -1,5 +1,5 @@
-import { objectType } from "nexus";
-import { BookContent } from "nexus-prisma";
+import { objectType } from 'nexus';
+import { BookContent } from 'nexus-prisma';
 
 export const bookContent = objectType({
   name: BookContent.$name,

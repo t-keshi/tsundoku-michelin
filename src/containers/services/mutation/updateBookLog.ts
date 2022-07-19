@@ -1,4 +1,4 @@
-import { gql } from "graphql-request";
+import { gql } from 'graphql-request';
 
 export const updateBookLog = gql`
   mutation UpdateBookLog($bookLogId: String!, $log: String!) {

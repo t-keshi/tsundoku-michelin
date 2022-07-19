@@ -13,22 +13,13 @@ export const bookQuery = extendType({
         args: { bookId: string },
         ctx: {
           prisma: PrismaClient;
-          select: Record<'select', any>;
         },
       ) => {
         const res = await ctx.prisma.book.findUnique({
           where: { id: args.bookId },
-          select: {
-            id: true,
-            title: true,
-            bookLogs: {
-              include: {
-                user: true,
-              },
-            },
-          },
         });
         console.log('##############', res, '##############');
+
         return res;
       },
     });

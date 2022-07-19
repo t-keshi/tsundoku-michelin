@@ -1,5 +1,6 @@
-import { objectType } from "nexus";
-import { User } from "nexus-prisma";
+import { PrismaClient } from '@prisma/client';
+import { objectType } from 'nexus';
+import { User } from 'nexus-prisma';
 
 export const user = objectType({
   name: User.$name,
@@ -11,34 +12,43 @@ export const user = objectType({
     t.field(User.image);
     t.field(User.profile);
     t.field(User.onboarding);
-    t.field(User.bookLogs);
-    t.field(User.bookshelfs);
-  },
-});
+    t.field({
+      ...User.bookLogs,
+      resolve: async (
+        parent: { id: string },
+        _,
+        ctx: {
+          prisma: PrismaClient;
+        },
+      ) => {
+        const res = await ctx.prisma.user
+          .findUnique({
+            where: { id: parent.id },
+          })
+          .bookLogs();
+        console.log('##############', res, '##############');
 
-export const Userr = objectType({
-  name: "Userr",
-  definition(t) {
-    t.int("id");
-    t.string("name");
-    t.string("email");
-    t.list.field("posts", {
-      type: "Post",
-      resolve: (parent) => {},
+        return res;
+      },
     });
-  },
-});
+    t.field({
+      ...User.bookshelfs,
+      resolve: async (
+        parent: { id: string },
+        _,
+        ctx: {
+          prisma: PrismaClient;
+        },
+      ) => {
+        const res = await ctx.prisma.user
+          .findUnique({
+            where: { id: parent.id },
+          })
+          .bookshelfs({ include: { book: true } });
+        console.log('##############', res, '##############');
 
-export const Post = objectType({
-  name: "Post",
-  definition(t) {
-    t.int("id");
-    t.string("title");
-    t.nullable.string("content");
-    t.boolean("published");
-    t.nullable.field("author", {
-      type: "Userr",
-      resolve: (parent) => {},
+        return res;
+      },
     });
   },
 });

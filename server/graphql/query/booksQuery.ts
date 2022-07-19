@@ -1,11 +1,11 @@
-import { Prisma, PrismaClient } from "@prisma/client";
-import { extendType, nullable, stringArg } from "nexus";
-import { Book } from "nexus-prisma";
+import { Prisma, PrismaClient } from '@prisma/client';
+import { extendType, nullable, stringArg } from 'nexus';
+import { Book } from 'nexus-prisma';
 
 export const booksQuery = extendType({
-  type: "Query",
+  type: 'Query',
   definition: (t) => {
-    t.list.field("books", {
+    t.list.field('books', {
       type: Book.$name,
       args: { keyword: nullable(stringArg()) },
       resolve: async (
@@ -14,18 +14,17 @@ export const booksQuery = extendType({
         ctx: {
           prisma: PrismaClient;
           select: Pick<
-            Prisma.SelectSubset<
-              Prisma.BookFindManyArgs,
-              Prisma.BookFindManyArgs
-            >,
-            "select"
+            Prisma.SelectSubset<Prisma.BookFindManyArgs, Prisma.BookFindManyArgs>,
+            'select'
           >;
-        }
+        },
       ) => {
         const res = await ctx.prisma.book.findMany({
           ...(args.keyword && { where: { title: { contains: args.keyword } } }),
           ...ctx.select,
         });
+        console.log('##############', res, '##############');
+
         return res;
       },
     });

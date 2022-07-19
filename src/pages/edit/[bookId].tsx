@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import Head from 'next/head';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import { EditTemplate } from '../../templates/edit';
 import { useBookLog } from '../../containers/presenters/useBookLog';
 import { Box } from '../../components/ui';
@@ -33,9 +34,12 @@ const Edit: React.FC<PageProps> = ({ uid }) => {
 };
 
 const EditPage: NextPageWithLayout<PageProps> = () => {
+  const router = useRouter();
   const { data: session } = useSession();
 
   if (!session) {
+    router.push('/');
+
     return null;
   }
 

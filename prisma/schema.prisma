@@ -21,21 +21,14 @@ model topics {
   likes   Int
 }
 
-model users {
-  id       Int     @id @default(autoincrement())
-  email    String  @db.VarChar(255)
-  password String  @db.VarChar(255)
-  name     String? @db.VarChar(255)
-}
-
 // next-auth
 
 model Account {
   id                String  @id @default(cuid())
-  userId            String
+  userId            String  @map("user_id")
   type              String
   provider          String
-  providerAccountId String
+  providerAccountId String  @map("provider_account_id")
   refresh_token     String? @db.Text
   access_token      String? @db.Text
   expires_at        Int?
@@ -47,22 +40,25 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@map("account")
 }
 
 model Session {
   id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
   expires      DateTime
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
 }
 
 model User {
   id            String      @id @default(cuid())
   name          String?
   email         String?     @unique
-  emailVerified DateTime?
+  emailVerified DateTime?   @map("email_verified")
   image         String?     @db.VarChar(512)
   profile       String?
   onboarding    String?
@@ -70,6 +66,8 @@ model User {
   sessions      Session[]
   bookLogs      BookLog[]
   bookshelfs    Bookshelf[]
+
+  @@map("user")
 }
 
 model VerificationToken {
@@ -78,6 +76,7 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+  @@map("verification_token")
 }
 
 model Book {
@@ -92,6 +91,8 @@ model Book {
   bookContents   BookContent[]
   bookLogs       BookLog[]
   bookshelfs     Bookshelf[]
+
+  @@map("book")
 }
 
 model BookContent {
@@ -104,6 +105,8 @@ model BookContent {
   updatedAt DateTime @updatedAt
 
   book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@map("book_content")
 }
 
 model BookLog {
@@ -118,6 +121,7 @@ model BookLog {
   user User @relation(fields: [userId], references: [id])
 
   @@unique([bookId, userId])
+  @@map("book_log")
 }
 
 model Bookshelf {
@@ -131,4 +135,5 @@ model Bookshelf {
   user User @relation(fields: [userId], references: [id])
 
   @@unique([bookId, userId])
+  @@map("bookshelf")
 }

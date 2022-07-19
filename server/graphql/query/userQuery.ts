@@ -6,7 +6,7 @@ export const userQuery = extendType({
   type: 'Query',
   definition: (t) => {
     t.field('user', {
-      type: 'Userr',
+      type: User.$name,
       args: { userId: stringArg() },
       resolve: async (
         _,
@@ -23,7 +23,8 @@ export const userQuery = extendType({
           where: { id: args.userId },
           ...ctx.select,
         });
-        parseInt('1');
+        console.log('##############', res, '##############');
+
         return res;
       },
     });

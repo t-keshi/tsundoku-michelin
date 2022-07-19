@@ -1,12 +1,12 @@
-import { Prisma, PrismaClient } from "@prisma/client";
-import { Session } from "next-auth";
-import { extendType, stringArg } from "nexus";
-import { BookLog } from "nexus-prisma";
+import { Prisma, PrismaClient } from '@prisma/client';
+import { Session } from 'next-auth';
+import { extendType, stringArg } from 'nexus';
+import { BookLog } from 'nexus-prisma';
 
 export const bookLogsQuery = extendType({
-  type: "Query",
+  type: 'Query',
   definition: (t) => {
-    t.list.field("bookLogs", {
+    t.list.field('bookLogs', {
       type: BookLog.$name,
       args: { userId: stringArg() },
       resolve: async (
@@ -16,22 +16,21 @@ export const bookLogsQuery = extendType({
           session: Session | null;
           prisma: PrismaClient;
           select: Pick<
-            Prisma.SelectSubset<
-              Prisma.BookLogFindManyArgs,
-              Prisma.BookLogFindManyArgs
-            >,
-            "select"
+            Prisma.SelectSubset<Prisma.BookLogFindManyArgs, Prisma.BookLogFindManyArgs>,
+            'select'
           >;
-        }
+        },
       ) => {
         if (!ctx.session) {
-          throw new Error("Invalid session value");
+          throw new Error('Invalid session value');
         }
 
         const res = await ctx.prisma.bookLog.findMany({
           where: { userId: ctx.session.user.uid },
           ...ctx.select,
         });
+        console.log('##############', res, '##############');
+
         return res;
       },
     });

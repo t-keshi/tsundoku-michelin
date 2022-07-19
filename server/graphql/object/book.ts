@@ -1,6 +1,6 @@
-import { PrismaClient } from "@prisma/client";
-import { objectType } from "nexus";
-import { Book } from "nexus-prisma";
+import { PrismaClient } from '@prisma/client';
+import { objectType } from 'nexus';
+import { Book } from 'nexus-prisma';
 
 export const book = objectType({
   name: Book.$name,
@@ -15,50 +15,59 @@ export const book = objectType({
     t.field(Book.updatedAt);
     t.field({
       ...Book.bookLogs,
-      resolve: (
+      resolve: async (
+        parent: { id: string },
         _,
-        args: { bookId: string },
         ctx: {
           prisma: PrismaClient;
-        }
+        },
       ) => {
-        ctx.prisma.book
+        const res = await ctx.prisma.book
           .findUnique({
-            where: { id: args.bookId },
+            where: { id: parent.id },
           })
           .bookLogs({ include: { user: true } });
+        console.log('##############', res, '##############');
+
+        return res;
       },
     });
     t.field({
       ...Book.bookContents,
-      resolve: (
+      resolve: async (
+        parent: { id: string },
         _,
-        args: { bookId: string },
         ctx: {
           prisma: PrismaClient;
-        }
+        },
       ) => {
-        ctx.prisma.book
+        const res = await ctx.prisma.book
           .findUnique({
-            where: { id: args.bookId },
+            where: { id: parent.id },
           })
           .bookContents();
+        console.log('##############', res, '##############');
+
+        return res;
       },
     });
     t.field({
       ...Book.bookshelfs,
-      resolve: (
+      resolve: async (
+        parent: { id: string },
         _,
-        args: { bookId: string },
         ctx: {
           prisma: PrismaClient;
-        }
+        },
       ) => {
-        ctx.prisma.book
+        const res = await ctx.prisma.book
           .findUnique({
-            where: { id: args.bookId },
+            where: { id: parent.id },
           })
-          .bookshelfs();
+          .bookshelfs({ include: { user: true } });
+        console.log('##############', res, '##############');
+
+        return res;
       },
     });
   },

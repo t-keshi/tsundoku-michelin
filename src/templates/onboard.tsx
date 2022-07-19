@@ -47,7 +47,7 @@ const schema: SchemaOf<FormValues> = yup.object().shape({
     .matches(/^[a-zA-Z0-9-_]+$/, '半角英数字または_, -で入力してください'),
 });
 
-export const NewUserTemplate: React.FC<Props> = ({ user, onSubmit }) => {
+export const OnboardTemplate: React.FC<Props> = ({ user, onSubmit }) => {
   const {
     register,
     handleSubmit,

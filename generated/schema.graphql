@@ -91,22 +91,14 @@ type Mutation {
   updateBookLog(bookLogId: String!, log: String!): BookLog!
 }
 
-type Post {
-  author: Userr
-  content: String
-  id: Int!
-  published: Boolean!
-  title: String!
-}
-
 type Query {
   book(bookId: String!): Book!
   bookContents(bookId: String!): [BookContent!]!
-  bookLog(bookId: String!, userId: String!): Userr
+  bookLog(bookId: String!, userId: String!): BookLog
   bookLogs(userId: String!): [BookLog!]!
   books(keyword: String): [Book!]!
   bookshelfs(userId: String!): [Bookshelf!]!
-  user(userId: String!): Userr!
+  user(userId: String!): User!
 }
 
 type Session {
@@ -127,13 +119,6 @@ type User {
   name: String
   onboarding: String
   profile: String
-}
-
-type Userr {
-  email: String!
-  id: Int!
-  name: String!
-  posts: [Post!]!
 }
 
 type VerificationToken {
