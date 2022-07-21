@@ -1,29 +1,30 @@
-import { Prisma, PrismaClient } from "@prisma/client";
-import { extendType, stringArg } from "nexus";
-import { User } from "nexus-prisma";
+import { PrismaClient } from '@prisma/client';
+import { Session } from 'next-auth';
+import { extendType } from 'nexus';
+import { User } from 'nexus-prisma';
 
 export const resetUsernameMutation = extendType({
-  type: "Mutation",
+  type: 'Mutation',
   definition: (t) => {
-    t.field("resetUser", {
+    t.field('resetUser', {
       type: User.$name,
-      args: { userId: stringArg() },
       resolve: async (
         _,
-        args: { userId: string },
+        __,
         ctx: {
+          session: Session | null;
           prisma: PrismaClient;
-          select: Pick<
-            Prisma.SelectSubset<Prisma.UserUpdateArgs, Prisma.UserUpdateArgs>,
-            "select"
-          >;
-        }
+        },
       ) => {
+        if (!ctx.session) {
+          throw new Error('Invalid session value');
+        }
+
         const res = await ctx.prisma.user.update({
-          where: { id: args.userId },
-          data: { name: "" },
-          ...ctx.select,
+          where: { id: ctx.session.user.uid },
+          data: { name: '' },
         });
+        console.log('##############', res, '##############');
 
         return res;
       },

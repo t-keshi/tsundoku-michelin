@@ -1,8 +1,8 @@
-import { gql } from "graphql-request";
+import { gql } from 'graphql-request';
 
 export const resetUsername = gql`
-  mutation ResetUsername($userId: String!) {
-    resetUser(userId: $userId) {
+  mutation ResetUsername {
+    resetUser {
       id
     }
   }

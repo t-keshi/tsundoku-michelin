@@ -19,6 +19,7 @@ export { ListItem } from './ListItem/ListItem';
 export { ListItemButton } from './ListItemButton/ListItemButton';
 export { ListItemIcon } from './ListItemIcon/ListItemIcon';
 export { ListItemText } from './ListItemText/ListItemText';
+export { Loader } from './Loader/Loader';
 export { Modal } from './Modal/Modal';
 export { Paper } from './Paper/Paper';
 export { Popover } from './Popover/Popover';

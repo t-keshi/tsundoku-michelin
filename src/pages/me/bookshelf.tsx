@@ -1,43 +1,21 @@
-import { GetServerSideProps } from 'next';
-import { Session, unstable_getServerSession } from 'next-auth';
+import { useSession } from 'next-auth/react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import React, { Suspense } from 'react';
-import { SWRConfig } from 'swr';
 import { Layout } from '../../components/layout/Layout';
-import { Typography } from '../../components/ui';
+import { Loader } from '../../components/ui/Loader/Loader';
 import { fetchBookshelfBooks } from '../../containers/services/query/fetchBookshelfBooks';
 import { sdkHooks } from '../../containers/services/sdk';
 import { BookshelfTemplate } from '../../templates/bookshelf';
 import { NextPageWithLayout } from '../../type';
-import { authOptions } from '../api/auth/[...nextauth]';
 
 type PageProps = {
-  session: Session;
+  uid: string;
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await unstable_getServerSession(context.req, context.res, authOptions);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {
-      uid: session.user.uid,
-    },
-  };
-};
-
-const Bookshelf: React.FC<PageProps> = ({ session }) => {
-  const { uid } = session.user;
+const Bookshelf: React.FC<PageProps> = ({ uid }) => {
   const { data } = sdkHooks.useFetchBookshelfBooks(
-    uid ? fetchBookshelfBooks : null,
+    fetchBookshelfBooks,
     { userId: uid ?? '' },
     { suspense: true },
   );
@@ -56,13 +34,26 @@ const Bookshelf: React.FC<PageProps> = ({ session }) => {
   );
 };
 
-const BookshelfPage: NextPageWithLayout<PageProps> = ({ session }) => (
-  <SWRConfig>
-    <Suspense fallback={<Typography variant="overline">loading...</Typography>}>
-      <Bookshelf session={session} />
+const BookshelfPage: NextPageWithLayout = () => {
+  const router = useRouter();
+  const { data: session, status } = useSession();
+
+  if (status === 'unauthenticated') {
+    if (router.isReady) {
+      router.push('/');
+    }
+  }
+
+  if (!session) {
+    return null;
+  }
+
+  return (
+    <Suspense fallback={<Loader page />}>
+      <Bookshelf uid={session.user.uid} />
     </Suspense>
-  </SWRConfig>
-);
+  );
+};
 
 BookshelfPage.getLayout = (page: React.ReactElement) => <Layout>{page}</Layout>;
 

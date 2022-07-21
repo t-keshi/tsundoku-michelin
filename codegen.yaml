@@ -1,5 +1,5 @@
 schema: http://localhost:3000/api/graphql
-documents: "./src/containers/services/**/*.ts"
+documents: ./src/containers/services/**/*.ts
 generates:
   ./generated/types.ts:
     plugins:

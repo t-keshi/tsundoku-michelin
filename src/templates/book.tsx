@@ -1,9 +1,10 @@
-import Link from "next/link";
-import { useCallback, useState } from "react";
-import { MdOutlineBookmarkAdd, MdTaskAlt } from "react-icons/md";
-import { formatDistance } from "date-fns";
-import { ja } from "date-fns/locale";
-import { FetchBookWithLogsQuery } from "../../generated/types";
+import Link from 'next/link';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { MdOutlineBookmarkAdd, MdTaskAlt } from 'react-icons/md';
+import { formatDistance } from 'date-fns';
+import { ja } from 'date-fns/locale';
+import { useSession } from 'next-auth/react';
+import { FetchBookshelfsQuery, FetchBookWithLogsQuery } from '../../generated/types';
 import {
   Accordion,
   Avatar,
@@ -14,27 +15,52 @@ import {
   Paper,
   Stack,
   Typography,
-} from "../components/ui";
-import { useSnackbar } from "../containers/contexts/snackbar";
+} from '../components/ui';
+import { MarkdownRenderer } from '../components/organisms/MarkdownRenderer';
+import { useHasHydrated } from '../helpers/hooks/useHasHydrated';
 
 type Props = {
-  bookWithLogs: FetchBookWithLogsQuery["book"];
+  bookWithLogs: FetchBookWithLogsQuery['book'];
+  bookshelfs: FetchBookshelfsQuery['bookshelfs'] | undefined;
+  onAddBookshelf: () => void;
+  onRemoveBookshelf: () => void;
 };
 
-export const BookTemplate: React.FC<Props> = ({ bookWithLogs }) => {
-  const { onOpen: onSnackbarOpen } = useSnackbar();
+export const BookTemplate: React.FC<Props> = ({
+  bookWithLogs,
+  bookshelfs,
+  onAddBookshelf,
+  onRemoveBookshelf,
+}) => {
+  const { data: session } = useSession();
 
-  const [isAddedBookshelf, setIsAddedBookshelf] = useState(false);
+  // FIXME: 本棚に追加されているかどうかのチェックは whereでひっぱてきてクエリを最適化できそう
+  const isLoading = !bookshelfs;
+  const isMyBookshelf = bookshelfs?.find((bookshelf) => bookshelf.user.id === session?.user.uid);
+
+  const [isClickable, setIsClickable] = useState(true);
 
   const handleClickAddBookshelf = useCallback(() => {
-    setIsAddedBookshelf(true);
-    onSnackbarOpen({ message: "MY本棚に追加しました", status: "success" });
-  }, [onSnackbarOpen]);
+    setIsClickable(false);
+    if (isClickable) {
+      onAddBookshelf();
+    }
+    setTimeout(() => {
+      setIsClickable(true);
+    }, 2000);
+  }, [isClickable, onAddBookshelf]);
 
   const handleClickRemoveBookshelf = useCallback(() => {
-    setIsAddedBookshelf(false);
-    onSnackbarOpen({ message: "MY本棚から削除しました", status: "success" });
-  }, [onSnackbarOpen]);
+    setIsClickable(false);
+    if (isClickable) {
+      onRemoveBookshelf();
+    }
+    setTimeout(() => {
+      setIsClickable(true);
+    }, 2000);
+  }, [isClickable, onRemoveBookshelf]);
+
+  const hasHydrated = useHasHydrated();
 
   return (
     <>
@@ -44,40 +70,43 @@ export const BookTemplate: React.FC<Props> = ({ bookWithLogs }) => {
         sx={{
           px: { mobile: 3, tablet: 5, desktop: 7 },
           py: 3,
-          fontWeight: "bold",
+          fontWeight: 'bold',
         }}
       >
         {bookWithLogs.title}
       </Typography>
       <Box sx={{ mt: 5 }} />
       <Flex sx={{ columnGap: 2 }}>
-        <Box sx={{ width: "100%" }}>
-          <Paper sx={{ p: 3, width: "100%" }}>
-            <Flex sx={{ justifyContent: "center" }}>
+        <Box sx={{ width: '100%' }}>
+          <Paper sx={{ p: 3, width: '100%' }}>
+            <Flex sx={{ justifyContent: 'center' }}>
               <Box>
-                <Typography
-                  variant="overline"
-                  display="block"
-                  sx={{ textAlign: "center" }}
-                >
+                <Typography variant="overline" display="block" sx={{ textAlign: 'center' }}>
                   あなたの積読を、みんなの資産に。
                 </Typography>
                 <Flex sx={{ columnGap: 2 }}>
                   <Link href={`/edit/${bookWithLogs.id}`}>
                     <Button startIcon={<>✍️</>}>読書ログを投稿</Button>
                   </Link>
-                  {isAddedBookshelf ? (
+                  {hasHydrated && !isLoading && isMyBookshelf && (
                     <Button
                       variant="outlined"
                       color="secondary"
+                      style={{
+                        cursor: isClickable ? 'pointer' : 'wait',
+                      }}
                       startIcon={<MdTaskAlt />}
                       onClick={handleClickRemoveBookshelf}
                     >
                       MY本棚に追加済み
                     </Button>
-                  ) : (
+                  )}
+                  {hasHydrated && !isLoading && !isMyBookshelf && (
                     <Button
                       variant="outlined"
+                      style={{
+                        cursor: isClickable ? 'pointer' : 'wait',
+                      }}
                       startIcon={<MdOutlineBookmarkAdd />}
                       onClick={handleClickAddBookshelf}
                     >
@@ -91,8 +120,8 @@ export const BookTemplate: React.FC<Props> = ({ bookWithLogs }) => {
           <Box sx={{ mt: 2 }} />
           <Stack spacing={2}>
             {bookWithLogs.bookLogs.map((log, index) => (
-              <Paper key={log.id} sx={{ p: 3, width: "100%" }}>
-                <Flex sx={{ alignItems: "center", columnGap: 1 }}>
+              <Paper key={log.id} sx={{ p: 3, width: '100%' }}>
+                <Flex sx={{ alignItems: 'center', columnGap: 1 }}>
                   <Avatar src="/brand-icon.png" />
                   <Typography variant="body2" color="primary">
                     {log.user.name}
@@ -107,7 +136,11 @@ export const BookTemplate: React.FC<Props> = ({ bookWithLogs }) => {
                 <Accordion
                   initialIsOpen={index === 0}
                   excerpt={<Typography>{log.log.slice(0, 200)}</Typography>}
-                  fullContent={<Typography>{log.log}</Typography>}
+                  fullContent={
+                    <Box>
+                      <MarkdownRenderer>{log.log}</MarkdownRenderer>
+                    </Box>
+                  }
                 />
               </Paper>
             ))}
@@ -117,9 +150,9 @@ export const BookTemplate: React.FC<Props> = ({ bookWithLogs }) => {
           sx={{
             width: 300,
             display: {
-              mobile: "none",
-              tablet: "block",
-              desktop: "block",
+              mobile: 'none',
+              tablet: 'block',
+              desktop: 'block',
             },
           }}
         >

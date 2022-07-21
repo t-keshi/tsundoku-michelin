@@ -64,7 +64,7 @@ export const book = objectType({
           .findUnique({
             where: { id: parent.id },
           })
-          .bookshelfs({ include: { user: true } });
+          .bookshelfs();
         console.log('##############', res, '##############');
 
         return res;

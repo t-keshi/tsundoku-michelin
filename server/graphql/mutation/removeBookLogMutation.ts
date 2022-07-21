@@ -3,15 +3,15 @@ import { Session } from 'next-auth';
 import { extendType, stringArg } from 'nexus';
 import { BookLog } from 'nexus-prisma';
 
-export const updateBookLogMutation = extendType({
+export const removeBookLogMutation = extendType({
   type: 'Mutation',
   definition: (t) => {
-    t.field('updateBookLog', {
+    t.field('removeBookLog', {
       type: BookLog.$name,
-      args: { bookLogId: stringArg(), log: stringArg() },
+      args: { bookLogId: stringArg() },
       resolve: async (
         _,
-        args: { bookLogId: string; log: string },
+        args: { bookLogId: string },
         ctx: {
           session: Session | null;
           prisma: PrismaClient;
@@ -27,6 +27,7 @@ export const updateBookLogMutation = extendType({
           },
           select: {
             userId: true,
+            bookId: true,
           },
         });
         console.log('##############', res, '##############');
@@ -35,15 +36,23 @@ export const updateBookLogMutation = extendType({
           throw new Error('Invalid user');
         }
 
-        const updateRes = await ctx.prisma.bookLog.update({
-          where: {
-            id: args.bookLogId,
-          },
-          data: { log: args.log },
-        });
-        console.log('##############', updateRes, '##############');
+        const deleteRes = await ctx.prisma.$transaction([
+          ctx.prisma.book.update({
+            where: { id: res.bookId },
+            data: {
+              bookLogCount: {
+                increment: -1,
+              },
+            },
+          }),
+          ctx.prisma.bookLog.delete({
+            where: { id: args.bookLogId },
+          }),
+        ]);
 
-        return updateRes;
+        console.log('##############', deleteRes, '##############');
+
+        return deleteRes[1];
       },
     });
   },

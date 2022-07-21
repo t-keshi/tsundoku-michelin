@@ -1,4 +1,4 @@
-type Flex =
+export type Flex =
   | 'start'
   | 'end'
   | 'flex-start'
@@ -10,7 +10,7 @@ type Flex =
   | 'space-around'
   | 'space-evenly';
 
-type Size =
+export type Size =
   | 100
   | 150
   | 200
@@ -26,11 +26,11 @@ type Size =
   | 'max-content'
   | 'min-content';
 
-type Space = 0.5 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 'auto';
+export type SpaceVariants = 0.5 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 'auto';
 
-type Display = 'none' | 'flex' | 'inine-flex' | 'block' | 'inline-block' | 'inline';
+export type DisplayVariants = 'none' | 'flex' | 'inine-flex' | 'block' | 'inline-block' | 'inline';
 
-type Color =
+export type ColorVariants =
   | 'primary-light'
   | 'primary-main'
   | 'primary-dark'
@@ -42,7 +42,7 @@ type Color =
   | 'text-primary'
   | 'text-secondary';
 
-type Typography =
+export type TypographyVariants =
   | 'h1'
   | 'h2'
   | 'h3'
@@ -57,7 +57,7 @@ type Typography =
   | 'caption'
   | 'overline';
 
-type BreakPoint<T extends Record<string, unknown>> = {
+export type BreakPoint<T extends Record<string, unknown>> = {
   [P in keyof T]:
     | T[keyof T]
     | {
@@ -68,27 +68,27 @@ type BreakPoint<T extends Record<string, unknown>> = {
 };
 
 export type SystemProps = BreakPoint<{
-  display: Display;
+  display: DisplayVariants;
   width: Size | '100vw';
   maxWidth: Size | '100vw';
   minWidth: Size | '100vw';
   height: Size | '100vh';
   maxHeight: Size | '100vh';
   minHeight: Size | '100vh';
-  p: Space;
-  pt: Space;
-  pr: Space;
-  pb: Space;
-  pl: Space;
-  px: Space;
-  py: Space;
-  m: Space;
-  mt: Space;
-  mr: Space;
-  mb: Space;
-  ml: Space;
-  mx: Space;
-  my: Space;
+  p: SpaceVariants;
+  pt: SpaceVariants;
+  pr: SpaceVariants;
+  pb: SpaceVariants;
+  pl: SpaceVariants;
+  px: SpaceVariants;
+  py: SpaceVariants;
+  m: SpaceVariants;
+  mt: SpaceVariants;
+  mr: SpaceVariants;
+  mb: SpaceVariants;
+  ml: SpaceVariants;
+  mx: SpaceVariants;
+  my: SpaceVariants;
   flexDirection: 'row' | 'column';
   justifyContent: Flex;
   justifyItems: Flex;
@@ -99,36 +99,36 @@ export type SystemProps = BreakPoint<{
   flexGrow: 0 | 1;
   flexShrink: 0 | 1;
   flexWrap: 'wrap';
-  gap: Space;
-  rowGap: Space;
-  columnGap: Space;
-  color: Color;
-  bgColor: Color | 'default';
+  gap: SpaceVariants;
+  rowGap: SpaceVariants;
+  columnGap: SpaceVariants;
+  color: ColorVariants;
+  bgColor: ColorVariants | 'default';
   position: 'relative' | 'absolute' | 'fixed';
-  top: Space;
-  right: Space;
-  bottom: Space;
-  left: Space;
+  top: SpaceVariants;
+  right: SpaceVariants;
+  bottom: SpaceVariants;
+  left: SpaceVariants;
   borderRadius: '100%';
   border: 1;
   borderTop: 1;
   borderRight: 1;
   borderBottom: 1;
   borderLeft: 1;
-  borderColor: Color;
-  textDecoration: Color;
+  borderColor: ColorVariants;
+  textDecoration: ColorVariants;
   textAlign: 'right' | 'left' | 'center';
   fontWeight: 'bold' | 'bolder';
-  fontSize: Typography;
-  lineHeight: Typography;
-  letterSpacing: Typography;
+  fontSize: TypographyVariants;
+  lineHeight: TypographyVariants;
+  letterSpacing: TypographyVariants;
   cursor: 'pointer' | 'default';
   overflowX: 'scroll' | 'hidden';
   overflowY: 'scroll' | 'hidden';
   overflow: 'scroll' | 'hidden';
-  gridGap: Space;
-  gridColumnGap: Space;
-  gridRowGap: Space;
+  gridGap: SpaceVariants;
+  gridColumnGap: SpaceVariants;
+  gridRowGap: SpaceVariants;
   gridColumn: 1 | 2 | 3 | 4 | 5;
   gridRow: 1 | 2 | 3 | 4 | 5;
   gridAutoFlow: 'row' | 'column' | 'dense' | 'row dense' | 'column dense';
@@ -137,4 +137,8 @@ export type SystemProps = BreakPoint<{
   gridTemplateColumns: 1 | 2 | 3 | 4 | 5;
   gridTemplateRows: 1 | 2 | 3 | 4 | 5;
   boxShadow: 0 | 1 | 2 | 3 | 'neumorphism';
+  listStyle: 'none' | 'inside';
+  wordBreak: 'break-all';
+  wordWrap: 'break-word';
+  whiteSpace: 'pre-wrap';
 }>;

@@ -1,53 +1,53 @@
-import { defineProperties } from "@vanilla-extract/sprinkles";
-import { vars } from "../theme/index.css";
-import { breakpoints } from "./breakpoints.css";
+import { defineProperties } from '@vanilla-extract/sprinkles';
+import { vars } from '../theme/index.css';
+import { breakpoints } from './breakpoints.css';
 
 export const border = defineProperties({
   ...breakpoints,
   properties: {
-    borderRadius: ["100%"],
+    borderRadius: ['100%'],
     borderColor: {
-      "primary-light": vars.palette.primary.light,
-      "primary-main": vars.palette.primary.main,
-      "primary-dark": vars.palette.primary.dark,
-      "primary-contrastText": vars.palette.secondary.contrastText,
-      "secondary-light": vars.palette.secondary.light,
-      "secondary-main": vars.palette.secondary.main,
-      "secondary-dark": vars.palette.secondary.dark,
-      "secondary-contrastText": vars.palette.secondary.contrastText,
-      "text-primary": vars.palette.lightMode.text.primary,
-      "text-secondary": vars.palette.lightMode.text.secondary,
+      'primary-light': vars.palette.primary.light,
+      'primary-main': vars.palette.primary.main,
+      'primary-dark': vars.palette.primary.dark,
+      'primary-contrastText': vars.palette.secondary.contrastText,
+      'secondary-light': vars.palette.secondary.light,
+      'secondary-main': vars.palette.secondary.main,
+      'secondary-dark': vars.palette.secondary.dark,
+      'secondary-contrastText': vars.palette.secondary.contrastText,
+      'text-primary': vars.palette.lightMode.text.primary,
+      'text-secondary': vars.palette.lightMode.text.secondary,
     },
     border: {
-      1: "1px solid",
+      1: '1px solid',
     },
     borderTop: {
-      1: "1px solid",
+      1: '1px solid',
     },
     borderRight: {
-      1: "1px solid",
+      1: '1px solid',
     },
     borderBottom: {
-      1: "1px solid",
+      1: '1px solid',
     },
     borderLeft: {
-      1: "1px solid",
+      1: '1px solid',
     },
     textDecoration: {
-      "primary-light": `underline ${vars.palette.primary.light}`,
-      "primary-main": `underline ${vars.palette.primary.main}`,
-      "primary-dark": `underline ${vars.palette.primary.dark}`,
-      "primary-contrastText": `underline ${vars.palette.secondary.contrastText}`,
-      "secondary-light": vars.palette.secondary.light,
-      "secondary-main": vars.palette.secondary.main,
-      "secondary-dark": vars.palette.secondary.dark,
-      "secondary-contrastText": vars.palette.secondary.contrastText,
-      "text-primary": `underline ${vars.palette.lightMode.text.primary}`,
-      "text-secondary": vars.palette.lightMode.text.secondary,
+      'primary-light': `underline ${vars.palette.primary.light}`,
+      'primary-main': `underline ${vars.palette.primary.main}`,
+      'primary-dark': `underline ${vars.palette.primary.dark}`,
+      'primary-contrastText': `underline ${vars.palette.secondary.contrastText}`,
+      'secondary-light': vars.palette.secondary.light,
+      'secondary-main': vars.palette.secondary.main,
+      'secondary-dark': vars.palette.secondary.dark,
+      'secondary-contrastText': vars.palette.secondary.contrastText,
+      'text-primary': `underline ${vars.palette.lightMode.text.primary}`,
+      'text-secondary': vars.palette.lightMode.text.secondary,
     },
-    textAlign: ["right", "left", "center"],
-    fontWeight: ["bold", "border"],
-    cursor: ["pointer", "default"],
+    textAlign: ['right', 'left', 'center'],
+    fontWeight: ['bold', 'border'],
+    cursor: ['pointer', 'default'],
     fontSize: {
       h1: vars.typography.h1.fontSize,
       h2: vars.typography.h2.fontSize,
@@ -93,8 +93,12 @@ export const border = defineProperties({
       caption: vars.typography.caption.letterSpacing,
       overline: vars.typography.overline.letterSpacing,
     },
-    overflowX: ["scroll", "hidden"],
-    overflowY: ["scroll", "hidden"],
-    overflow: ["scroll", "hidden"],
+    overflowX: ['scroll', 'hidden'],
+    overflowY: ['scroll', 'hidden'],
+    overflow: ['scroll', 'hidden'],
+    listStyle: ['none', 'inside'],
+    wordBreak: ['break-all'],
+    wordWrap: ['break-word'],
+    whiteSpace: ['pre-wrap'],
   },
 });

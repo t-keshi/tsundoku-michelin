@@ -7,14 +7,14 @@ import { useMutation } from '../../helpers/hooks/useMutation';
 export const useOnboard = (uid: string) => {
   const router = useRouter();
   const { data, error } = sdkHooks.useFetchUserOnboard(
-    fetchUserOnboard,
+    [fetchUserOnboard, uid],
     {
       userId: uid,
     },
     { suspense: true },
   );
 
-  const { mutate: resetUsername } = useMutation(() => sdk.ResetUsername({ userId: uid }));
+  const { mutate: resetUsername } = useMutation(() => sdk.ResetUsername());
 
   const { mutate: registerUser } = useMutation(
     async ({ userId, name, image }: { userId: string; name: string; image?: File }) => {

@@ -1,5 +1,5 @@
 import { Prisma, PrismaClient } from '@prisma/client';
-import { extendType, stringArg } from 'nexus';
+import { extendType, nullable, stringArg } from 'nexus';
 import { Bookshelf } from 'nexus-prisma';
 
 export const bookshelfQuery = extendType({
@@ -7,10 +7,10 @@ export const bookshelfQuery = extendType({
   definition: (t) => {
     t.list.field('bookshelfs', {
       type: Bookshelf.$name,
-      args: { userId: stringArg() },
+      args: { userId: nullable(stringArg()), bookId: nullable(stringArg()) },
       resolve: async (
         _,
-        args: { userId: string },
+        args: { userId?: string; bookId?: string },
         ctx: {
           prisma: PrismaClient;
           select: Pick<
@@ -20,7 +20,10 @@ export const bookshelfQuery = extendType({
         },
       ) => {
         const res = await ctx.prisma.bookshelf.findMany({
-          where: { userId: args.userId },
+          where: {
+            ...(args.userId && { userId: args.userId }),
+            ...(args.bookId && { bookId: args.bookId }),
+          },
           ...ctx.select,
         });
         console.log('##############', res, '##############');

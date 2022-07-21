@@ -1,12 +1,12 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import React, { Suspense } from 'react';
 import { SWRConfig } from 'swr';
 import { FetchBookWithLogsQuery } from '../../../generated/types';
 import { Layout } from '../../components/layout/Layout';
+import { useBook } from '../../containers/presenters/useBook';
 import { fetchBookWithLogs } from '../../containers/services/query/fetchBookWithLogs';
-import { sdk, sdkHooks } from '../../containers/services/sdk';
+import { sdk } from '../../containers/services/sdk';
 import { BookTemplate } from '../../templates/book';
 import { NextPageWithLayout } from '../../type';
 
@@ -34,24 +34,23 @@ export const getStaticProps: GetStaticProps<PageProps, { bookId: string }> = asy
 };
 
 const Book: React.FC = () => {
-  const router = useRouter();
-  const query = router.query as { bookId: string };
-  const { data } = sdkHooks.useFetchBookWithLogs(
-    fetchBookWithLogs,
-    { bookId: query.bookId },
-    { suspense: true },
-  );
+  const { data, onAddBookshelf, onRemoveBookshelf } = useBook();
 
-  if (!data) {
+  if (!data.bookWithLogsData) {
     throw new Error('');
   }
 
   return (
     <>
       <Head>
-        <title>積読ミシュラン | {data.book.title}</title>
+        <title>積読ミシュラン | {data.bookWithLogsData.book.title}</title>
       </Head>
-      <BookTemplate bookWithLogs={data.book} />
+      <BookTemplate
+        bookWithLogs={data.bookWithLogsData.book}
+        bookshelfs={data.bookshelfsData?.bookshelfs}
+        onAddBookshelf={onAddBookshelf}
+        onRemoveBookshelf={onRemoveBookshelf}
+      />
     </>
   );
 };

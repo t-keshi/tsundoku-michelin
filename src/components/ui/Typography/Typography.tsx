@@ -1,13 +1,14 @@
 import clsx from 'clsx';
 import React, { forwardRef } from 'react';
 import { configs } from '../../system/configs/index.css';
-import { SystemProps } from '../../system/configs/type';
+import { SystemProps, TypographyVariants } from '../../system/configs/type';
 import { blockquote, figure, typography } from './typography.css';
 
 type TypogrqphyProps = {
   children: React.ReactNode;
   className?: string;
-  variant?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'body1' | 'body2' | 'overline' | 'blockquote';
+  variant?: TypographyVariants | 'blockquote';
+  remark?: true;
   noWrap?: true;
   gutterBottom?: true;
   paragraph?: true;
@@ -28,6 +29,7 @@ export const Typography = forwardRef<HTMLParagraphElement | HTMLHeadingElement, 
       sx,
       children,
       variant = 'body1',
+      remark,
       noWrap,
       gutterBottom,
       paragraph,
@@ -48,7 +50,7 @@ export const Typography = forwardRef<HTMLParagraphElement | HTMLHeadingElement, 
           className={clsx(typogrqphyClasses.root, sx && configs(sx as object), figure())}
           {...rest}
         >
-          <blockquote className={blockquote()}>{children}</blockquote>
+          <blockquote className={blockquote({ remark })}>{children}</blockquote>
         </figure>
       );
     }
@@ -60,6 +62,7 @@ export const Typography = forwardRef<HTMLParagraphElement | HTMLHeadingElement, 
         sx && configs(sx as object),
         typography({
           variant,
+          remark,
           noWrap,
           gutterBottom,
           paragraph,

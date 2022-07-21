@@ -1,21 +1,59 @@
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown, { Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Prism } from 'react-syntax-highlighter';
 import { dark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import { CodeComponent } from 'react-markdown/lib/ast-to-react';
-import { Typography } from '../ui/Typography/Typography';
+import { Typography } from '../ui';
 
-const BlockQuote: React.FC<{ children: React.ReactNode & React.ReactNode[] }> = ({ children }) => (
-  <Typography variant="blockquote">{children}</Typography>
+const H1: Components['h1'] = ({ children }) => (
+  <Typography variant="h1" gutterBottom>
+    {children}
+  </Typography>
 );
 
-const Code: keyof JSX.IntrinsicElements | CodeComponent | undefined = ({
-  inline,
-  className,
-  children,
-  ...props
-}) => {
+const H2: Components['h2'] = ({ children }) => (
+  <Typography variant="h2" gutterBottom>
+    {children}
+  </Typography>
+);
+
+const H3: Components['h3'] = ({ children }) => (
+  <Typography variant="h3" gutterBottom>
+    {children}
+  </Typography>
+);
+
+const H4: Components['h4'] = ({ children }) => (
+  <Typography variant="h4" gutterBottom>
+    {children}
+  </Typography>
+);
+
+const H5: Components['h5'] = ({ children }) => (
+  <Typography variant="h5" gutterBottom>
+    {children}
+  </Typography>
+);
+
+const H6: Components['h6'] = ({ children }) => (
+  <Typography variant="h6" gutterBottom>
+    {children}
+  </Typography>
+);
+
+const P: Components['p'] = ({ children }) => (
+  <Typography variant="body1" gutterBottom noWrap remark>
+    {children}
+  </Typography>
+);
+
+const Blockquote: Components['blockquote'] = ({ children }) => (
+  <Typography variant="blockquote" remark>
+    {children}
+  </Typography>
+);
+
+const Code: Components['code'] = ({ inline, className, children, ...props }) => {
   const match = /language-(\w+)/.exec(className || '');
 
   return !inline && match ? (
@@ -34,7 +72,14 @@ export const MarkdownRenderer: React.FC<{ children: string }> = ({ children }) =
   <ReactMarkdown
     rehypePlugins={[remarkGfm]}
     components={{
-      blockquote: BlockQuote,
+      h1: H1,
+      h2: H2,
+      h3: H3,
+      h4: H4,
+      h5: H5,
+      h6: H6,
+      p: P,
+      blockquote: Blockquote,
       code: Code,
     }}
   >

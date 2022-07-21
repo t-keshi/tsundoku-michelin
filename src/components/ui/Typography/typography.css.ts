@@ -1,36 +1,43 @@
-import { recipe } from "@vanilla-extract/recipes";
-import { vars } from "../../system/theme/index.css";
-import { mq } from "../../system/utils/mediaQuery";
+import { recipe } from '@vanilla-extract/recipes';
+import { vars } from '../../system/theme/index.css';
+import { mq } from '../../system/utils/mediaQuery';
 
 export const typography = recipe({
   base: {
-    display: "inline",
+    display: 'inline',
   },
   variants: {
     variant: vars.typography,
     noWrap: {
       true: {
-        overflow: "hidden",
-        textOverflow: "ellipsis",
-        whiteSpace: "nowrap",
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+      },
+    },
+    remark: {
+      true: {
+        wordBreak: 'break-all',
+        wordWrap: 'break-word',
+        whiteSpace: 'pre-wrap',
       },
     },
     gutterBottom: {
       true: {
-        marginBottom: "0.35em",
+        marginBottom: '0.35em',
       },
     },
     paragraph: {
       true: {
-        marginBottom: "0.35em",
+        marginBottom: '0.35em',
       },
     },
     clickable: {
       true: {
-        cursor: "pointer",
+        cursor: 'pointer',
         selectors: {
-          "&:hover": {
-            textDecoration: "underline",
+          '&:hover': {
+            textDecoration: 'underline',
             textUnderlineOffset: 4,
           },
         },
@@ -38,10 +45,10 @@ export const typography = recipe({
     },
     display: {
       block: {
-        display: "block",
+        display: 'block',
       },
       inline: {
-        display: "inline",
+        display: 'inline',
       },
     },
     responsive: {
@@ -63,13 +70,13 @@ export const typography = recipe({
   compoundVariants: [
     {
       variants: {
-        variant: "h1",
+        variant: 'h1',
         responsive: true,
       },
       style: {
         ...vars.typography.h2,
-        "@media": {
-          [mq("tablet")]: {
+        '@media': {
+          [mq('tablet')]: {
             ...vars.typography.h1,
           },
         },
@@ -77,13 +84,13 @@ export const typography = recipe({
     },
     {
       variants: {
-        variant: "h2",
+        variant: 'h2',
         responsive: true,
       },
       style: {
         ...vars.typography.h3,
-        "@media": {
-          [mq("tablet")]: {
+        '@media': {
+          [mq('tablet')]: {
             ...vars.typography.h2,
           },
         },
@@ -91,13 +98,13 @@ export const typography = recipe({
     },
     {
       variants: {
-        variant: "h3",
+        variant: 'h3',
         responsive: true,
       },
       style: {
         ...vars.typography.h4,
-        "@media": {
-          [mq("tablet")]: {
+        '@media': {
+          [mq('tablet')]: {
             ...vars.typography.h3,
           },
         },
@@ -105,13 +112,27 @@ export const typography = recipe({
     },
     {
       variants: {
-        variant: "h5",
+        variant: 'h4',
+        responsive: true,
+      },
+      style: {
+        ...vars.typography.h5,
+        '@media': {
+          [mq('tablet')]: {
+            ...vars.typography.h4,
+          },
+        },
+      },
+    },
+    {
+      variants: {
+        variant: 'h5',
         responsive: true,
       },
       style: {
         ...vars.typography.h6,
-        "@media": {
-          [mq("tablet")]: {
+        '@media': {
+          [mq('tablet')]: {
             ...vars.typography.h5,
           },
         },
@@ -122,7 +143,7 @@ export const typography = recipe({
 
 export const figure = recipe({
   base: {
-    display: "block",
+    display: 'block',
     borderLeft: `3px solid ${vars.palette.lightMode.text.secondary}`,
     marginTop: vars.spacing[4],
     marginBottom: vars.spacing[4],
@@ -130,8 +151,8 @@ export const figure = recipe({
     paddingBottom: vars.spacing[2],
     paddingLeft: vars.spacing[2],
     paddingRight: vars.spacing[2],
-    "@media": {
-      [mq("tablet")]: {
+    '@media': {
+      [mq('tablet')]: {
         paddingLeft: vars.spacing[4],
         paddingRight: vars.spacing[4],
       },
@@ -143,5 +164,14 @@ export const figure = recipe({
 export const blockquote = recipe({
   base: {
     ...vars.typography.body1,
+  },
+  variants: {
+    remark: {
+      true: {
+        wordBreak: 'break-all',
+        wordWrap: 'break-word',
+        whiteSpace: 'pre-wrap',
+      },
+    },
   },
 });
