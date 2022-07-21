@@ -14,12 +14,7 @@ type PageProps = {
   fallback: { [key: typeof fetchBookWithLogs]: FetchBookWithLogsQuery };
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await sdk.FetchBooks();
-  const paths = res.books.map((book) => ({ params: { bookId: book.id } }));
-
-  return { paths, fallback: false };
-};
+export const getStaticPaths: GetStaticPaths = async () => ({ paths: [], fallback: 'blocking' });
 
 export const getStaticProps: GetStaticProps<PageProps, { bookId: string }> = async (context) => {
   const bookId = context.params?.bookId ?? '';
