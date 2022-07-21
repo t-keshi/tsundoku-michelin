@@ -81,6 +81,21 @@ module.exports = {
         varsIgnorePattern: '_',
       },
     ],
+    'import/no-extraneous-dependencies': [
+      'error',
+      {
+        devDependencies: [
+          '**/__specs__/**',
+          '**/*/*.spec.*',
+          '**/__tests__/**',
+          '**/*/*.test.*',
+          'src/setupTests.*',
+          '.storybook/**',
+          'stories/**',
+          '**/*.stories.tsx',
+        ],
+      },
+    ],
   },
   settings: {
     'import/resolver': {

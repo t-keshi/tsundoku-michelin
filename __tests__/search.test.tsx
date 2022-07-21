@@ -1,7 +1,8 @@
 import { byTestId } from 'testing-library-selector';
 import userEvent from '@testing-library/user-event';
-import { render } from '../testUtils';
-import Search from './search';
+import { render } from '../src/testUtils';
+import Search from '../src/pages/search';
+import '@testing-library/jest-dom/extend-expect';
 
 const ui = {
   searchInput: byTestId('search'),

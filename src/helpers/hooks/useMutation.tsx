@@ -2,8 +2,10 @@
 import { useCallback } from 'react';
 import { useSnackbar } from '../../containers/contexts/snackbar';
 
-type Options = {
-  onSuccess?: () => void;
+type PromiseType<T extends Promise<any>> = T extends Promise<infer P> ? P : never;
+
+type Options<TMutateFn extends (...args: any) => Promise<unknown>> = {
+  onSuccess?: (res: PromiseType<ReturnType<TMutateFn>>) => void;
   onError?: () => void;
   onSettled?: () => void;
   errorMessage?: string;
@@ -12,19 +14,19 @@ type Options = {
 
 export const useMutation = <TMutateFn extends (...args: any) => Promise<unknown>>(
   mutateFn: TMutateFn,
-  options?: Options,
+  options?: Options<TMutateFn>,
 ) => {
   const { onOpen } = useSnackbar();
 
   const fn = useCallback(
     (args: any) =>
       mutateFn(args)
-        .then(() => {
+        .then((res) => {
           if (options?.successMessage) {
             onOpen({ message: options.successMessage, status: 'success' });
           }
           if (options?.onSuccess) {
-            options?.onSuccess();
+            options?.onSuccess(res as PromiseType<ReturnType<TMutateFn>>);
           }
         })
         .catch((error) => {
@@ -44,7 +46,7 @@ export const useMutation = <TMutateFn extends (...args: any) => Promise<unknown>
           }
         }),
     [mutateFn, onOpen, options],
-  );
+  ) as TMutateFn;
 
-  return { mutate: fn as TMutateFn };
+  return { mutate: fn };
 };

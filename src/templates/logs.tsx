@@ -1,10 +1,21 @@
 import { formatDistance } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import Link from 'next/link';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { MdModeEdit, MdOutlineDelete } from 'react-icons/md';
 import { FetchUserBookLogsQuery } from '../../generated/types';
-import { Box, Flex, IconButton, IconButtonGroup, Paper, Stack, Typography } from '../components/ui';
+import {
+  Box,
+  Button,
+  Dialog,
+  Flex,
+  IconButton,
+  IconButtonGroup,
+  Paper,
+  Stack,
+  Typography,
+} from '../components/ui';
+import { useDisclosure } from '../helpers/hooks/useDisclosure';
 
 type Props = {
   bookLogs: FetchUserBookLogsQuery['bookLogs'];
@@ -12,12 +23,22 @@ type Props = {
 };
 
 export const LogsTemplate: React.FC<Props> = ({ bookLogs, onRemoveBookLog }) => {
-  const handleRemoveBookLog = useCallback(
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [id, setId] = useState<string | undefined>();
+  const handleDialogOpen = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
-      onRemoveBookLog(e.currentTarget.id);
+      onOpen();
+      setId(e.currentTarget.id);
     },
-    [onRemoveBookLog],
+    [onOpen],
   );
+
+  const handleRemoveBookLog = useCallback(() => {
+    if (id) {
+      onClose();
+      onRemoveBookLog(id);
+    }
+  }, [id, onClose, onRemoveBookLog]);
 
   return (
     <>
@@ -52,13 +73,29 @@ export const LogsTemplate: React.FC<Props> = ({ bookLogs, onRemoveBookLog }) => 
                     <MdModeEdit />
                   </IconButton>
                 </Link>
-                <IconButton id={log.id} onClick={handleRemoveBookLog}>
+                <IconButton id={log.id} onClick={handleDialogOpen}>
                   <MdOutlineDelete />
                 </IconButton>
               </IconButtonGroup>
             </Flex>
           ))}
         </Stack>
+        <Dialog isOpen={isOpen} onClose={onClose}>
+          <Typography variant="h3" gutterBottom>
+            削除
+          </Typography>
+          <Typography gutterBottom>本当に削除してもよろしいですか？</Typography>
+          <Box sx={{ mt: 3 }} />
+          <Flex sx={{ justifyContent: 'flex-end' }}>
+            <Button
+              variant="contained"
+              onClick={handleRemoveBookLog}
+              data-testid="Login with Google"
+            >
+              削除
+            </Button>
+          </Flex>
+        </Dialog>
       </Paper>
     </>
   );

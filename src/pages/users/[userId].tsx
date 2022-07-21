@@ -12,6 +12,7 @@ import { sdk, sdkHooks } from '../../containers/services/sdk';
 import { Typography } from '../../components/ui';
 import { UserTemplate } from '../../templates/user';
 import { fetchBookshelfBooks } from '../../containers/services/query/fetchBookshelfBooks';
+import { useUser } from '../../containers/presenters/useUser';
 
 type PageProps = {
   fallback: { [key: typeof fetchBookshelfBooks]: FetchBookshelfBooksQuery };
@@ -32,18 +33,8 @@ export const getServerSideProps: GetServerSideProps<PageProps, { userId: string 
   };
 };
 
-const Logs: React.FC = () => {
-  const { status, data: session } = useSession();
-  const uid = session?.user ? (session.user as Session & { uid: string }).uid : undefined;
-  const { data } = sdkHooks.useFetchUserBookLogs(
-    uid ? fetchUserBookLogs : null,
-    { userId: uid ?? '' },
-    { suspense: true },
-  );
-
-  if (!data || status === 'loading') {
-    return <Typography variant="overline">loading...</Typography>;
-  }
+const Users: React.FC = () => {
+  useUser();
 
   return (
     <>
@@ -57,7 +48,7 @@ const Logs: React.FC = () => {
 
 const UserPage: NextPageWithLayout<PageProps> = ({ fallback }) => (
   <SWRConfig value={{ fallback }}>
-    <Logs />
+    <Users />
   </SWRConfig>
 );
 

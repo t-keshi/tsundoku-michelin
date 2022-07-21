@@ -16,9 +16,9 @@ export const useLogs = (uid: string) => {
     (bookLogId: string) => sdk.RemoveBookLog({ bookLogId }),
     {
       successMessage: '読書ログを削除しました',
-      onSuccess: () => {
+      onSuccess: (res) => {
         mutateBookLogs();
-        mutate(fetchEditBookLogInfo);
+        mutate([fetchEditBookLogInfo, res.removeBookLog.bookId]);
       },
     },
   );

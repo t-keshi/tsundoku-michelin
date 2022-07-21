@@ -1,28 +1,16 @@
-import Head from "next/head";
-import { Suspense, useCallback, useDeferredValue, useState } from "react";
-import { Layout } from "../components/layout/Layout";
-import { useDebounce } from "../helpers/hooks/useDebounce";
-import { sdkHooks } from "../containers/services/sdk";
-import { SearchTemplate } from "../templates/search";
-import { NextPageWithLayout } from "../type";
+import Head from 'next/head';
+import { Suspense } from 'react';
+import { Layout } from '../components/layout/Layout';
+import { SearchTemplate } from '../templates/search';
+import { NextPageWithLayout } from '../type';
+import { useSearch } from '../containers/presenters/useSearch';
 
 const Search: NextPageWithLayout = () => {
-  const [keyword, setKeyword] = useState("");
-  const debounce = useDebounce(500);
-  const handleSearch = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      debounce(() => setKeyword(e.target.value));
-    },
-    [debounce]
-  );
-  const deferredKeyword = useDeferredValue(keyword);
-  const { data } = sdkHooks.useSearchBooks(
-    deferredKeyword === "" ? null : deferredKeyword,
-    {
-      keyword: deferredKeyword,
-    },
-    { suspense: true }
-  );
+  const {
+    data,
+    onSearch,
+    variables: { keyword },
+  } = useSearch();
 
   return (
     <>
@@ -30,10 +18,7 @@ const Search: NextPageWithLayout = () => {
         <title>積読ミシュラン | Search</title>
       </Head>
       <Suspense fallback={<div>Loading...</div>}>
-        <SearchTemplate
-          booksSearch={data?.booksSearch}
-          onChange={handleSearch}
-        />
+        <SearchTemplate books={data?.books} keyword={keyword} onSearch={onSearch} />
       </Suspense>
     </>
   );

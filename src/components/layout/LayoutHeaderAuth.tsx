@@ -1,7 +1,7 @@
-import React, { useCallback } from "react";
-import { MdLogout, MdManageAccounts, MdOutlineArticle } from "react-icons/md";
-import Link from "next/link";
-import { useSession, signOut } from "next-auth/react";
+import React, { startTransition, useCallback } from 'react';
+import { MdLogout, MdManageAccounts, MdOutlineArticle } from 'react-icons/md';
+import Link from 'next/link';
+import { useSession, signOut } from 'next-auth/react';
 import {
   Button,
   Typography,
@@ -13,10 +13,10 @@ import {
   ListItemIcon,
   ListItemText,
   Popover,
-} from "../ui";
-import { useAnchoEl } from "../../helpers/hooks/useAnchoEl";
-import { useAuthModal } from "../../containers/contexts/authModal";
-import { useSnackbar } from "../../containers/contexts/snackbar";
+} from '../ui';
+import { useAnchoEl } from '../../helpers/hooks/useAnchoEl';
+import { useAuthModal } from '../../containers/contexts/authModal';
+import { useSnackbar } from '../../containers/contexts/snackbar';
 
 export const LayoutHeaderAuth = () => {
   const { onOpen } = useAuthModal();
@@ -24,35 +24,30 @@ export const LayoutHeaderAuth = () => {
   const { status, data: session } = useSession();
   const { onOpen: onOpenSnackbar } = useSnackbar();
   const handleLogOut = useCallback(() => {
-    signOut().then(() =>
-      onOpenSnackbar({ message: "ログアウトしました", status: "success" })
-    );
+    signOut().then(() => {
+      startTransition(() => {
+        onOpenSnackbar({ message: 'ログアウトしました', status: 'success' });
+      });
+    });
   }, [onOpenSnackbar]);
 
-  if (status === "unauthenticated") {
+  if (status === 'unauthenticated') {
     return <Button onClick={onOpen}>Log in</Button>;
   }
 
-  if (status === "loading" || !session) {
+  if (status === 'loading' || !session) {
     return <Typography variant="overline">loading...</Typography>;
   }
 
   return (
     <>
       <IconButton onClick={onMenuOpen}>
-        <Avatar
-          priority
-          src={session.user?.image ? session.user.image : "/brand-icon.png"}
-        />
+        <Avatar priority src={session.user?.image ? session.user.image : '/brand-icon.png'} />
       </IconButton>
       <Link href="/me/bookshelf">
         <Button>MY本棚</Button>
       </Link>
-      <Popover
-        offsetMargin={{ top: 12, right: 0 }}
-        anchorEl={anchorEl}
-        onClose={onMenuClose}
-      >
+      <Popover offsetMargin={{ top: 12, right: 0 }} anchorEl={anchorEl} onClose={onMenuClose}>
         <List>
           <ListItem>
             <Link href="/me/profile">

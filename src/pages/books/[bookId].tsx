@@ -1,7 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
-import React, { Suspense } from 'react';
-import { SWRConfig } from 'swr';
+import React from 'react';
+import { SWRConfig, unstable_serialize } from 'swr';
 import { FetchBookWithLogsQuery } from '../../../generated/types';
 import { Layout } from '../../components/layout/Layout';
 import { useBook } from '../../containers/presenters/useBook';
@@ -14,10 +14,12 @@ type PageProps = {
   fallback: { [key: typeof fetchBookWithLogs]: FetchBookWithLogsQuery };
 };
 
-export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => ({
-  paths: [],
-  fallback: 'blocking',
-});
+export const getStaticPaths: GetStaticPaths = async () => {
+  const res = await sdk.FetchBooks();
+  const paths = res.books.map((book) => ({ params: { bookId: book.id } }));
+
+  return { paths, fallback: false };
+};
 
 export const getStaticProps: GetStaticProps<PageProps, { bookId: string }> = async (context) => {
   const bookId = context.params?.bookId ?? '';
@@ -26,7 +28,7 @@ export const getStaticProps: GetStaticProps<PageProps, { bookId: string }> = asy
   return {
     props: {
       fallback: {
-        [fetchBookWithLogs]: res,
+        [unstable_serialize([fetchBookWithLogs, bookId])]: res,
       },
       revalidate: 10,
     },
@@ -34,32 +36,25 @@ export const getStaticProps: GetStaticProps<PageProps, { bookId: string }> = asy
 };
 
 const Book: React.FC = () => {
-  const { data, onAddBookshelf, onRemoveBookshelf } = useBook();
+  const { data } = useBook();
 
-  if (!data.bookWithLogsData) {
+  if (!data) {
     throw new Error('');
   }
 
   return (
     <>
       <Head>
-        <title>積読ミシュラン | {data.bookWithLogsData.book.title}</title>
+        <title>積読ミシュラン | {data.book.title}</title>
       </Head>
-      <BookTemplate
-        bookWithLogs={data.bookWithLogsData.book}
-        bookshelfs={data.bookshelfsData?.bookshelfs}
-        onAddBookshelf={onAddBookshelf}
-        onRemoveBookshelf={onRemoveBookshelf}
-      />
+      <BookTemplate bookWithLogs={data.book} />
     </>
   );
 };
 
 const BookPage: NextPageWithLayout<PageProps> = ({ fallback }) => (
   <SWRConfig value={{ fallback }}>
-    <Suspense fallback={<div>Loading...</div>}>
-      <Book />
-    </Suspense>
+    <Book />
   </SWRConfig>
 );
 

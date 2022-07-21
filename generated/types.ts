@@ -238,7 +238,7 @@ export type RemoveBookLogMutationVariables = Exact<{
 }>;
 
 
-export type RemoveBookLogMutation = { __typename?: 'Mutation', removeBookLog: { __typename?: 'BookLog', id: string } };
+export type RemoveBookLogMutation = { __typename?: 'Mutation', removeBookLog: { __typename?: 'BookLog', id: string, bookId: string } };
 
 export type RemoveBookshelfMutationVariables = Exact<{
   bookId: Scalars['String'];
@@ -348,6 +348,7 @@ export const RemoveBookLogDocument = gql`
     mutation RemoveBookLog($bookLogId: String!) {
   removeBookLog(bookLogId: $bookLogId) {
     id
+    bookId
   }
 }
     `;

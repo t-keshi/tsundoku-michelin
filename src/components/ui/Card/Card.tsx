@@ -25,7 +25,7 @@ const cardClasses = {
   footer: 'Vanilla-Card-footer',
 };
 
-const LinkWrapper: React.FC<{ href?: string; children: React.ReactNode }> = ({
+const LinkWrapper: React.FC<{ href?: string; children: React.ReactElement }> = ({
   href,
   children,
 }) => {
