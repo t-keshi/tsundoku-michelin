@@ -58,6 +58,11 @@ type BookLog {
   userId: String!
 }
 
+type BooksEdge {
+  books: [Book!]!
+  endCursor: String
+}
+
 type Bookshelf {
   book: Book!
   bookId: String!
@@ -99,7 +104,8 @@ type Query {
   bookContents(bookId: String!): [BookContent!]!
   bookLog(bookId: String!, userId: String!): BookLog
   bookLogs(userId: String!): [BookLog!]!
-  books(keyword: String): [Book!]!
+  books(cursor: String, keyword: String, limit: Int): [Book!]!
+  booksEdge(cursor: String, keyword: String, limit: Int): BooksEdge!
   bookshelfs(bookId: String, userId: String): [Bookshelf!]!
   user(userId: String!): User!
 }

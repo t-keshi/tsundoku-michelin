@@ -1,12 +1,12 @@
-import { GetStaticProps } from "next";
-import Head from "next/head";
-import { SWRConfig } from "swr";
-import { FetchBooksQuery } from "../../generated/types";
-import { Layout } from "../components/layout/Layout";
-import { fetchBooks } from "../containers/services/query/fetchBooks";
-import { sdk, sdkHooks } from "../containers/services/sdk";
-import { HomeTemplate } from "../templates";
-import { NextPageWithLayout } from "../type";
+import { GetStaticProps } from 'next';
+import Head from 'next/head';
+import { SWRConfig } from 'swr';
+import { FetchBooksQuery } from '../../generated/types';
+import { Layout } from '../components/layout/Layout';
+import { fetchBooks } from '../containers/services/query/fetchBooks';
+import { sdk, sdkHooks } from '../containers/services/sdk';
+import { HomeTemplate } from '../templates';
+import { NextPageWithLayout } from '../type';
 
 type PageProps = {
   fallback: { [key: typeof fetchBooks]: FetchBooksQuery };
@@ -29,7 +29,7 @@ const Home: React.FC = () => {
   const { data } = sdkHooks.useFetchBooks(fetchBooks);
 
   if (!data) {
-    throw new Error("");
+    throw new Error('');
   }
 
   return (
@@ -43,10 +43,10 @@ const Home: React.FC = () => {
 };
 
 const HomePage: NextPageWithLayout<PageProps> = ({ fallback }) => (
-    <SWRConfig value={{ fallback }}>
-      <Home />
-    </SWRConfig>
-  );
+  <SWRConfig value={{ fallback }}>
+    <Home />
+  </SWRConfig>
+);
 
 HomePage.getLayout = (page: React.ReactElement) => <Layout>{page}</Layout>;
 

@@ -2,12 +2,12 @@ import React, { useCallback, useState } from 'react';
 import { MdOutlineBookmarkAdd, MdTaskAlt } from 'react-icons/md';
 import { useSession } from 'next-auth/react';
 import { Button } from '../components/ui';
-import { useBooks } from '../containers/presenters/useBooks';
+import { useBookshelfs } from '../containers/presenters/useBookshelfs';
 
 export const BookDynamic: React.FC = () => {
   const { data: session } = useSession();
 
-  const { data, onAddBookshelf, onRemoveBookshelf } = useBooks();
+  const { data, onAddBookshelf, onRemoveBookshelf } = useBookshelfs();
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const { bookshelfs } = data!;
 

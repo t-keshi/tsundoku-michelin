@@ -9,3 +9,5 @@ generates:
       - plugin-typescript-swr
     config:
       fetcher: fetch
+      useSWRInfinite:
+        - FetchBooksEdge

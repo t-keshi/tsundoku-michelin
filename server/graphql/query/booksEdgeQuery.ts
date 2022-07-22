@@ -1,12 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 import { extendType, intArg, nullable, stringArg } from 'nexus';
-import { Book } from 'nexus-prisma';
 
-export const booksQuery = extendType({
+export const booksEdgeQuery = extendType({
   type: 'Query',
   definition: (t) => {
-    t.list.field('books', {
-      type: Book.$name,
+    t.field('booksEdge', {
+      type: 'BooksEdge',
       args: {
         keyword: nullable(stringArg()),
         cursor: nullable(stringArg()),
@@ -15,21 +14,22 @@ export const booksQuery = extendType({
       resolve: async (
         _,
         args: { keyword?: string; cursor?: string; limit?: number },
-        ctx: {
-          prisma: PrismaClient;
-        },
+        ctx: { prisma: PrismaClient },
       ) => {
         const res = await ctx.prisma.book.findMany({
           ...(args.limit && { take: args.limit }),
           ...(args.cursor && { cursor: { id: args.cursor }, skip: 1 }),
           ...(args.keyword && { where: { title: { contains: args.keyword } } }),
           orderBy: {
-            bookshelfCount: 'asc',
+            bookshelfCount: 'desc',
           },
         });
         console.log('##############', res, '##############');
 
-        return res;
+        return {
+          endCursor: res.length > 0 ? res[res.length - 1].id : null,
+          books: res,
+        };
       },
     });
   },
