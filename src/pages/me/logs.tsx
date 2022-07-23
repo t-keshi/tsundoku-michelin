@@ -15,7 +15,7 @@ const Logs: React.FC<PageProps> = ({ uid }) => {
   const { data, onRemoveBookLog } = useLogs(uid);
 
   if (!data) {
-    throw new Error('suspense boundary throw error unexpectedly');
+    return null;
   }
 
   return (

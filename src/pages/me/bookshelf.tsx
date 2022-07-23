@@ -15,7 +15,7 @@ const Bookshelf: React.FC<PageProps> = ({ uid }) => {
   const { data } = useBookshelf(uid);
 
   if (!data) {
-    throw new Error('suspense boundary throw error unexpectedly');
+    return null;
   }
 
   return (

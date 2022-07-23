@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { Button, Typography } from '../components/ui';
 import { useBookDynamic } from '../containers/presenters/useBookDynamic';
 import { LinkWithAuth } from '../components/organisms/LinkWithAuth';
+import { ButtonWithAuth } from '../components/organisms/ButtonWidthAuth';
 
 type Props = {
   uid: string | undefined;
@@ -45,28 +46,32 @@ const BookDynamic: React.FC<Props> = ({ uid, bookId }) => {
         <Button startIcon={<>✍️</>}>読書ログを{hasBookLog ? '更新' : '投稿'}</Button>
       </LinkWithAuth>
       {inBookshelf ? (
-        <Button
-          variant="outlined"
-          color="secondary"
-          style={{
-            cursor: isClickable ? 'pointer' : 'wait',
-          }}
-          startIcon={<MdTaskAlt />}
-          onClick={handleClickRemoveBookshelf}
-        >
-          MY本棚に追加済み
-        </Button>
+        <ButtonWithAuth>
+          <Button
+            variant="outlined"
+            color="secondary"
+            style={{
+              cursor: isClickable ? 'pointer' : 'wait',
+            }}
+            startIcon={<MdTaskAlt />}
+            onClick={handleClickRemoveBookshelf}
+          >
+            MY本棚に追加済み
+          </Button>
+        </ButtonWithAuth>
       ) : (
-        <Button
-          variant="outlined"
-          style={{
-            cursor: isClickable ? 'pointer' : 'wait',
-          }}
-          startIcon={<MdOutlineBookmarkAdd />}
-          onClick={handleClickAddBookshelf}
-        >
-          MY本棚に追加
-        </Button>
+        <ButtonWithAuth>
+          <Button
+            variant="outlined"
+            style={{
+              cursor: isClickable ? 'pointer' : 'wait',
+            }}
+            startIcon={<MdOutlineBookmarkAdd />}
+            onClick={handleClickAddBookshelf}
+          >
+            MY本棚に追加
+          </Button>
+        </ButtonWithAuth>
       )}
     </>
   );
