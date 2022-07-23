@@ -28,7 +28,7 @@ export const getStaticProps: GetStaticProps<PageProps, { page: string }> = async
       fallback: {
         [unstable_serialize([fetchBooksEdge, offset])]: res,
       },
-      revalidate: 600,
+      revalidate: 3600,
     },
   };
 };

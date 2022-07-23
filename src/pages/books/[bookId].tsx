@@ -26,7 +26,7 @@ export const getStaticProps: GetStaticProps<PageProps, { bookId: string }> = asy
       fallback: {
         [unstable_serialize([fetchBookWithLogs, bookId])]: res,
       },
-      revalidate: 600,
+      revalidate: 3600,
     },
   };
 };

@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { MarkdownEditor } from '@react-libraries/markdown-editor';
 import { MdChevronLeft, MdHelp, MdModeEdit, MdPlayCircleFilled } from 'react-icons/md';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
@@ -25,6 +24,7 @@ import {
   Button,
   Form,
 } from '../components/ui';
+import { MarkdownEditor } from '../components/organisms/MarkdownEditor';
 
 type Props = {
   bookLog: FetchEditBookLogInfoQuery['bookLog'];

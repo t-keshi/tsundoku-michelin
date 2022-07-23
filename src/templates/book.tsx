@@ -51,7 +51,7 @@ export const BookTemplate: React.FC<Props> = ({ bookWithLogs }) => (
         <Stack spacing={2}>
           {bookWithLogs.bookLogs.map((log, index) => (
             <Paper key={log.id} sx={{ p: 3, width: '100%' }}>
-              <Flex sx={{ alignItems: 'center', columnGap: 1 }}>
+              <Flex sx={{ alignItems: 'center', columnGap: 1, mb: 2 }}>
                 <Link href={`/users/${log.user.id}`}>
                   <Flex sx={{ alignItems: 'center', columnGap: 1 }}>
                     <Avatar

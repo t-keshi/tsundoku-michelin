@@ -6,37 +6,37 @@ import { dark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import { Typography } from '../ui';
 
 const H1: Components['h1'] = ({ children }) => (
-  <Typography variant="h1" gutterBottom>
+  <Typography variant="h1" gutterBottom responsive>
     {children}
   </Typography>
 );
 
 const H2: Components['h2'] = ({ children }) => (
-  <Typography variant="h2" gutterBottom>
+  <Typography variant="h2" paragraph responsive underline>
     {children}
   </Typography>
 );
 
 const H3: Components['h3'] = ({ children }) => (
-  <Typography variant="h3" gutterBottom>
+  <Typography variant="h3" paragraph responsive>
     {children}
   </Typography>
 );
 
 const H4: Components['h4'] = ({ children }) => (
-  <Typography variant="h4" gutterBottom>
+  <Typography variant="h4" gutterBottom responsive>
     {children}
   </Typography>
 );
 
 const H5: Components['h5'] = ({ children }) => (
-  <Typography variant="h5" gutterBottom>
+  <Typography variant="h5" gutterBottom responsive>
     {children}
   </Typography>
 );
 
 const H6: Components['h6'] = ({ children }) => (
-  <Typography variant="h6" gutterBottom>
+  <Typography variant="h6" gutterBottom responsive>
     {children}
   </Typography>
 );

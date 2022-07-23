@@ -43,6 +43,11 @@ export const typography = recipe({
         },
       },
     },
+    underline: {
+      true: {
+        borderBottom: `1px solid ${vars.palette.lightMode.divider}`,
+      },
+    },
     display: {
       block: {
         display: 'block',

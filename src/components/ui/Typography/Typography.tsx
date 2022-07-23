@@ -13,6 +13,7 @@ type TypogrqphyProps = {
   gutterBottom?: true;
   paragraph?: true;
   clickable?: boolean;
+  underline?: boolean;
   display?: 'inline' | 'block';
   responsive?: boolean;
   color?: 'primary' | 'secondary' | 'error';
@@ -34,6 +35,7 @@ export const Typography = forwardRef<HTMLParagraphElement | HTMLHeadingElement, 
       gutterBottom,
       paragraph,
       clickable = false,
+      underline = false,
       display: displayProps,
       responsive = false,
       color = 'primary',
@@ -67,6 +69,7 @@ export const Typography = forwardRef<HTMLParagraphElement | HTMLHeadingElement, 
           gutterBottom,
           paragraph,
           clickable,
+          underline,
           display,
           responsive,
           color,
