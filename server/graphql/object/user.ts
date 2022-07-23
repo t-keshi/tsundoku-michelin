@@ -44,7 +44,7 @@ export const user = objectType({
           .findUnique({
             where: { id: parent.id },
           })
-          .bookshelfs({ include: { book: true } });
+          .bookshelfs({ include: { book: true }, orderBy: { updatedAt: 'desc' } });
         console.log('##############', res, '##############');
 
         return res;

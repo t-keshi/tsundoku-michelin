@@ -18,6 +18,9 @@ export const bookshelfsQuery = extendType({
             ...(args.userId && { userId: args.userId }),
             ...(args.bookId && { bookId: args.bookId }),
           },
+          orderBy: {
+            updatedAt: 'desc',
+          },
         });
         console.log('##############', res, '##############');
 

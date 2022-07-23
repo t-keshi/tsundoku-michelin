@@ -20,7 +20,7 @@ export const InternalServerError = () => (
         <Typography variant="body1" color="secondary">
           サーバーエラーが発生しました。
           <br />
-          時間をおいて再度、お試しください:bow:
+          時間をおいて再度お試しください🙇‍♂️
         </Typography>
       </Flex>
     </main>

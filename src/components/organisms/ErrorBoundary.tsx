@@ -136,7 +136,7 @@ export const Fallback: React.FC = () => {
             <br />
             ページリロードをお試しの上、解決しない場合は、
             <br />
-            管理者(quick.resp.biz094@gmaill.com)までお問合せください:bow:
+            管理者(quick.resp.biz094@gmaill.com)までお問合せください🙇‍♂️
           </Typography>
           <Box sx={{ mt: 4 }} />
           <Button variant="contained" color="primary" onClick={handleRefresh}>
