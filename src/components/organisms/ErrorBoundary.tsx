@@ -139,8 +139,8 @@ export const Fallback: React.FC = () => {
             管理者(quick.resp.biz094@gmaill.com)までお問合せください🙇‍♂️
           </Typography>
           <Box sx={{ mt: 4 }} />
-          <Button variant="contained" color="primary" onClick={handleRefresh}>
-            <MdRefresh />
+          <Button variant="contained" color="primary" startIcon={<MdRefresh/>} onClick={handleRefresh}>
+            ページリロード
           </Button>
         </Flex>
       </main>
@@ -149,5 +149,5 @@ export const Fallback: React.FC = () => {
 };
 
 export const TopErrorBoundary: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <ErrorBoundary fallbackRender={Fallback}>{children}</ErrorBoundary>
+  <ErrorBoundary fallbackRender={() => <Fallback />}>{children}</ErrorBoundary>
 );
