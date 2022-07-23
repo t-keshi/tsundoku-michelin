@@ -1,7 +1,5 @@
-import Link from 'next/link';
 import React from 'react';
-import { MdChevronLeft } from 'react-icons/md';
-import { Avatar, Box, Button, Flex, Typography } from '../components/ui';
+import { Avatar, Box, Flex, Typography } from '../components/ui';
 
 export const InternalServerError = () => (
   <Box sx={{ bgColor: 'primary-light', minHeight: '100vh' }}>
