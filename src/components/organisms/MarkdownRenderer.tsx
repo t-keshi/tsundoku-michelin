@@ -24,25 +24,25 @@ const H3: Components['h3'] = ({ children }) => (
 );
 
 const H4: Components['h4'] = ({ children }) => (
-  <Typography variant="h4" gutterBottom responsive>
+  <Typography variant="h4" paragraph responsive>
     {children}
   </Typography>
 );
 
 const H5: Components['h5'] = ({ children }) => (
-  <Typography variant="h5" gutterBottom responsive>
+  <Typography variant="h5" paragraph responsive>
     {children}
   </Typography>
 );
 
 const H6: Components['h6'] = ({ children }) => (
-  <Typography variant="h6" gutterBottom responsive>
+  <Typography variant="h6" paragraph responsive>
     {children}
   </Typography>
 );
 
 const P: Components['p'] = ({ children }) => (
-  <Typography variant="body1" gutterBottom noWrap remark>
+  <Typography variant="body1" noWrap remark>
     {children}
   </Typography>
 );

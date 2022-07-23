@@ -24,12 +24,12 @@ export const typography = recipe({
     },
     gutterBottom: {
       true: {
-        marginBottom: '0.35em',
+        marginBottom: '8px',
       },
     },
     paragraph: {
       true: {
-        marginBottom: '0.35em',
+        marginBottom: '16px',
       },
     },
     clickable: {

@@ -1,6 +1,11 @@
 import Link from 'next/link';
 import React, { Fragment } from 'react';
-import { MdChevronLeft, MdOutlineArticle, MdOutlineBookmarkAdd } from 'react-icons/md';
+import {
+  MdChevronLeft,
+  MdChevronRight,
+  MdOutlineArticle,
+  MdOutlineBookmarkAdd,
+} from 'react-icons/md';
 import { FetchBooksQuery } from '../../generated/types';
 import { Box, Card, Flex, Grid, IconButton, Typography } from '../components/ui';
 
@@ -50,17 +55,19 @@ export const BooksListTemplate: React.FC<Props> = ({ books, page, hasPrevPage, h
     </Grid>
     <Box sx={{ mt: 3 }} />
     <Flex sx={{ justifyContent: 'space-between' }}>
-      {hasPrevPage && (
-        <Link href={`/${page - 1}`}>
+      {hasPrevPage ? (
+        <Link href={`/book-list/${page - 1}`}>
           <IconButton>
             <MdChevronLeft />
           </IconButton>
         </Link>
+      ) : (
+        <div />
       )}
       {hasNextPage && (
-        <Link href={`/${page + 1}`}>
+        <Link href={`/book-list/${page + 1}`}>
           <IconButton>
-            <MdChevronLeft />
+            <MdChevronRight />
           </IconButton>
         </Link>
       )}
