@@ -56,7 +56,7 @@ export const BooksListTemplate: React.FC<Props> = ({ books, page, hasPrevPage, h
     <Box sx={{ mt: 3 }} />
     <Flex sx={{ justifyContent: 'space-between' }}>
       {hasPrevPage ? (
-        <Link href={`/book-list/${page - 1}`}>
+        <Link href={`/books-list/${page - 1}`}>
           <IconButton>
             <MdChevronLeft />
           </IconButton>
@@ -65,7 +65,7 @@ export const BooksListTemplate: React.FC<Props> = ({ books, page, hasPrevPage, h
         <div />
       )}
       {hasNextPage && (
-        <Link href={`/book-list/${page + 1}`}>
+        <Link href={`/books-list/${page + 1}`}>
           <IconButton>
             <MdChevronRight />
           </IconButton>
