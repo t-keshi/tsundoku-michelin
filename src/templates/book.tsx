@@ -1,15 +1,15 @@
 import { formatDistance } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import dynamic from 'next/dynamic';
-import { Suspense } from 'react';
+import Link from 'next/link';
 import { FetchBookWithLogsQuery } from '../../generated/types';
 import { Accordion, Avatar, Box, Card, Flex, Paper, Stack, Typography } from '../components/ui';
 import { MarkdownRenderer } from '../components/organisms/MarkdownRenderer';
 import { minHeight32 } from '../components/system/style/style.css';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-const BookDynamic = dynamic<{}>(
-  () => import('./book-dynamic').then((modules) => modules.BookDynamic),
+const BookDynamicComponent = dynamic<{}>(
+  () => import('./book-dynamic').then((modules) => modules.BookDynamicComponent),
   {
     ssr: false,
   },
@@ -42,15 +42,7 @@ export const BookTemplate: React.FC<Props> = ({ bookWithLogs }) => (
                 あなたの積読を、みんなの資産に。
               </Typography>
               <Flex className={minHeight32} sx={{ columnGap: 2 }}>
-                <Suspense
-                  fallback={
-                    <Typography variant="overline" color="secondary">
-                      loading...
-                    </Typography>
-                  }
-                >
-                  <BookDynamic />
-                </Suspense>
+                <BookDynamicComponent />
               </Flex>
             </Box>
           </Flex>
@@ -60,10 +52,18 @@ export const BookTemplate: React.FC<Props> = ({ bookWithLogs }) => (
           {bookWithLogs.bookLogs.map((log, index) => (
             <Paper key={log.id} sx={{ p: 3, width: '100%' }}>
               <Flex sx={{ alignItems: 'center', columnGap: 1 }}>
-                <Avatar size="sm" src={log.user.image || '/brand-icon.png'} />
-                <Typography variant="body2" color="primary">
-                  {log.user.name}
-                </Typography>
+                <Link href={`/users/${log.user.id}`}>
+                  <Flex sx={{ alignItems: 'center', columnGap: 1 }}>
+                    <Avatar
+                      size="sm"
+                      sx={{ cursor: 'pointer' }}
+                      src={log.user.image || '/brand-icon.png'}
+                    />
+                    <Typography variant="body2" color="primary" clickable>
+                      {log.user.name}
+                    </Typography>
+                  </Flex>
+                </Link>
                 <Typography variant="body2" color="secondary">
                   {formatDistance(new Date(log.updatedAt), new Date(), {
                     locale: ja,

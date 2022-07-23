@@ -1,22 +1,21 @@
-import React, { useCallback, useState } from 'react';
+import React, { Suspense, useCallback, useState } from 'react';
 import { MdOutlineBookmarkAdd, MdTaskAlt } from 'react-icons/md';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { Button } from '../components/ui';
+import { Button, Typography } from '../components/ui';
 import { useBookDynamic } from '../containers/presenters/useBookDynamic';
 import { LinkWithAuth } from '../components/organisms/LinkWithAuth';
 
-export const BookDynamic: React.FC = () => {
-  const { data: session } = useSession();
-  const uid = session?.user.uid;
+type Props = {
+  uid: string | undefined;
+  bookId: string;
+};
 
-  const router = useRouter();
-  const bookId = router.isReady ? (router.query as { bookId: string }).bookId : undefined;
-
+const BookDynamic: React.FC<Props> = ({ uid, bookId }) => {
   const { data, onAddBookshelf, onRemoveBookshelf } = useBookDynamic(uid, bookId);
 
-  const hasBookLog = Boolean(data?.bookshelf?.id);
-  const inBookshelf = Boolean(data?.bookLog?.id);
+  const hasBookLog = Boolean(data?.bookLog?.id);
+  const inBookshelf = Boolean(data?.bookshelf?.id);
 
   const [isClickable, setIsClickable] = useState(true);
 
@@ -70,5 +69,29 @@ export const BookDynamic: React.FC = () => {
         </Button>
       )}
     </>
+  );
+};
+
+export const BookDynamicComponent: React.FC = () => {
+  const { data: session, status } = useSession();
+  const uid = session?.user.uid;
+
+  const router = useRouter();
+  const { bookId } = router.query as { bookId: string };
+
+  if (status === 'loading' || !router.isReady) {
+    return null;
+  }
+
+  return (
+    <Suspense
+      fallback={
+        <Typography variant="overline" color="secondary">
+          loading...
+        </Typography>
+      }
+    >
+      <BookDynamic uid={uid} bookId={bookId} />
+    </Suspense>
   );
 };

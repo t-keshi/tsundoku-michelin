@@ -13,10 +13,10 @@ export const bookshelfsQuery = extendType({
         args: { userId?: string; bookId?: string },
         ctx: { prisma: PrismaClient },
       ) => {
+        console.log({ ...(args.userId && { userId: args.userId }) });
         const res = await ctx.prisma.bookshelf.findMany({
           where: {
             ...(args.userId && { userId: args.userId }),
-            ...(args.bookId && { bookId: args.bookId }),
           },
         });
         console.log('##############', res, '##############');
