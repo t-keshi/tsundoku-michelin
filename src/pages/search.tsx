@@ -4,8 +4,9 @@ import { Layout } from '../components/layout/Layout';
 import { SearchTemplate } from '../templates/search';
 import { NextPageWithLayout } from '../type';
 import { useSearch } from '../containers/presenters/useSearch';
+import { Loader } from '../components/ui';
 
-const Search: NextPageWithLayout = () => {
+const Search: React.FC = () => {
   const {
     data,
     onSearch,
@@ -17,13 +18,17 @@ const Search: NextPageWithLayout = () => {
       <Head>
         <title>積読ミシュラン | Search</title>
       </Head>
-      <Suspense fallback={<div>Loading...</div>}>
-        <SearchTemplate books={data?.books} keyword={keyword} onSearch={onSearch} />
-      </Suspense>
+      <SearchTemplate books={data?.books} keyword={keyword} onSearch={onSearch} />
     </>
   );
 };
 
-Search.getLayout = (page: React.ReactElement) => <Layout>{page}</Layout>;
+const SearchPage: NextPageWithLayout = () => (
+  <Suspense fallback={<Loader page />}>
+    <Search />
+  </Suspense>
+);
 
-export default Search;
+SearchPage.getLayout = (page: React.ReactElement) => <Layout>{page}</Layout>;
+
+export default SearchPage;

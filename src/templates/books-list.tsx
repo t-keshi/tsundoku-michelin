@@ -1,13 +1,17 @@
+import Link from 'next/link';
 import React, { Fragment } from 'react';
-import { MdOutlineArticle, MdOutlineBookmarkAdd } from 'react-icons/md';
+import { MdChevronLeft, MdOutlineArticle, MdOutlineBookmarkAdd } from 'react-icons/md';
 import { FetchBooksQuery } from '../../generated/types';
-import { Box, Card, Flex, Grid, Typography } from '../components/ui';
+import { Box, Card, Flex, Grid, IconButton, Typography } from '../components/ui';
 
 type Props = {
   books: FetchBooksQuery['books'];
+  page: number;
+  hasPrevPage: boolean;
+  hasNextPage: boolean;
 };
 
-export const HomeTemplate: React.FC<Props> = ({ books }) => (
+export const BooksListTemplate: React.FC<Props> = ({ books, page, hasPrevPage, hasNextPage }) => (
   <>
     <Typography variant="h2">Books</Typography>
     <Box sx={{ mt: 3 }} />
@@ -44,5 +48,22 @@ export const HomeTemplate: React.FC<Props> = ({ books }) => (
         </Fragment>
       ))}
     </Grid>
+    <Box sx={{ mt: 3 }} />
+    <Flex sx={{ justifyContent: 'space-between' }}>
+      {hasPrevPage && (
+        <Link href={`/${page - 1}`}>
+          <IconButton>
+            <MdChevronLeft />
+          </IconButton>
+        </Link>
+      )}
+      {hasNextPage && (
+        <Link href={`/${page + 1}`}>
+          <IconButton>
+            <MdChevronLeft />
+          </IconButton>
+        </Link>
+      )}
+    </Flex>
   </>
 );

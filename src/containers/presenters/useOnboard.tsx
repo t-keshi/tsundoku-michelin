@@ -17,9 +17,9 @@ export const useOnboard = (uid: string) => {
   const { mutate: resetUsername } = useMutation(() => sdk.ResetUsername());
 
   const { mutate: registerUser } = useMutation(
-    async ({ userId, name, image }: { userId: string; name: string; image?: File }) => {
+    async ({ name, image }: { userId: string; name: string; image?: File }) => {
       if (!image) {
-        return sdk.OnboardUser({ userId, name });
+        return sdk.OnboardUser({ name });
       }
 
       const formData = new FormData();
@@ -32,7 +32,7 @@ export const useOnboard = (uid: string) => {
       const imgRes: { image: string } = await _res.json();
       const imageUrl = imgRes.image;
 
-      const res = await sdk.OnboardUser({ userId, name, image: imageUrl });
+      const res = await sdk.OnboardUser({ name, image: imageUrl });
 
       return res;
     },
@@ -54,6 +54,10 @@ export const useOnboard = (uid: string) => {
       router.push('/');
     }
   }, [uid, shouldOnboard, resetUsername, router, alreadOnboared]);
+
+  if (!data) {
+    throw new Error('suspense boundary throw error unexpectedly');
+  }
 
   return {
     data,

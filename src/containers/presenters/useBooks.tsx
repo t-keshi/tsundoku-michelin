@@ -1,8 +1,13 @@
 import { sdkHooks } from '../services/sdk';
-import { fetchBooks } from '../services/query/fetchBooks';
+import { fetchBooksEdge } from '../services/query/fetchBooksEdge';
 
-export const useBooks = () => {
-  const { data, error } = sdkHooks.useFetchBooks(fetchBooks);
+export const useBooks = (page: number) => {
+  const offset = (page - 1) * 50;
+  const { data, error } = sdkHooks.useFetchBooksEdge(
+    [fetchBooksEdge, offset],
+    { offset },
+    { suspense: true },
+  );
 
   return {
     data,

@@ -1,7 +1,6 @@
-import { PrismaClient } from "@prisma/client";
-import { prisma } from "./prisma";
-import { accountData } from "./data/accountData";
-import { bookData } from "./data/bookData";
+import { prisma } from './prisma';
+import { accountData } from './data/accountData';
+import { bookData } from './data/bookData';
 
 const resetDB = async () => {
   await prisma.book.deleteMany();
@@ -32,7 +31,7 @@ const setUpBook = async () => {
   });
 };
 
-const load = async () => {
+export const load = async () => {
   await resetDB().catch((e) => {
     throw new Error(e);
   });

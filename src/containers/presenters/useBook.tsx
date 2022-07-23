@@ -10,6 +10,7 @@ export const useBook = () => {
   const { data: bookWithLogsData, error: bookWithLogsError } = sdkHooks.useFetchBookWithLogs(
     [fetchBookWithLogs, bookId],
     { bookId },
+    { suspense: true },
   );
 
   return {

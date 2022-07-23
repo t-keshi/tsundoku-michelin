@@ -1,11 +1,9 @@
-import { useSession } from 'next-auth/react';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import React, { Suspense } from 'react';
 import { Layout } from '../../components/layout/Layout';
 import { Loader } from '../../components/ui/Loader/Loader';
-import { fetchBookshelfBooks } from '../../containers/services/query/fetchBookshelfBooks';
-import { sdkHooks } from '../../containers/services/sdk';
+import { useBookshelf } from '../../containers/presenters/useBookshelf';
+import { useProtectedRoute } from '../../helpers/hooks/useProtectedRoute';
 import { BookshelfTemplate } from '../../templates/bookshelf';
 import { NextPageWithLayout } from '../../type';
 
@@ -14,14 +12,10 @@ type PageProps = {
 };
 
 const Bookshelf: React.FC<PageProps> = ({ uid }) => {
-  const { data } = sdkHooks.useFetchBookshelfBooks(
-    fetchBookshelfBooks,
-    { userId: uid ?? '' },
-    { suspense: true },
-  );
+  const { data } = useBookshelf(uid);
 
   if (!data) {
-    throw new Error('');
+    throw new Error('suspense boundary throw error unexpectedly');
   }
 
   return (
@@ -35,14 +29,7 @@ const Bookshelf: React.FC<PageProps> = ({ uid }) => {
 };
 
 const BookshelfPage: NextPageWithLayout = () => {
-  const router = useRouter();
-  const { data: session, status } = useSession();
-
-  if (status === 'unauthenticated') {
-    if (router.isReady) {
-      router.push('/');
-    }
-  }
+  const session = useProtectedRoute();
 
   if (!session) {
     return null;

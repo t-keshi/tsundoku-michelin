@@ -1,8 +1,8 @@
 import { gql } from 'graphql-request';
 
 export const fetchBooks = gql`
-  query FetchBooks($cursor: String, $limit: Int) {
-    books(cursor: $cursor, limit: $limit) {
+  query FetchBooks($offset: Int, $limit: Int) {
+    books(offset: $offset, limit: $limit) {
       id
       title
       image

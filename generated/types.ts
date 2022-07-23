@@ -80,7 +80,7 @@ export type BookLog = {
 export type BooksEdge = {
   __typename?: 'BooksEdge';
   books: Array<Book>;
-  endCursor?: Maybe<Scalars['String']>;
+  hasNextPage?: Maybe<Scalars['Boolean']>;
 };
 
 export type Bookshelf = {
@@ -103,6 +103,7 @@ export type Mutation = {
   removeBookshelf: Bookshelf;
   resetUser: User;
   updateBookLog: BookLog;
+  updateUser: User;
 };
 
 
@@ -137,6 +138,14 @@ export type MutationRemoveBookshelfArgs = {
 export type MutationUpdateBookLogArgs = {
   bookLogId: Scalars['String'];
   log: Scalars['String'];
+};
+
+
+export type MutationUpdateUserArgs = {
+  image?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  onboarding?: InputMaybe<Scalars['String']>;
+  profile?: InputMaybe<Scalars['String']>;
 };
 
 export type Query = {
@@ -174,16 +183,16 @@ export type QueryBookLogsArgs = {
 
 
 export type QueryBooksArgs = {
-  cursor?: InputMaybe<Scalars['String']>;
   keyword?: InputMaybe<Scalars['String']>;
   limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 
 export type QueryBooksEdgeArgs = {
-  cursor?: InputMaybe<Scalars['String']>;
   keyword?: InputMaybe<Scalars['String']>;
   limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -242,13 +251,12 @@ export type CreateBookLogMutationVariables = Exact<{
 export type CreateBookLogMutation = { __typename?: 'Mutation', createBookLog: { __typename?: 'BookLog', id: string } };
 
 export type OnboardUserMutationVariables = Exact<{
-  userId: Scalars['String'];
   name: Scalars['String'];
   image?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type OnboardUserMutation = { __typename?: 'Mutation', onboardUser: { __typename?: 'User', id: string } };
+export type OnboardUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string } };
 
 export type RemoveBookLogMutationVariables = Exact<{
   bookLogId: Scalars['String'];
@@ -267,7 +275,7 @@ export type RemoveBookshelfMutation = { __typename?: 'Mutation', removeBookshelf
 export type ResetUsernameMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ResetUsernameMutation = { __typename?: 'Mutation', resetUser: { __typename?: 'User', id: string } };
+export type ResetUsernameMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string } };
 
 export type UpdateBookLogMutationVariables = Exact<{
   bookLogId: Scalars['String'];
@@ -277,15 +285,30 @@ export type UpdateBookLogMutationVariables = Exact<{
 
 export type UpdateBookLogMutation = { __typename?: 'Mutation', updateBookLog: { __typename?: 'BookLog', id: string } };
 
+export type UpdateUserImageMutationVariables = Exact<{
+  image: Scalars['String'];
+}>;
+
+
+export type UpdateUserImageMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string } };
+
+export type UpdateUserInfoMutationVariables = Exact<{
+  name?: InputMaybe<Scalars['String']>;
+  profile?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type UpdateUserInfoMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string } };
+
 export type FetchBookWithLogsQueryVariables = Exact<{
   bookId: Scalars['String'];
 }>;
 
 
-export type FetchBookWithLogsQuery = { __typename?: 'Query', book: { __typename?: 'Book', id: string, title: string, image: string, url: string, bookLogs: Array<{ __typename?: 'BookLog', id: string, log: string, updatedAt: any, user: { __typename?: 'User', id: string, name?: string | null } }> } };
+export type FetchBookWithLogsQuery = { __typename?: 'Query', book: { __typename?: 'Book', id: string, title: string, image: string, url: string, bookLogs: Array<{ __typename?: 'BookLog', id: string, log: string, updatedAt: any, user: { __typename?: 'User', id: string, name?: string | null, image?: string | null } }> } };
 
 export type FetchBooksQueryVariables = Exact<{
-  cursor?: InputMaybe<Scalars['String']>;
+  offset?: InputMaybe<Scalars['Int']>;
   limit?: InputMaybe<Scalars['Int']>;
 }>;
 
@@ -293,11 +316,11 @@ export type FetchBooksQueryVariables = Exact<{
 export type FetchBooksQuery = { __typename?: 'Query', books: Array<{ __typename?: 'Book', id: string, title: string, image: string, url: string, bookLogCount: number, bookshelfCount: number, createdAt: any, updatedAt: any }> };
 
 export type FetchBooksEdgeQueryVariables = Exact<{
-  cursor?: InputMaybe<Scalars['String']>;
+  offset?: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type FetchBooksEdgeQuery = { __typename?: 'Query', booksEdge: { __typename?: 'BooksEdge', endCursor?: string | null, books: Array<{ __typename?: 'Book', id: string, title: string, image: string, url: string, bookLogCount: number, bookshelfCount: number, createdAt: any, updatedAt: any }> } };
+export type FetchBooksEdgeQuery = { __typename?: 'Query', booksEdge: { __typename?: 'BooksEdge', hasNextPage?: boolean | null, books: Array<{ __typename?: 'Book', id: string, title: string, image: string, url: string, bookLogCount: number, bookshelfCount: number, createdAt: any, updatedAt: any }> } };
 
 export type FetchBookshelfBooksQueryVariables = Exact<{
   userId: Scalars['String'];
@@ -321,12 +344,19 @@ export type FetchEditBookLogInfoQueryVariables = Exact<{
 
 export type FetchEditBookLogInfoQuery = { __typename?: 'Query', bookLog?: { __typename?: 'BookLog', id: string, log: string } | null, book: { __typename?: 'Book', id: string, title: string, bookContents: Array<{ __typename?: 'BookContent', id: string, bookId: string, index: number, type: string, heading: string }> } };
 
+export type FetchProfileQueryVariables = Exact<{
+  userId: Scalars['String'];
+}>;
+
+
+export type FetchProfileQuery = { __typename?: 'Query', user: { __typename?: 'User', id: string, name?: string | null, image?: string | null, profile?: string | null } };
+
 export type FetchUserQueryVariables = Exact<{
   userId: Scalars['String'];
 }>;
 
 
-export type FetchUserQuery = { __typename?: 'Query', user: { __typename?: 'User', id: string, name?: string | null, image?: string | null, bookshelfs: Array<{ __typename?: 'Bookshelf', id: string, book: { __typename?: 'Book', id: string, title: string, image: string, bookLogCount: number, bookshelfCount: number } }> } };
+export type FetchUserQuery = { __typename?: 'Query', user: { __typename?: 'User', id: string, name?: string | null, image?: string | null, profile?: string | null, bookshelfs: Array<{ __typename?: 'Bookshelf', id: string, book: { __typename?: 'Book', id: string, title: string, image: string, bookLogCount: number, bookshelfCount: number } }> } };
 
 export type FetchUserBookLogsQueryVariables = Exact<{
   userId: Scalars['String'];
@@ -365,8 +395,8 @@ export const CreateBookLogDocument = gql`
 }
     `;
 export const OnboardUserDocument = gql`
-    mutation OnboardUser($userId: String!, $name: String!, $image: String) {
-  onboardUser(userId: $userId, name: $name, image: $image) {
+    mutation OnboardUser($name: String!, $image: String) {
+  updateUser(name: $name, image: $image) {
     id
   }
 }
@@ -388,7 +418,7 @@ export const RemoveBookshelfDocument = gql`
     `;
 export const ResetUsernameDocument = gql`
     mutation ResetUsername {
-  resetUser {
+  updateUser(name: "") {
     id
   }
 }
@@ -396,6 +426,20 @@ export const ResetUsernameDocument = gql`
 export const UpdateBookLogDocument = gql`
     mutation UpdateBookLog($bookLogId: String!, $log: String!) {
   updateBookLog(bookLogId: $bookLogId, log: $log) {
+    id
+  }
+}
+    `;
+export const UpdateUserImageDocument = gql`
+    mutation UpdateUserImage($image: String!) {
+  updateUser(image: $image) {
+    id
+  }
+}
+    `;
+export const UpdateUserInfoDocument = gql`
+    mutation UpdateUserInfo($name: String, $profile: String) {
+  updateUser(name: $name, profile: $profile) {
     id
   }
 }
@@ -414,14 +458,15 @@ export const FetchBookWithLogsDocument = gql`
       user {
         id
         name
+        image
       }
     }
   }
 }
     `;
 export const FetchBooksDocument = gql`
-    query FetchBooks($cursor: String, $limit: Int) {
-  books(cursor: $cursor, limit: $limit) {
+    query FetchBooks($offset: Int, $limit: Int) {
+  books(offset: $offset, limit: $limit) {
     id
     title
     image
@@ -434,9 +479,9 @@ export const FetchBooksDocument = gql`
 }
     `;
 export const FetchBooksEdgeDocument = gql`
-    query FetchBooksEdge($cursor: String) {
-  booksEdge(cursor: $cursor, limit: 50) {
-    endCursor
+    query FetchBooksEdge($offset: Int) {
+  booksEdge(offset: $offset, limit: 50) {
+    hasNextPage
     books {
       id
       title
@@ -493,12 +538,23 @@ export const FetchEditBookLogInfoDocument = gql`
   }
 }
     `;
+export const FetchProfileDocument = gql`
+    query FetchProfile($userId: String!) {
+  user(userId: $userId) {
+    id
+    name
+    image
+    profile
+  }
+}
+    `;
 export const FetchUserDocument = gql`
     query FetchUser($userId: String!) {
   user(userId: $userId) {
     id
     name
     image
+    profile
     bookshelfs {
       id
       book {
@@ -578,6 +634,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     UpdateBookLog(variables: UpdateBookLogMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateBookLogMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdateBookLogMutation>(UpdateBookLogDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateBookLog', 'mutation');
     },
+    UpdateUserImage(variables: UpdateUserImageMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateUserImageMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateUserImageMutation>(UpdateUserImageDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateUserImage', 'mutation');
+    },
+    UpdateUserInfo(variables?: UpdateUserInfoMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateUserInfoMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateUserInfoMutation>(UpdateUserInfoDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateUserInfo', 'mutation');
+    },
     FetchBookWithLogs(variables: FetchBookWithLogsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FetchBookWithLogsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<FetchBookWithLogsQuery>(FetchBookWithLogsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'FetchBookWithLogs', 'query');
     },
@@ -595,6 +657,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     FetchEditBookLogInfo(variables: FetchEditBookLogInfoQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FetchEditBookLogInfoQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<FetchEditBookLogInfoQuery>(FetchEditBookLogInfoDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'FetchEditBookLogInfo', 'query');
+    },
+    FetchProfile(variables: FetchProfileQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FetchProfileQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<FetchProfileQuery>(FetchProfileDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'FetchProfile', 'query');
     },
     FetchUser(variables: FetchUserQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FetchUserQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<FetchUserQuery>(FetchUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'FetchUser', 'query');
@@ -656,6 +721,9 @@ export function getSdkWithHooks(client: GraphQLClient, withWrapper: SdkFunctionW
     },
     useFetchEditBookLogInfo(key: SWRKeyInterface, variables: FetchEditBookLogInfoQueryVariables, config?: SWRConfigInterface<FetchEditBookLogInfoQuery, ClientError>) {
       return useSWR<FetchEditBookLogInfoQuery, ClientError>(key, () => sdk.FetchEditBookLogInfo(variables), config);
+    },
+    useFetchProfile(key: SWRKeyInterface, variables: FetchProfileQueryVariables, config?: SWRConfigInterface<FetchProfileQuery, ClientError>) {
+      return useSWR<FetchProfileQuery, ClientError>(key, () => sdk.FetchProfile(variables), config);
     },
     useFetchUser(key: SWRKeyInterface, variables: FetchUserQueryVariables, config?: SWRConfigInterface<FetchUserQuery, ClientError>) {
       return useSWR<FetchUserQuery, ClientError>(key, () => sdk.FetchUser(variables), config);

@@ -1,4 +1,4 @@
-import { gql } from "graphql-request";
+import { gql } from 'graphql-request';
 
 export const fetchUser = gql`
   query FetchUser($userId: String!) {
@@ -6,6 +6,7 @@ export const fetchUser = gql`
       id
       name
       image
+      profile
       bookshelfs {
         id
         book {

@@ -76,7 +76,7 @@ export const book = objectType({
 export const BooksEdge = objectType({
   name: 'BooksEdge',
   definition: (t) => {
-    t.nullable.string('endCursor');
+    t.nullable.boolean('hasNextPage');
     t.list.field('books', {
       type: Book.$name,
     });

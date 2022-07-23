@@ -1,5 +1,15 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"],
+  "include": [
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "server/**/*.js",
+    "server/**/*.jsx",
+    "server/**/*.ts",
+    "server/**/*.tsx",
+    "prisma/**/*.ts"
+  ],
   "exclude": ["node_modules"]
 }

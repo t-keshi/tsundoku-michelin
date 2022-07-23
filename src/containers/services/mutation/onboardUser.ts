@@ -1,8 +1,8 @@
-import { gql } from "graphql-request";
+import { gql } from 'graphql-request';
 
 export const onboardUser = gql`
-  mutation OnboardUser($userId: String!, $name: String!, $image: String) {
-    onboardUser(userId: $userId, name: $name, image: $image) {
+  mutation OnboardUser($name: String!, $image: String) {
+    updateUser(name: $name, image: $image) {
       id
     }
   }

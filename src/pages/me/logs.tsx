@@ -1,12 +1,11 @@
 import React, { Suspense } from 'react';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
 import { Layout } from '../../components/layout/Layout';
 import { NextPageWithLayout } from '../../type';
 import { LogsTemplate } from '../../templates/logs';
 import { Loader } from '../../components/ui';
 import { useLogs } from '../../containers/presenters/useLogs';
+import { useProtectedRoute } from '../../helpers/hooks/useProtectedRoute';
 
 type PageProps = {
   uid: string;
@@ -16,7 +15,7 @@ const Logs: React.FC<PageProps> = ({ uid }) => {
   const { data, onRemoveBookLog } = useLogs(uid);
 
   if (!data) {
-    throw new Error('');
+    throw new Error('suspense boundary throw error unexpectedly');
   }
 
   return (
@@ -30,14 +29,7 @@ const Logs: React.FC<PageProps> = ({ uid }) => {
 };
 
 const LogsPage: NextPageWithLayout = () => {
-  const router = useRouter();
-  const { data: session, status } = useSession();
-
-  if (status === 'unauthenticated') {
-    if (router.isReady) {
-      router.push('/');
-    }
-  }
+  const session = useProtectedRoute();
 
   if (!session) {
     return null;

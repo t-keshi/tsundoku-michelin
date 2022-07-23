@@ -1,52 +1,18 @@
-import { GetStaticProps } from 'next';
-import Head from 'next/head';
-import { SWRConfig } from 'swr';
-import { FetchBooksQuery } from '../../generated/types';
+import { useRouter } from 'next/router';
 import { Layout } from '../components/layout/Layout';
-import { fetchBooks } from '../containers/services/query/fetchBooks';
-import { sdk, sdkHooks } from '../containers/services/sdk';
-import { HomeTemplate } from '../templates';
 import { NextPageWithLayout } from '../type';
 
-type PageProps = {
-  fallback: { [key: typeof fetchBooks]: FetchBooksQuery };
-};
+const HomePage: NextPageWithLayout = () => {
+  const router = useRouter();
 
-export const getStaticProps: GetStaticProps<PageProps> = async () => {
-  const res = await sdk.FetchBooks();
-
-  return {
-    props: {
-      fallback: {
-        [fetchBooks]: res,
-      },
-      revalidate: 3600,
-    },
-  };
-};
-
-const Home: React.FC = () => {
-  const { data } = sdkHooks.useFetchBooks(fetchBooks);
-
-  if (!data) {
-    throw new Error('');
+  if (!router.isReady) {
+    return null;
   }
 
-  return (
-    <>
-      <Head>
-        <title>積読ミシュラン</title>
-      </Head>
-      <HomeTemplate books={data.books} />
-    </>
-  );
-};
+  router.push('/books-list/1');
 
-const HomePage: NextPageWithLayout<PageProps> = ({ fallback }) => (
-  <SWRConfig value={{ fallback }}>
-    <Home />
-  </SWRConfig>
-);
+  return null;
+};
 
 HomePage.getLayout = (page: React.ReactElement) => <Layout>{page}</Layout>;
 

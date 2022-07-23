@@ -15,12 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "jest.setup.js",
-    "src/next.auth.dts"
-  ],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "jest.setup.js", "src/next.auth.dts"],
   "exclude": ["node_modules"]
 }

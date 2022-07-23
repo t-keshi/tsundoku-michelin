@@ -2,14 +2,10 @@ import React from 'react';
 import Head from 'next/head';
 import { SWRConfig } from 'swr';
 import { GetServerSideProps } from 'next';
-import { useSession } from 'next-auth/react';
-import { Session } from 'next-auth';
 import { Layout } from '../../components/layout/Layout';
 import { NextPageWithLayout } from '../../type';
-import { fetchUserBookLogs } from '../../containers/services/query/fetchUserBookLogs';
 import { FetchBookshelfBooksQuery } from '../../../generated/types';
-import { sdk, sdkHooks } from '../../containers/services/sdk';
-import { Typography } from '../../components/ui';
+import { sdk } from '../../containers/services/sdk';
 import { UserTemplate } from '../../templates/user';
 import { fetchBookshelfBooks } from '../../containers/services/query/fetchBookshelfBooks';
 import { useUser } from '../../containers/presenters/useUser';
@@ -34,7 +30,11 @@ export const getServerSideProps: GetServerSideProps<PageProps, { userId: string 
 };
 
 const Users: React.FC = () => {
-  useUser();
+  const { data } = useUser();
+
+  if (!data) {
+    throw new Error('suspense boundary throw error unexpectedly');
+  }
 
   return (
     <>

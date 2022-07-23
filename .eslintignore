@@ -2,3 +2,4 @@ jest.config.js
 jest.setup.js
 .eslintrc.js
 generated/
+prisma/index.ts

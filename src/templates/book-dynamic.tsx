@@ -1,13 +1,17 @@
 import React, { useCallback, useState } from 'react';
 import { MdOutlineBookmarkAdd, MdTaskAlt } from 'react-icons/md';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import { Button } from '../components/ui';
-import { useBookshelfs } from '../containers/presenters/useBookshelfs';
+import { useBookDynamic } from '../containers/presenters/useBookDynamic';
+import { LinkWithAuth } from '../components/organisms/LinkWithAuth';
 
 export const BookDynamic: React.FC = () => {
   const { data: session } = useSession();
+  const router = useRouter();
+  const bookId = router.isReady ? (router.query as { bookId: string }).bookId : '';
+  const { data, onAddBookshelf, onRemoveBookshelf } = useBookDynamic();
 
-  const { data, onAddBookshelf, onRemoveBookshelf } = useBookshelfs();
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const { bookshelfs } = data!;
 
@@ -36,8 +40,11 @@ export const BookDynamic: React.FC = () => {
   }, [isClickable, onRemoveBookshelf]);
 
   return (
-    <div suppressHydrationWarning>
-      {typeof window !== 'undefined' && isMyBookshelf && (
+    <>
+      <LinkWithAuth href={`/edit/${bookId}`}>
+        <Button startIcon={<>✍️</>}>読書ログを投稿</Button>
+      </LinkWithAuth>
+      {isMyBookshelf && (
         <Button
           variant="outlined"
           color="secondary"
@@ -50,7 +57,7 @@ export const BookDynamic: React.FC = () => {
           MY本棚に追加済み
         </Button>
       )}
-      {typeof window !== 'undefined' && !isMyBookshelf && (
+      {!isMyBookshelf && (
         <Button
           variant="outlined"
           style={{
@@ -62,6 +69,6 @@ export const BookDynamic: React.FC = () => {
           MY本棚に追加
         </Button>
       )}
-    </div>
+    </>
   );
 };

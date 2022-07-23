@@ -9,22 +9,22 @@ export const booksQuery = extendType({
       type: Book.$name,
       args: {
         keyword: nullable(stringArg()),
-        cursor: nullable(stringArg()),
         limit: nullable(intArg()),
+        offset: nullable(intArg()),
       },
       resolve: async (
         _,
-        args: { keyword?: string; cursor?: string; limit?: number },
+        args: { keyword?: string; offset?: number; limit?: number },
         ctx: {
           prisma: PrismaClient;
         },
       ) => {
         const res = await ctx.prisma.book.findMany({
-          ...(args.limit && { take: args.limit }),
-          ...(args.cursor && { cursor: { id: args.cursor }, skip: 1 }),
           ...(args.keyword && { where: { title: { contains: args.keyword } } }),
+          ...(args.offset && { skip: args.offset }),
+          ...(args.limit && { take: args.limit }),
           orderBy: {
-            bookshelfCount: 'asc',
+            bookshelfCount: 'desc',
           },
         });
         console.log('##############', res, '##############');

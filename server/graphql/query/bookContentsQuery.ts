@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { Session } from 'next-auth';
 import { extendType, stringArg } from 'nexus';
 import { BookContent } from 'nexus-prisma';
@@ -15,15 +15,10 @@ export const bookContentsQuery = extendType({
         ctx: {
           session: Session | null;
           prisma: PrismaClient;
-          select: Pick<
-            Prisma.SelectSubset<Prisma.BookLogFindManyArgs, Prisma.BookLogFindManyArgs>,
-            'select'
-          >;
         },
       ) => {
         const res = await ctx.prisma.bookContent.findMany({
           where: { bookId: args.bookId },
-          ...ctx.select,
         });
         console.log('##############', res, '##############');
 

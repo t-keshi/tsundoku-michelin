@@ -60,7 +60,7 @@ type BookLog {
 
 type BooksEdge {
   books: [Book!]!
-  endCursor: String
+  hasNextPage: Boolean
 }
 
 type Bookshelf {
@@ -97,6 +97,7 @@ type Mutation {
   removeBookshelf(bookId: String!): Bookshelf!
   resetUser: User!
   updateBookLog(bookLogId: String!, log: String!): BookLog!
+  updateUser(image: String, name: String, onboarding: String, profile: String): User!
 }
 
 type Query {
@@ -104,8 +105,8 @@ type Query {
   bookContents(bookId: String!): [BookContent!]!
   bookLog(bookId: String!, userId: String!): BookLog
   bookLogs(userId: String!): [BookLog!]!
-  books(cursor: String, keyword: String, limit: Int): [Book!]!
-  booksEdge(cursor: String, keyword: String, limit: Int): BooksEdge!
+  books(keyword: String, limit: Int, offset: Int): [Book!]!
+  booksEdge(keyword: String, limit: Int, offset: Int): BooksEdge!
   bookshelfs(bookId: String, userId: String): [Bookshelf!]!
   user(userId: String!): User!
 }

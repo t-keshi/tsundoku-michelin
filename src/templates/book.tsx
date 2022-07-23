@@ -10,16 +10,18 @@ import {
   Button,
   Card,
   Flex,
+  Loader,
   Paper,
   Stack,
   Typography,
 } from '../components/ui';
 import { MarkdownRenderer } from '../components/organisms/MarkdownRenderer';
 import { LinkWithAuth } from '../components/organisms/LinkWithAuth';
+import { minHeight32 } from '../components/system/style/style.css';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 const BookDynamic = dynamic<{}>(
-  () => import('./bookDynamic').then((modules) => modules.BookDynamic),
+  () => import('./book-dynamic').then((modules) => modules.BookDynamic),
   {
     ssr: false,
   },
@@ -51,11 +53,8 @@ export const BookTemplate: React.FC<Props> = ({ bookWithLogs }) => (
               <Typography variant="overline" display="block" sx={{ textAlign: 'center' }}>
                 あなたの積読を、みんなの資産に。
               </Typography>
-              <Flex sx={{ columnGap: 2 }}>
-                <LinkWithAuth href={`/edit/${bookWithLogs.id}`}>
-                  <Button startIcon={<>✍️</>}>読書ログを投稿</Button>
-                </LinkWithAuth>
-                <Suspense>
+              <Flex className={minHeight32} sx={{ columnGap: 2 }}>
+                <Suspense fallback={<Typography variant="overline">loading...</Typography>}>
                   <BookDynamic />
                 </Suspense>
               </Flex>
@@ -67,7 +66,7 @@ export const BookTemplate: React.FC<Props> = ({ bookWithLogs }) => (
           {bookWithLogs.bookLogs.map((log, index) => (
             <Paper key={log.id} sx={{ p: 3, width: '100%' }}>
               <Flex sx={{ alignItems: 'center', columnGap: 1 }}>
-                <Avatar src="/brand-icon.png" />
+                <Avatar size="sm" src={log.user.image || '/brand-icon.png'} />
                 <Typography variant="body2" color="primary">
                   {log.user.name}
                 </Typography>

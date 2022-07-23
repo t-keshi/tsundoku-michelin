@@ -21,3 +21,4 @@ export * from './mutation/removeBookLogMutation';
 export * from './mutation/removeBookshelfMutation';
 export * from './mutation/resetUsernameMutation';
 export * from './mutation/updateBookLogMutation';
+export * from './mutation/updateUserMutation';

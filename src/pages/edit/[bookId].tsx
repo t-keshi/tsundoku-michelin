@@ -1,22 +1,23 @@
 import React, { Suspense } from 'react';
 import Head from 'next/head';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { EditTemplate } from '../../templates/edit';
 import { useEdit } from '../../containers/presenters/useEdit';
 import { Box } from '../../components/ui';
 import { NextPageWithLayout } from '../../type';
 import { Loader } from '../../components/ui/Loader/Loader';
+import { useProtectedRoute } from '../../helpers/hooks/useProtectedRoute';
 
 type PageProps = {
   uid: string;
+  bookId: string;
 };
 
-const Edit: React.FC<PageProps> = ({ uid }) => {
-  const { data, onSubmit } = useEdit(uid);
+const Edit: React.FC<PageProps> = ({ uid, bookId }) => {
+  const { data, onSubmit } = useEdit(uid, bookId);
 
   if (!data) {
-    return null;
+    throw new Error('suspense boundary throw error unexpectedly');
   }
 
   return (
@@ -35,22 +36,17 @@ const Edit: React.FC<PageProps> = ({ uid }) => {
 };
 
 const EditPage: NextPageWithLayout<PageProps> = () => {
+  const session = useProtectedRoute();
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const bookId = router.isReady ? (router.query as { bookId: string }).bookId : undefined;
 
-  if (status === 'unauthenticated') {
-    if (router.isReady) {
-      router.push('/');
-    }
-  }
-
-  if (!session) {
+  if (!session || !bookId) {
     return null;
   }
 
   return (
     <Suspense fallback={<Loader page />}>
-      <Edit uid={session.user.uid} />
+      <Edit uid={session.user.uid} bookId={bookId} />
     </Suspense>
   );
 };

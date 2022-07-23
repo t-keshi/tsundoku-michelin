@@ -12,9 +12,5 @@ export const useUser = () => {
     { suspense: true },
   );
 
-  if (!data) {
-    throw new Error('suspense boundary throw error unexpectedly');
-  }
-
-  return data;
+  return { data };
 };

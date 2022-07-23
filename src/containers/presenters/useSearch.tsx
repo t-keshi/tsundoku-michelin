@@ -12,12 +12,16 @@ export const useSearch = () => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       keyword: defferedKeyword!,
     },
-    { suspense: true },
+    { suspense: true, fallbackData: { books: [] } },
   );
 
   const handleSearch = useCallback((newKeyword: string) => {
     setKeyword(newKeyword);
   }, []);
+
+  if (!data) {
+    throw new Error('suspense boundary throw error unexpectedly');
+  }
 
   return {
     data,

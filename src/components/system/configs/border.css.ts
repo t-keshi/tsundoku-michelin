@@ -100,5 +100,6 @@ export const border = defineProperties({
     wordBreak: ['break-all'],
     wordWrap: ['break-word'],
     whiteSpace: ['pre-wrap'],
+    visibility: ['hidden'],
   },
 });

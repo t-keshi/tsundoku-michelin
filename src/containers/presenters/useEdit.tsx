@@ -3,22 +3,19 @@ import { sdk, sdkHooks } from '../services/sdk';
 import { useMutation } from '../../helpers/hooks/useMutation';
 import { fetchEditBookLogInfo } from '../services/query/fetchEditBookLogInfo';
 
-export const useEdit = (uid: string) => {
+export const useEdit = (uid: string, bookId: string) => {
   const router = useRouter();
-  const query = router.query as { bookId: string };
-
-  const { bookId } = query;
   const { data, error, mutate } = sdkHooks.useFetchEditBookLogInfo(
-    !router.isReady ? null : [fetchEditBookLogInfo, uid, bookId],
+    [fetchEditBookLogInfo, uid, bookId],
     {
       userId: uid,
-      bookId: query.bookId,
+      bookId,
     },
-    { suspense: false, revalidateOnMount: true },
+    { suspense: true },
   );
 
   const { mutate: createBookLog } = useMutation(
-    (log: string) => sdk.CreateBookLog({ bookId: query.bookId, log }),
+    (log: string) => sdk.CreateBookLog({ bookId, log }),
     {
       successMessage: '読書ログを投稿しました',
       onSuccess: () => {

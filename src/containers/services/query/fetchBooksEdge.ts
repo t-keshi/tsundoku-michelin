@@ -1,9 +1,9 @@
 import { gql } from 'graphql-request';
 
-export const fetchBooks = gql`
-  query FetchBooksEdge($cursor: String) {
-    booksEdge(cursor: $cursor, limit: 50) {
-      endCursor
+export const fetchBooksEdge = gql`
+  query FetchBooksEdge($offset: Int) {
+    booksEdge(offset: $offset, limit: 50) {
+      hasNextPage
       books {
         id
         title

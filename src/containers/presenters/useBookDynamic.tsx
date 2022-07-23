@@ -4,7 +4,7 @@ import { sdk, sdkHooks } from '../services/sdk';
 import { useMutation } from '../../helpers/hooks/useMutation';
 import { fetchBookshelfs } from '../services/query/fetchBookshelfs';
 
-export const useBookshelfs = () => {
+export const useBookDynamic = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const query = router.query as { bookId: string };

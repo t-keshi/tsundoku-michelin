@@ -43,7 +43,7 @@ const schema: SchemaOf<FormValues> = yup.object().shape({
     .string()
     .required()
     .min(2)
-    .max(30)
+    .max(15)
     .matches(/^[a-zA-Z0-9-_]+$/, '半角英数字または_, -で入力してください'),
 });
 
@@ -56,14 +56,15 @@ export const OnboardTemplate: React.FC<Props> = ({ user, onSubmit }) => {
     resolver: yupResolver(schema),
     defaultValues: { name: '', image: '' },
   });
+
   const { image, imageDataUrl, onUpload } = useImageUpload();
 
-  const handleClickSubmti = handleSubmit(({ name }) => {
+  const handleClickSubmit = handleSubmit(({ name }) => {
     onSubmit({ userId: user.id, name, ...(image && { image }) });
   });
 
   return (
-    <Form onSubmit={handleClickSubmti}>
+    <Form onSubmit={handleClickSubmit}>
       <Paper sx={{ p: 3, width: 300 }}>
         <input hidden type="file" onChange={onUpload} />
         <Typography variant="h3" sx={{ textAlign: 'center' }}>
@@ -74,8 +75,9 @@ export const OnboardTemplate: React.FC<Props> = ({ user, onSubmit }) => {
             <Avatar size="lg" src={imageDataUrl || user?.image || '/brand-icon.png'} priority />
           </IconButton>
         </Flex>
-        <Label>表示名(半角英数字または_, -)</Label>
+        <Label htmlFor="name">表示名(半角英数字または_, -)</Label>
         <TextField
+          id="name"
           variant="outlined"
           sx={{ width: '100%' }}
           {...register('name')}

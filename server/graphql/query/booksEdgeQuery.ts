@@ -8,18 +8,18 @@ export const booksEdgeQuery = extendType({
       type: 'BooksEdge',
       args: {
         keyword: nullable(stringArg()),
-        cursor: nullable(stringArg()),
+        offset: nullable(intArg()),
         limit: nullable(intArg()),
       },
       resolve: async (
         _,
-        args: { keyword?: string; cursor?: string; limit?: number },
+        args: { keyword?: string; offset?: number; limit?: number },
         ctx: { prisma: PrismaClient },
       ) => {
         const res = await ctx.prisma.book.findMany({
-          ...(args.limit && { take: args.limit }),
-          ...(args.cursor && { cursor: { id: args.cursor }, skip: 1 }),
           ...(args.keyword && { where: { title: { contains: args.keyword } } }),
+          ...(args.offset && { skip: args.offset }),
+          ...(args.limit && { take: args.limit + 1 }),
           orderBy: {
             bookshelfCount: 'desc',
           },
@@ -27,8 +27,8 @@ export const booksEdgeQuery = extendType({
         console.log('##############', res, '##############');
 
         return {
-          endCursor: res.length > 0 ? res[res.length - 1].id : null,
-          books: res,
+          hasNextPage: args.limit ? res.length === args.limit + 1 : null,
+          books: args.limit ? res.slice(0, args.limit) : res,
         };
       },
     });

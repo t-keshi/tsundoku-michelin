@@ -16,12 +16,12 @@ export const avatar = recipe({
   variants: {
     size: {
       sm: {
-        width: 40,
-        height: 40,
+        width: 32,
+        height: 32,
       },
       md: {
-        width: 48,
-        height: 48,
+        width: 40,
+        height: 40,
       },
       lg: {
         width: 120,

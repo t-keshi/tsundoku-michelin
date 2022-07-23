@@ -1,18 +1,51 @@
-import React from "react";
-import Head from "next/head";
-import { Layout } from "../../components/layout/Layout";
-import { NextPageWithLayout } from "../../type";
-import { ProfileTemplate } from "../../templates/profile";
+import React, { Suspense } from 'react';
+import Head from 'next/head';
+import { Layout } from '../../components/layout/Layout';
+import { NextPageWithLayout } from '../../type';
+import { ProfileTemplate } from '../../templates/profile';
+import { Loader } from '../../components/ui';
+import { useProfile } from '../../containers/presenters/useProfile';
+import { useProtectedRoute } from '../../helpers/hooks/useProtectedRoute';
 
-const Profile: NextPageWithLayout = () => (
+type PageProps = {
+  uid: string;
+};
+
+const Profile: React.FC<PageProps> = ({ uid }) => {
+  const { data, onUpdateUserImage, onUpdateUserInfo } = useProfile(uid);
+
+  if (!data) {
+    throw new Error('suspense boundary throw error unexpectedly');
+  }
+
+  return (
     <>
       <Head>
-        <title>積読ミシュラン | Profile</title>
+        <title>積読ミシュラン | Bookshelf</title>
       </Head>
-      <ProfileTemplate />
+      <ProfileTemplate
+        user={data.user}
+        onUpdateUserImage={onUpdateUserImage}
+        onUpdateUserInfo={onUpdateUserInfo}
+      />
     </>
   );
+};
 
-Profile.getLayout = (page: React.ReactElement) => <Layout>{page}</Layout>;
+const ProfilePage: NextPageWithLayout = () => {
+  const session = useProtectedRoute();
 
-export default Profile;
+  if (!session) {
+    return null;
+  }
+
+  return (
+    <Suspense fallback={<Loader page />}>
+      <Profile uid={session.user.uid} />
+    </Suspense>
+  );
+};
+
+ProfilePage.getLayout = (page: React.ReactElement) => <Layout>{page}</Layout>;
+
+export default ProfilePage;

@@ -14,6 +14,7 @@ export const fetchBookWithLogs = gql`
         user {
           id
           name
+          image
         }
       }
     }
