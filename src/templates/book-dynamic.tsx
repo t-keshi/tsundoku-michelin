@@ -8,14 +8,15 @@ import { LinkWithAuth } from '../components/organisms/LinkWithAuth';
 
 export const BookDynamic: React.FC = () => {
   const { data: session } = useSession();
+  const uid = session?.user.uid;
+
   const router = useRouter();
-  const bookId = router.isReady ? (router.query as { bookId: string }).bookId : '';
-  const { data, onAddBookshelf, onRemoveBookshelf } = useBookDynamic();
+  const bookId = router.isReady ? (router.query as { bookId: string }).bookId : undefined;
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const { bookshelfs } = data!;
+  const { data, onAddBookshelf, onRemoveBookshelf } = useBookDynamic(uid, bookId);
 
-  const isMyBookshelf = bookshelfs.find((bookshelf) => bookshelf.user.id === session?.user.uid);
+  const hasBookLog = Boolean(data?.bookshelf?.id);
+  const inBookshelf = Boolean(data?.bookLog?.id);
 
   const [isClickable, setIsClickable] = useState(true);
 
@@ -42,9 +43,9 @@ export const BookDynamic: React.FC = () => {
   return (
     <>
       <LinkWithAuth href={`/edit/${bookId}`}>
-        <Button startIcon={<>✍️</>}>読書ログを投稿</Button>
+        <Button startIcon={<>✍️</>}>読書ログを{hasBookLog ? '更新' : '投稿'}</Button>
       </LinkWithAuth>
-      {isMyBookshelf && (
+      {inBookshelf ? (
         <Button
           variant="outlined"
           color="secondary"
@@ -56,8 +57,7 @@ export const BookDynamic: React.FC = () => {
         >
           MY本棚に追加済み
         </Button>
-      )}
-      {!isMyBookshelf && (
+      ) : (
         <Button
           variant="outlined"
           style={{

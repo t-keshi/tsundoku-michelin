@@ -12,6 +12,7 @@ export * from './query/bookLogsQuery';
 export * from './query/bookQuery';
 export * from './query/booksQuery';
 export * from './query/booksEdgeQuery';
+export * from './query/bookshelfQuery';
 export * from './query/bookshelfsQuery';
 export * from './query/userQuery';
 export * from './mutation/addBookshelfMutation';

@@ -156,6 +156,7 @@ export type Query = {
   bookLogs: Array<BookLog>;
   books: Array<Book>;
   booksEdge: BooksEdge;
+  bookshelf?: Maybe<Bookshelf>;
   bookshelfs: Array<Bookshelf>;
   user: User;
 };
@@ -172,8 +173,8 @@ export type QueryBookContentsArgs = {
 
 
 export type QueryBookLogArgs = {
-  bookId: Scalars['String'];
-  userId: Scalars['String'];
+  bookId?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -193,6 +194,12 @@ export type QueryBooksEdgeArgs = {
   keyword?: InputMaybe<Scalars['String']>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryBookshelfArgs = {
+  bookId?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -331,10 +338,11 @@ export type FetchBookshelfBooksQuery = { __typename?: 'Query', bookshelfs: Array
 
 export type FetchBookshelfsQueryVariables = Exact<{
   bookId: Scalars['String'];
+  userId: Scalars['String'];
 }>;
 
 
-export type FetchBookshelfsQuery = { __typename?: 'Query', bookshelfs: Array<{ __typename?: 'Bookshelf', user: { __typename?: 'User', id: string } }> };
+export type FetchBookshelfsQuery = { __typename?: 'Query', bookshelf?: { __typename?: 'Bookshelf', id: string } | null, bookLog?: { __typename?: 'BookLog', id: string } | null };
 
 export type FetchEditBookLogInfoQueryVariables = Exact<{
   bookId: Scalars['String'];
@@ -511,11 +519,12 @@ export const FetchBookshelfBooksDocument = gql`
 }
     `;
 export const FetchBookshelfsDocument = gql`
-    query FetchBookshelfs($bookId: String!) {
-  bookshelfs(bookId: $bookId) {
-    user {
-      id
-    }
+    query FetchBookshelfs($bookId: String!, $userId: String!) {
+  bookshelf(bookId: $bookId, userId: $userId) {
+    id
+  }
+  bookLog(bookId: $bookId, userId: $userId) {
+    id
   }
 }
     `;

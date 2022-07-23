@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { extendType, nullable, stringArg } from 'nexus';
 import { Bookshelf } from 'nexus-prisma';
 
-export const bookshelfQuery = extendType({
+export const bookshelfsQuery = extendType({
   type: 'Query',
   definition: (t) => {
     t.list.field('bookshelfs', {

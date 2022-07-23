@@ -3,20 +3,8 @@ import { ja } from 'date-fns/locale';
 import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 import { FetchBookWithLogsQuery } from '../../generated/types';
-import {
-  Accordion,
-  Avatar,
-  Box,
-  Button,
-  Card,
-  Flex,
-  Loader,
-  Paper,
-  Stack,
-  Typography,
-} from '../components/ui';
+import { Accordion, Avatar, Box, Card, Flex, Paper, Stack, Typography } from '../components/ui';
 import { MarkdownRenderer } from '../components/organisms/MarkdownRenderer';
-import { LinkWithAuth } from '../components/organisms/LinkWithAuth';
 import { minHeight32 } from '../components/system/style/style.css';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -54,7 +42,13 @@ export const BookTemplate: React.FC<Props> = ({ bookWithLogs }) => (
                 あなたの積読を、みんなの資産に。
               </Typography>
               <Flex className={minHeight32} sx={{ columnGap: 2 }}>
-                <Suspense fallback={<Typography variant="overline">loading...</Typography>}>
+                <Suspense
+                  fallback={
+                    <Typography variant="overline" color="secondary">
+                      loading...
+                    </Typography>
+                  }
+                >
                   <BookDynamic />
                 </Suspense>
               </Flex>

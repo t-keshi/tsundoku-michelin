@@ -103,10 +103,11 @@ type Mutation {
 type Query {
   book(bookId: String!): Book!
   bookContents(bookId: String!): [BookContent!]!
-  bookLog(bookId: String!, userId: String!): BookLog
+  bookLog(bookId: String, userId: String): BookLog
   bookLogs(userId: String!): [BookLog!]!
   books(keyword: String, limit: Int, offset: Int): [Book!]!
   booksEdge(keyword: String, limit: Int, offset: Int): BooksEdge!
+  bookshelf(bookId: String, userId: String): Bookshelf
   bookshelfs(bookId: String, userId: String): [Bookshelf!]!
   user(userId: String!): User!
 }
