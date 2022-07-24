@@ -16,7 +16,13 @@ type PageProps = {
   fallback: { [key: string]: FetchBooksEdgeQuery };
 };
 
-export const getStaticPaths: GetStaticPaths = async () => ({ paths: [], fallback: 'blocking' });
+export const getStaticPaths = async () => {
+  const res = await sdk.FetchBooksCount();
+  const totalPage = Math.floor(res.booksCount.count / 50);
+  const paths = [...Array(totalPage)].map((page) => ({ prams: { page } }));
+
+  return { paths, fallback: 'blocking' };
+};
 
 export const getStaticProps: GetStaticProps<PageProps, { page: string }> = async (context) => {
   const page = parseInt(context.params?.page ?? '0', 10);

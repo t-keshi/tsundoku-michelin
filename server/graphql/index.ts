@@ -15,6 +15,7 @@ export * from './query/booksEdgeQuery';
 export * from './query/bookshelfQuery';
 export * from './query/bookshelfsQuery';
 export * from './query/userQuery';
+export * from './query/booksCountQuery';
 export * from './mutation/addBookshelfMutation';
 export * from './mutation/createBookLogMutation';
 export * from './mutation/onboardUserMutation';

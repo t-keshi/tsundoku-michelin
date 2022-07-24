@@ -77,6 +77,11 @@ export type BookLog = {
   userId: Scalars['String'];
 };
 
+export type BooksCount = {
+  __typename?: 'BooksCount';
+  count: Scalars['Int'];
+};
+
 export type BooksEdge = {
   __typename?: 'BooksEdge';
   books: Array<Book>;
@@ -155,6 +160,7 @@ export type Query = {
   bookLog?: Maybe<BookLog>;
   bookLogs: Array<BookLog>;
   books: Array<Book>;
+  booksCount: BooksCount;
   booksEdge: BooksEdge;
   bookshelf?: Maybe<Bookshelf>;
   bookshelfs: Array<Bookshelf>;
@@ -322,6 +328,11 @@ export type FetchBooksQueryVariables = Exact<{
 
 export type FetchBooksQuery = { __typename?: 'Query', books: Array<{ __typename?: 'Book', id: string, title: string, image: string, url: string, bookLogCount: number, bookshelfCount: number, createdAt: any, updatedAt: any }> };
 
+export type FetchBooksCountQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type FetchBooksCountQuery = { __typename?: 'Query', booksCount: { __typename?: 'BooksCount', count: number } };
+
 export type FetchBooksEdgeQueryVariables = Exact<{
   offset?: InputMaybe<Scalars['Int']>;
 }>;
@@ -483,6 +494,13 @@ export const FetchBooksDocument = gql`
     bookshelfCount
     createdAt
     updatedAt
+  }
+}
+    `;
+export const FetchBooksCountDocument = gql`
+    query FetchBooksCount {
+  booksCount {
+    count
   }
 }
     `;
@@ -655,6 +673,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     FetchBooks(variables?: FetchBooksQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FetchBooksQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<FetchBooksQuery>(FetchBooksDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'FetchBooks', 'query');
     },
+    FetchBooksCount(variables?: FetchBooksCountQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FetchBooksCountQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<FetchBooksCountQuery>(FetchBooksCountDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'FetchBooksCount', 'query');
+    },
     FetchBooksEdge(variables?: FetchBooksEdgeQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FetchBooksEdgeQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<FetchBooksEdgeQuery>(FetchBooksEdgeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'FetchBooksEdge', 'query');
     },
@@ -712,6 +733,9 @@ export function getSdkWithHooks(client: GraphQLClient, withWrapper: SdkFunctionW
     },
     useFetchBooks(key: SWRKeyInterface, variables?: FetchBooksQueryVariables, config?: SWRConfigInterface<FetchBooksQuery, ClientError>) {
       return useSWR<FetchBooksQuery, ClientError>(key, () => sdk.FetchBooks(variables), config);
+    },
+    useFetchBooksCount(key: SWRKeyInterface, variables?: FetchBooksCountQueryVariables, config?: SWRConfigInterface<FetchBooksCountQuery, ClientError>) {
+      return useSWR<FetchBooksCountQuery, ClientError>(key, () => sdk.FetchBooksCount(variables), config);
     },
     useFetchBooksEdge(key: SWRKeyInterface, variables?: FetchBooksEdgeQueryVariables, config?: SWRConfigInterface<FetchBooksEdgeQuery, ClientError>) {
       return useSWR<FetchBooksEdgeQuery, ClientError>(key, () => sdk.FetchBooksEdge(variables), config);

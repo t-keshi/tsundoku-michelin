@@ -1,4 +1,3 @@
-import { PrismaClient } from '@prisma/client';
 import { objectType } from 'nexus';
 import { Book } from 'nexus-prisma';
 
@@ -13,63 +12,9 @@ export const book = objectType({
     t.field(Book.bookshelfCount);
     t.field(Book.createdAt);
     t.field(Book.updatedAt);
-    t.field({
-      ...Book.bookLogs,
-      resolve: async (
-        parent: { id: string },
-        _,
-        ctx: {
-          prisma: PrismaClient;
-        },
-      ) => {
-        const res = await ctx.prisma.book
-          .findUnique({
-            where: { id: parent.id },
-          })
-          .bookLogs({ include: { user: true } });
-        console.log('##############', res, '##############');
-
-        return res;
-      },
-    });
-    t.field({
-      ...Book.bookContents,
-      resolve: async (
-        parent: { id: string },
-        _,
-        ctx: {
-          prisma: PrismaClient;
-        },
-      ) => {
-        const res = await ctx.prisma.book
-          .findUnique({
-            where: { id: parent.id },
-          })
-          .bookContents();
-        console.log('##############', res, '##############');
-
-        return res;
-      },
-    });
-    t.field({
-      ...Book.bookshelfs,
-      resolve: async (
-        parent: { id: string },
-        _,
-        ctx: {
-          prisma: PrismaClient;
-        },
-      ) => {
-        const res = await ctx.prisma.book
-          .findUnique({
-            where: { id: parent.id },
-          })
-          .bookshelfs();
-        console.log('##############', res, '##############');
-
-        return res;
-      },
-    });
+    t.field(Book.bookLogs);
+    t.field(Book.bookContents);
+    t.field(Book.bookshelfs);
   },
 });
 
@@ -80,5 +25,12 @@ export const BooksEdge = objectType({
     t.list.field('books', {
       type: Book.$name,
     });
+  },
+});
+
+export const BooksCount = objectType({
+  name: 'BooksCount',
+  definition: (t) => {
+    t.int('count');
   },
 });

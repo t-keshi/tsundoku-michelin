@@ -58,6 +58,10 @@ type BookLog {
   userId: String!
 }
 
+type BooksCount {
+  count: Int!
+}
+
 type BooksEdge {
   books: [Book!]!
   hasNextPage: Boolean
@@ -106,6 +110,7 @@ type Query {
   bookLog(bookId: String, userId: String): BookLog
   bookLogs(userId: String!): [BookLog!]!
   books(keyword: String, limit: Int, offset: Int): [Book!]!
+  booksCount: BooksCount!
   booksEdge(keyword: String, limit: Int, offset: Int): BooksEdge!
   bookshelf(bookId: String, userId: String): Bookshelf
   bookshelfs(bookId: String, userId: String): [Bookshelf!]!
