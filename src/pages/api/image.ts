@@ -3,6 +3,23 @@ import { Storage, UploadOptions } from '@google-cloud/storage';
 import { v4 as uuid } from 'uuid';
 import formidable from 'formidable';
 import { datadogLogs } from '@datadog/browser-logs';
+import Cors from 'cors';
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+const runMiddleware = (req: NextApiRequest, res: NextApiResponse, fn: Function) =>
+  new Promise((resolve, reject) => {
+    fn(req, res, (result: unknown) => {
+      if (result instanceof Error) {
+        return reject(result);
+      }
+
+      return resolve(result);
+    });
+  });
+
+const cors = Cors({
+  methods: ['POST', 'GET'],
+});
 
 const gcs = new Storage({
   projectId: process.env.GCP_PROJECT_ID,
@@ -13,30 +30,39 @@ const gcs = new Storage({
 });
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const form = new formidable.IncomingForm();
-  try {
-    form.parse(req, async (err: Error, _, files) => {
+  await runMiddleware(req, res, cors);
+
+  const fData = await new Promise<{ image: formidable.File; name: string }>((resolve, reject) => {
+    const form = new formidable.IncomingForm({ multiples: false });
+    form.parse(req, (err: Error, fields, files) => {
       if (err) {
         datadogLogs.logger.error(err.message);
+
+        return reject(err);
       }
 
       const image = files.image as formidable.File;
+      const name = fields.name as string;
 
-      const gcsBucket = gcs.bucket('tsundoku-michelin');
-      const options: UploadOptions = {
-        contentType: image.mimetype || 'image/jpeg',
-        destination: `name/${uuid()}`,
-        gzip: true,
-      };
-      const result = await gcsBucket.upload(image.filepath, options);
-
-      return res.status(200).json({ image: result[1].mediaLink });
+      resolve({ image, name });
     });
-  } catch (err) {
-    datadogLogs.logger.error((err as Error).message);
+  });
 
-    return res.status(400).json((err as Error).message);
-  }
+  const gcsBucket = gcs.bucket('tsundoku-michelin');
+  const options: UploadOptions = {
+    contentType: fData.image.mimetype || 'image/jpeg',
+    destination: `${fData.name}/${uuid()}`,
+    gzip: true,
+  };
+
+  await gcsBucket
+    .upload(fData.image.filepath, options)
+    .then((result) => res.status(200).json({ image: result[1].mediaLink }))
+    .catch((err) => {
+      datadogLogs.logger.error((err as Error).message);
+
+      return res.status(400).json((err as Error).message);
+    });
 };
 
 export const config = {

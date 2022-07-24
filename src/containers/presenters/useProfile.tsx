@@ -10,20 +10,23 @@ export const useProfile = (uid: string) => {
     { suspense: true },
   );
 
-  const { mutate: updateUserImage } = useMutation(async ({ image }: { image: File }) => {
-    const formData = new FormData();
-    formData.append('image', image);
-    const _res = await fetch('/api/image', {
-      method: 'POST',
-      body: formData,
-    })
-      .then((res) => res.json())
-      .catch((err) => datadogLogs.logger.log(err.message));
-    const imgRes: { image: string } = _res;
-    const imageUrl = imgRes.image;
+  const { mutate: updateUserImage } = useMutation(
+    async ({ image, name }: { image: File; name: string }) => {
+      const formData = new FormData();
+      formData.append('image', image);
+      formData.append('name', name);
+      const _res = await fetch('/api/image', {
+        method: 'POST',
+        body: formData,
+      })
+        .then((res) => res.json())
+        .catch((err) => datadogLogs.logger.log(err.message));
+      const imgRes: { image: string } = _res;
+      const imageUrl = imgRes.image;
 
-    return sdk.UpdateUserImage({ image: imageUrl });
-  });
+      return sdk.UpdateUserImage({ image: imageUrl });
+    },
+  );
 
   const { mutate: updateUserInfo } = useMutation(
     async ({ name, profile }: { name: string; profile?: string }) =>

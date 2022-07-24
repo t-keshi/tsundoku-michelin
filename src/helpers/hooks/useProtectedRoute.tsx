@@ -11,10 +11,14 @@ export const useProtectedRoute = () => {
 
   if (status === 'unauthenticated') {
     router.push('/');
+
+    return null;
   }
 
   if (session && !session.user.name) {
     router.push('/auth/onboard');
+
+    return null;
   }
 
   return session;

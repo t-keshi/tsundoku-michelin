@@ -23,7 +23,13 @@ import { yup } from '../helpers/utils/yupExtend';
 
 type Props = {
   user: FetchProfileQuery['user'];
-  onUpdateUserImage: ({ image }: { image: File }) => Promise<UpdateUserImageMutation>;
+  onUpdateUserImage: ({
+    image,
+    name,
+  }: {
+    image: File;
+    name: string;
+  }) => Promise<UpdateUserImageMutation>;
   onUpdateUserInfo: ({
     name,
     profile,
@@ -75,13 +81,13 @@ export const ProfileTemplate: React.FC<Props> = ({ user, onUpdateUserImage, onUp
 
   const handleUpdateImage = useCallback(() => {
     if (image) {
-      onUpdateUserImage({ image });
+      onUpdateUserImage({ image, name: user.name || 'name' });
     }
     onReset();
     if (inputRef.current) {
       inputRef.current.value = '';
     }
-  }, [image, onReset, onUpdateUserImage]);
+  }, [image, onReset, onUpdateUserImage, user.name]);
 
   const handleClickChangeImage = useCallback(() => {
     if (inputRef.current) {
