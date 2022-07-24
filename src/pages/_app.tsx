@@ -17,7 +17,7 @@ type AppPropsWithLayout = AppProps & {
 datadogLogs.init({
   clientToken: process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN || '',
   site: 'datadoghq.com',
-  forwardErrorsToLogs: true,
+  forwardErrorsToLogs: process.env.NEXT_PUBLIC_ENV !== 'local',
   sampleRate: 100,
 });
 

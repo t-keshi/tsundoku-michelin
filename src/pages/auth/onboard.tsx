@@ -15,7 +15,7 @@ const Onboard: React.FC<PageProps> = ({ uid }) => {
   const { data, onRegister } = useOnboard(uid);
 
   if (!data) {
-    throw new Error('getStaticProps return unexpected response');
+    return null;
   }
 
   return (

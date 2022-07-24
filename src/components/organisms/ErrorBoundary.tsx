@@ -3,14 +3,10 @@ import { datadogLogs } from '@datadog/browser-logs';
 import { MdRefresh } from 'react-icons/md';
 import { Avatar, Box, Button, Flex, Typography } from '../ui';
 
-interface FallbackProps {
-  error: Error;
-  resetErrorBoundary: (...args: Array<unknown>) => void;
-}
-
-type FallbackRender = (
-  props: FallbackProps,
-) => React.ReactElement<unknown, string | React.FunctionComponent | typeof React.Component> | null;
+type FallbackRender = () => React.ReactElement<
+  unknown,
+  string | React.FunctionComponent | typeof React.Component
+> | null;
 
 interface ErrorBoundaryProps {
   onResetKeysChange?: (
@@ -81,13 +77,6 @@ export class ErrorBoundary extends React.Component<
     datadogLogs.logger.log(error.message, errorDetails, 'error');
   }
 
-  resetErrorBoundary = (...args: Array<unknown>): void => {
-    const { onReset } = this.props;
-
-    onReset?.(...args);
-    this.reset();
-  };
-
   reset(): void {
     this.updatedWithError = false;
     this.setState(initialState);
@@ -98,19 +87,14 @@ export class ErrorBoundary extends React.Component<
     const { fallbackRender, children } = this.props;
 
     if (error !== null) {
-      const props = {
-        error,
-        resetErrorBoundary: this.resetErrorBoundary,
-      };
-
-      return fallbackRender(props);
+      return fallbackRender();
     }
 
     return children;
   }
 }
 
-export const Fallback: React.FC = () => {
+export const Fallback: FallbackRender = () => {
   const handleRefresh = useCallback(() => {
     window.location.reload();
   }, []);
@@ -139,7 +123,12 @@ export const Fallback: React.FC = () => {
             管理者(quick.resp.biz094@gmaill.com)までお問合せください🙇‍♂️
           </Typography>
           <Box sx={{ mt: 4 }} />
-          <Button variant="contained" color="primary" startIcon={<MdRefresh/>} onClick={handleRefresh}>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<MdRefresh />}
+            onClick={handleRefresh}
+          >
             ページリロード
           </Button>
         </Flex>
@@ -148,6 +137,8 @@ export const Fallback: React.FC = () => {
   );
 };
 
-export const TopErrorBoundary: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <ErrorBoundary fallbackRender={() => <Fallback />}>{children}</ErrorBoundary>
-);
+export const TopErrorBoundary = ({
+  children,
+}: {
+  children: React.ReactNode;
+}): React.ReactElement => <ErrorBoundary fallbackRender={Fallback}>{children}</ErrorBoundary>;

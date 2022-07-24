@@ -1,8 +1,8 @@
 import { fetchBookshelfBooks } from '../services/query/fetchBookshelfBooks';
-import { sdkHooks } from '../services/sdk';
+import { sdk } from '../services/sdk';
 
 export const useBookshelf = (uid: string) => {
-  const { data, error } = sdkHooks.useFetchBookshelfBooks(
+  const { data, error } = sdk.useFetchBookshelfBooks(
     [fetchBookshelfBooks, uid],
     { userId: uid },
     { suspense: true },

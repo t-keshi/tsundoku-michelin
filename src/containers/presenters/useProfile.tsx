@@ -1,9 +1,10 @@
+import { datadogLogs } from '@datadog/browser-logs';
 import { useMutation } from '../../helpers/hooks/useMutation';
 import { fetchProfile } from '../services/query/fetchProfile';
-import { sdk, sdkHooks } from '../services/sdk';
+import { sdk } from '../services/sdk';
 
 export const useProfile = (uid: string) => {
-  const { data, error } = sdkHooks.useFetchProfile(
+  const { data, error } = sdk.useFetchProfile(
     [fetchProfile, uid],
     { userId: uid },
     { suspense: true },
@@ -15,7 +16,9 @@ export const useProfile = (uid: string) => {
     const _res = await fetch('/api/image', {
       method: 'POST',
       body: formData,
-    }).then((res) => res.json());
+    })
+      .then((res) => res.json())
+      .catch((err) => datadogLogs.logger.log(err.message));
     const imgRes: { image: string } = _res;
     const imageUrl = imgRes.image;
 

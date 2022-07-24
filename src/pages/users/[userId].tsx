@@ -35,7 +35,7 @@ const Users: React.FC<{ userId: string }> = ({ userId }) => {
   const { data } = useUser(userId);
 
   if (!data) {
-    throw new Error('suspense boundary throw error unexpectedly');
+    return null;
   }
 
   return (

@@ -1,9 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { SearchBooksQuery } from '../../generated/types';
-import { Box } from '../components/ui/Box/Box';
-import { Card } from '../components/ui/Card/Card';
-import { Grid } from '../components/ui/Grid/Grid';
-import { TextField } from '../components/ui/TextField/TextField';
+import { Box, Card, Grid, TextField } from '../components/ui';
 
 type Props = {
   books: SearchBooksQuery['books'] | undefined;

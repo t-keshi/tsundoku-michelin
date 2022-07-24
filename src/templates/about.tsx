@@ -1,7 +1,5 @@
-import { useEffect, useRef } from "react";
-import { Box } from "../components/ui/Box/Box";
-import { Button } from "../components/ui/Button/Button";
-import { Typography } from "../components/ui/Typography/Typography";
+import { useEffect, useRef } from 'react';
+import { Box, Button, Typography } from '../components/ui';
 
 export const AboutTemplate: React.FC = () => {
   const textFieldRef = useRef<HTMLInputElement>(null);
@@ -28,9 +26,7 @@ export const AboutTemplate: React.FC = () => {
         読みながら、書いて、また読む...そしていつか、すべての積読に、終止符を。
       </Typography>
       <Box sx={{ mt: 6 }} />
-      <Box
-        sx={{ display: { mobile: "none", tablet: "block", desktop: "block" } }}
-      >
+      <Box sx={{ display: { mobile: 'none', tablet: 'block', desktop: 'block' } }}>
         <Typography variant="h1" gutterBottom>
           あなたの積読を、みんなの資産に。
         </Typography>

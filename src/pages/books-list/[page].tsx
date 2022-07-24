@@ -28,7 +28,7 @@ export const getStaticProps: GetStaticProps<PageProps, { page: string }> = async
       fallback: {
         [unstable_serialize([fetchBooksEdge, offset])]: res,
       },
-      revalidate: 3600,
+      revalidate: 60,
     },
   };
 };
@@ -40,7 +40,7 @@ const BooksList: React.FC = () => {
   const { data } = useBooks(page);
 
   if (!data) {
-    throw new Error('getStaticProps return unexpected response');
+    return null;
   }
 
   return (

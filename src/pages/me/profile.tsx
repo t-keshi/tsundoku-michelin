@@ -15,7 +15,7 @@ const Profile: React.FC<PageProps> = ({ uid }) => {
   const { data, onUpdateUserImage, onUpdateUserInfo } = useProfile(uid);
 
   if (!data) {
-    throw new Error('suspense boundary throw error unexpectedly');
+    return null;
   }
 
   return (

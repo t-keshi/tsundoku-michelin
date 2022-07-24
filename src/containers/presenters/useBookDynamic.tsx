@@ -1,9 +1,9 @@
-import { sdk, sdkHooks } from '../services/sdk';
+import { sdk } from '../services/sdk';
 import { useMutation } from '../../helpers/hooks/useMutation';
 import { fetchBookshelfs } from '../services/query/fetchBookshelfs';
 
 export const useBookDynamic = (uid: string | undefined, bookId: string) => {
-  const { data, error, mutate } = sdkHooks.useFetchBookshelfs(
+  const { data, error, mutate } = sdk.useFetchBookshelfs(
     uid ? [fetchBookshelfs, uid, bookId] : null,
     {
       userId: uid || '',

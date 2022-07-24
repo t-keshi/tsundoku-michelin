@@ -17,7 +17,7 @@ const Edit: React.FC<PageProps> = ({ uid, bookId }) => {
   const { data, onSubmit } = useEdit(uid, bookId);
 
   if (!data) {
-    throw new Error('suspense boundary throw error unexpectedly');
+    return null;
   }
 
   return (

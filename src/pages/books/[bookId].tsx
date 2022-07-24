@@ -1,4 +1,4 @@
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import React, { Suspense } from 'react';
 import { SWRConfig, unstable_serialize } from 'swr';
@@ -15,7 +15,12 @@ type PageProps = {
   fallback: { [key: typeof fetchBookWithLogs]: FetchBookWithLogsQuery };
 };
 
-export const getStaticPaths: GetStaticPaths = async () => ({ paths: [], fallback: 'blocking' });
+export const getStaticPaths = async () => {
+  const res = await sdk.FetchBooks();
+  const paths = res.books.map((book) => ({ prams: { id: book.id } }));
+
+  return { paths, fallback: 'blocking' };
+};
 
 export const getStaticProps: GetStaticProps<PageProps, { bookId: string }> = async (context) => {
   const bookId = context.params?.bookId ?? '';
@@ -26,7 +31,7 @@ export const getStaticProps: GetStaticProps<PageProps, { bookId: string }> = asy
       fallback: {
         [unstable_serialize([fetchBookWithLogs, bookId])]: res,
       },
-      revalidate: 3600,
+      revalidate: 60,
     },
   };
 };
@@ -35,7 +40,7 @@ const Book: React.FC = () => {
   const { data } = useBook();
 
   if (!data) {
-    throw new Error('getStaticProps return unexpected response');
+    return null;
   }
 
   return (

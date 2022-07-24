@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { sdk, sdkHooks } from '../services/sdk';
+import { sdk } from '../services/sdk';
 import { fetchUserOnboard } from '../services/query/fetchUserOnboard';
 import { useMutation } from '../../helpers/hooks/useMutation';
 
 export const useOnboard = (uid: string) => {
   const router = useRouter();
-  const { data, error } = sdkHooks.useFetchUserOnboard(
+  const { data, error } = sdk.useFetchUserOnboard(
     [fetchUserOnboard, uid],
     {
       userId: uid,
@@ -54,10 +54,6 @@ export const useOnboard = (uid: string) => {
       router.push('/');
     }
   }, [uid, shouldOnboard, resetUsername, router, alreadOnboared]);
-
-  if (!data) {
-    throw new Error('suspense boundary throw error unexpectedly');
-  }
 
   return {
     data,

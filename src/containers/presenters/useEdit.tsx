@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router';
-import { sdk, sdkHooks } from '../services/sdk';
+import { sdk } from '../services/sdk';
 import { useMutation } from '../../helpers/hooks/useMutation';
 import { fetchEditBookLogInfo } from '../services/query/fetchEditBookLogInfo';
 
 export const useEdit = (uid: string, bookId: string) => {
   const router = useRouter();
-  const { data, error, mutate } = sdkHooks.useFetchEditBookLogInfo(
+  const { data, error, mutate } = sdk.useFetchEditBookLogInfo(
     [fetchEditBookLogInfo, uid, bookId],
     {
       userId: uid,
