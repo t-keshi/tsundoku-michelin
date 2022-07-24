@@ -17,7 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     form.parse(req, async (err: Error, _, files) => {
       if (err) {
-        datadogLogs.logger.log(err.message);
+        datadogLogs.logger.error(err.message);
       }
 
       const image = files.image as formidable.File;
@@ -33,7 +33,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(200).json({ image: result[1].mediaLink });
     });
   } catch (err) {
-    datadogLogs.logger.log((err as Error).message);
+    datadogLogs.logger.error((err as Error).message);
 
     return res.status(400).json((err as Error).message);
   }

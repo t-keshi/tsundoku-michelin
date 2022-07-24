@@ -17,7 +17,7 @@ type PageProps = {
 
 export const getStaticPaths = async () => {
   const res = await sdk.FetchBooks();
-  const paths = res.books.map((book) => ({ prams: { id: book.id } }));
+  const paths = res.books.map((book) => ({ params: { bookId: book.id } }));
 
   return { paths, fallback: 'blocking' };
 };

@@ -1,3 +1,4 @@
+import { datadogLogs } from '@datadog/browser-logs';
 import { PrismaClient } from '@prisma/client';
 import { extendType, nullable, stringArg } from 'nexus';
 import { Bookshelf } from 'nexus-prisma';
@@ -13,16 +14,17 @@ export const bookshelfsQuery = extendType({
         args: { userId?: string; bookId?: string },
         ctx: { prisma: PrismaClient },
       ) => {
-        const res = await ctx.prisma.bookshelf.findMany({
-          where: {
-            ...(args.userId && { userId: args.userId }),
-            ...(args.bookId && { bookId: args.bookId }),
-          },
-          orderBy: {
-            updatedAt: 'desc',
-          },
-        });
-        console.log('##############', res, '##############');
+        const res = await ctx.prisma.bookshelf
+          .findMany({
+            where: {
+              ...(args.userId && { userId: args.userId }),
+              ...(args.bookId && { bookId: args.bookId }),
+            },
+            orderBy: {
+              updatedAt: 'desc',
+            },
+          })
+          .catch((err) => datadogLogs.logger.error(err.message));
 
         return res;
       },

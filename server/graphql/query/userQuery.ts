@@ -1,3 +1,4 @@
+import { datadogLogs } from '@datadog/browser-logs';
 import { PrismaClient } from '@prisma/client';
 import { extendType, stringArg } from 'nexus';
 import { User } from 'nexus-prisma';
@@ -15,10 +16,11 @@ export const userQuery = extendType({
           prisma: PrismaClient;
         },
       ) => {
-        const res = await ctx.prisma.user.findUnique({
-          where: { id: args.userId },
-        });
-        console.log('##############', res, '##############');
+        const res = await ctx.prisma.user
+          .findUnique({
+            where: { id: args.userId },
+          })
+          .catch((err) => datadogLogs.logger.error(err.message));
 
         return res;
       },
