@@ -27,8 +27,8 @@ export const useOnboard = (uid: string) => {
       formData.append('name', name);
       const _res = await fetch('/api/image', {
         method: 'POST',
-        body: formData,
         headers: { Accept: 'application/json' },
+        body: formData,
       });
       const imgRes: { image: string } = await _res.json();
       const imageUrl = imgRes.image;

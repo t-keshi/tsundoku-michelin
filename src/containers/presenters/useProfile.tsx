@@ -17,6 +17,7 @@ export const useProfile = (uid: string) => {
       formData.append('name', name);
       const _res = await fetch('/api/image', {
         method: 'POST',
+        headers: { Accept: 'application/json' },
         body: formData,
       })
         .then((res) => res.json())
