@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { Storage, UploadOptions } from '@google-cloud/storage';
 import { v4 as uuid } from 'uuid';
 import formidable from 'formidable';
-import { datadogLogs } from '@datadog/browser-logs';
 import Cors from 'cors';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -25,7 +24,7 @@ const gcs = new Storage({
   projectId: process.env.GCP_PROJECT_ID,
   credentials: {
     client_email: process.env.GCP_CLIENT_EMAIL,
-    private_key: process.env.GCP_PRIVATE_KEY,
+    private_key: process.env.GCP_PRIVATE_KEY?.replace(/\\n/gm, '\n') || '',
   },
 });
 
@@ -36,7 +35,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const form = new formidable.IncomingForm({ multiples: false });
     form.parse(req, (err: Error, fields, files) => {
       if (err) {
-        datadogLogs.logger.error(err.message);
+        // eslint-disable-next-line no-console
+        console.log(err);
 
         return reject(err);
       }
@@ -55,13 +55,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     gzip: true,
   };
 
+  // eslint-disable-next-line no-console
+  console.log(gcsBucket);
+
   await gcsBucket
     .upload(fData.image.filepath, options)
     .then((result) => res.status(200).json({ image: result[1].mediaLink }))
     .catch((err) => {
-      datadogLogs.logger.error((err as Error).message);
-
-      return res.status(400).json((err as Error).message);
+      // eslint-disable-next-line no-console
+      console.log(err);
+      res.status(400).json((err as Error).message);
     });
 };
 
