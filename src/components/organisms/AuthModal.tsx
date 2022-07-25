@@ -28,7 +28,7 @@ export const AuthModal = () => {
     <Dialog isOpen={isOpen} onClose={onClose}>
       <Box className={h50} sx={{ width: 200, position: 'relative', mx: 'auto' }}>
         <Link href="/">
-          <Image src="/brand-logo.png" layout="fill" objectFit="contain" alt="logo" />
+          <Image src="/brand-logo.svg" layout="fill" objectFit="contain" alt="logo" />
         </Link>
       </Box>
       <Box sx={{ mt: 2 }} />

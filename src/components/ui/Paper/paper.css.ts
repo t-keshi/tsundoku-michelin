@@ -4,7 +4,7 @@ import { createTransition } from '../../system/utils/transition';
 
 export const paper = recipe({
   base: {
-    backgroundColor: vars.palette.lightMode.background,
+    backgroundColor: vars.palette.lightMode.background.paper,
     color: vars.palette.lightMode.text.primary,
     transition: createTransition(['box-shadow']),
     borderRadius: vars.radius,

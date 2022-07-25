@@ -2,14 +2,31 @@ import React, { Suspense } from 'react';
 import Head from 'next/head';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
+// import { GetServerSideProps } from 'next';
 import { Box, Flex, Typography } from '../../components/ui';
 import { NextPageWithLayout } from '../../type';
 import { useOnboard } from '../../containers/presenters/useOnboard';
 import { OnboardTemplate } from '../../templates/onboard';
+// import { fetchUserOnboard } from '../../containers/services/query/fetchUserOnboard';
 
 type PageProps = {
   uid: string;
 };
+
+// export const getServerSideProps: GetServerSideProps<PageProps, { uid: string }> = async (
+//   context,
+// ) => {
+//   const userId = context.params?.userId ?? '';
+//   const res = await sdk.FetchUserOnboard({ userId: context.uid });
+
+//   return {
+//     props: {
+//       fallback: {
+//         [unstable_serialize([fetchUserOnboard, uid])]: res,
+//       },
+//     },
+//   };
+// };
 
 const Onboard: React.FC<PageProps> = ({ uid }) => {
   const { data, onRegister } = useOnboard(uid);
@@ -50,7 +67,7 @@ const OnboardPage: NextPageWithLayout = () => {
 };
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <Box sx={{ bgColor: 'primary-light', minHeight: '100vh' }}>
+  <Box sx={{ bgColor: 'default', minHeight: '100vh' }}>
     <main>
       <Flex
         sx={{

@@ -9,13 +9,13 @@ type Props = {
 export const UserTemplate: React.FC<Props> = ({ user }) => (
   <>
     <Flex sx={{ columnGap: { mobile: 2, tablet: 4, desktop: 6 }, alignItems: 'center' }}>
-      <Avatar size="lg" src={user.image || '/brand-icon.png'} />
+      <Avatar size="lg" src={user.image || '/brand-icon.svg'} />
       <Box>
         <Typography variant="h2" gutterBottom>
           {user.name}
         </Typography>
         {user.profile && (
-          <Typography variant="h3" gutterBottom>
+          <Typography variant="body1" color="secondary">
             {user.profile}
           </Typography>
         )}

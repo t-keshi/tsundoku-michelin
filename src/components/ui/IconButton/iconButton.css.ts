@@ -1,23 +1,23 @@
-import { recipe } from "@vanilla-extract/recipes";
-import { vars } from "../../system/theme/index.css";
-import { createTransition } from "../../system/utils/transition";
+import { recipe } from '@vanilla-extract/recipes';
+import { vars } from '../../system/theme/index.css';
+import { createTransition } from '../../system/utils/transition';
 
 export const iconButton = recipe({
   base: {
-    display: "inline-flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: "50%",
-    overflow: "visible",
-    transition: createTransition(["background-color"], {
-      duration: "shortest",
+    display: 'inline-flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: '50%',
+    overflow: 'visible',
+    transition: createTransition(['background-color'], {
+      duration: 'shortest',
     }),
-    cursor: "pointer",
+    cursor: 'pointer',
     lineHeight: 1,
     color: vars.palette.lightMode.action.active,
-    backgroundColor: vars.palette.lightMode.background,
+    backgroundColor: vars.palette.lightMode.background.paper,
     selectors: {
-      "&:hover": {
+      '&:hover': {
         backgroundColor: vars.palette.lightMode.action.hover,
       },
     },
@@ -25,10 +25,10 @@ export const iconButton = recipe({
   variants: {
     transparent: {
       true: {
-        backgroundColor: "inherit",
+        backgroundColor: 'inherit',
         selectors: {
-          "&:hover": {
-            backgroundColor: "inherit",
+          '&:hover': {
+            backgroundColor: 'inherit',
           },
         },
       },
@@ -37,9 +37,9 @@ export const iconButton = recipe({
       true: {
         backgroundColor: vars.palette.primary.main,
         color: vars.palette.primary.contrastText,
-        cursor: "auto",
+        cursor: 'auto',
         selectors: {
-          "&:hover": {
+          '&:hover': {
             backgroundColor: vars.palette.primary.main,
           },
         },
@@ -67,7 +67,7 @@ export const iconButton = recipe({
     },
     disabled: {
       true: {
-        backgroundColor: "transparent",
+        backgroundColor: 'transparent',
         color: vars.palette.lightMode.action.disabled,
       },
     },

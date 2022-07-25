@@ -1,20 +1,20 @@
-import { recipe } from "@vanilla-extract/recipes";
-import { vars } from "../../system/theme/index.css";
-import { createTransition } from "../../system/utils/transition";
+import { recipe } from '@vanilla-extract/recipes';
+import { vars } from '../../system/theme/index.css';
+import { createTransition } from '../../system/utils/transition';
 
 export const popoverPaper = recipe({
   base: {
-    backgroundColor: vars.palette.lightMode.background,
+    backgroundColor: vars.palette.lightMode.background.paper,
     color: vars.palette.lightMode.text.primary,
-    transition: createTransition(["box-shadow"]),
+    transition: createTransition(['box-shadow']),
     borderRadius: vars.radius,
-    position: "absolute",
-    overflowY: "auto",
-    overflowX: "hidden",
+    position: 'absolute',
+    overflowY: 'auto',
+    overflowX: 'hidden',
     minWidth: 16,
     minHeight: 16,
-    maxWidth: "calc(100% - 32px)",
-    maxHeight: "calc(100% - 32px)",
+    maxWidth: 'calc(100% - 32px)',
+    maxHeight: 'calc(100% - 32px)',
     outline: 0,
   },
   variants: {

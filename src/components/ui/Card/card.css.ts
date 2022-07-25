@@ -1,12 +1,12 @@
-import { recipe } from "@vanilla-extract/recipes";
-import { vars } from "../../system/theme/index.css";
-import { createTransition } from "../../system/utils/transition";
+import { recipe } from '@vanilla-extract/recipes';
+import { vars } from '../../system/theme/index.css';
+import { createTransition } from '../../system/utils/transition';
 
 export const card = recipe({
   base: {
-    transition: createTransition(["box-shadow"]),
+    transition: createTransition(['box-shadow']),
     borderRadius: vars.radius,
-    overflow: "hidden",
+    overflow: 'hidden',
   },
   variants: {
     outlined: {
@@ -26,10 +26,10 @@ export const card = recipe({
     },
     color: {
       paper: {
-        backgroundColor: vars.palette.lightMode.background,
+        backgroundColor: vars.palette.lightMode.background.paper,
       },
       inherit: {
-        color: "inherit",
+        color: 'inherit',
       },
     },
     elevation: {
@@ -54,8 +54,8 @@ const MEDIA_HEIGHT = 200;
 export const cardMedia = recipe({
   base: {
     height: 200,
-    width: "100%",
-    position: "relative",
+    width: '100%',
+    position: 'relative',
   },
 });
 
@@ -67,23 +67,23 @@ export const cardContent = recipe({
     paddingBottom: vars.spacing[1],
     marginTop: vars.spacing[1],
     height: `calc(100% - ${MEDIA_HEIGHT}px)`,
-    display: "grid",
-    gridTemplateRows: "auto 1fr",
+    display: 'grid',
+    gridTemplateRows: 'auto 1fr',
   },
 });
 
 export const cardFooter = recipe({
   base: {
-    marginTop: "auto",
+    marginTop: 'auto',
     paddingBottom: vars.spacing[1],
   },
 });
 
 export const cardTitle = recipe({
   base: {
-    display: "-webkit-box",
-    overflow: "hidden",
+    display: '-webkit-box',
+    overflow: 'hidden',
     WebkitLineClamp: 2,
-    WebkitBoxOrient: "vertical",
+    WebkitBoxOrient: 'vertical',
   },
 });

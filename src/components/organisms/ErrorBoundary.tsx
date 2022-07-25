@@ -100,7 +100,7 @@ export const Fallback: FallbackRender = () => {
   }, []);
 
   return (
-    <Box sx={{ bgColor: 'primary-light', minHeight: '100vh' }}>
+    <Box sx={{ bgColor: 'default', minHeight: '100vh' }}>
       <main>
         <Flex
           sx={{
@@ -110,7 +110,7 @@ export const Fallback: FallbackRender = () => {
             justifyContent: 'center',
           }}
         >
-          <Avatar size="lg" src="/brand-icon.png" />
+          <Avatar size="lg" src="/brand-icon.svg" />
           <Box sx={{ mt: 2 }} />
           <Typography variant="h1" paragraph>
             SORRY

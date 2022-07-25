@@ -4,7 +4,7 @@ import { MdChevronLeft } from 'react-icons/md';
 import { Avatar, Box, Button, Flex, Typography } from '../components/ui';
 
 export const NotFound = () => (
-  <Box sx={{ bgColor: 'primary-light', minHeight: '100vh' }}>
+  <Box sx={{ bgColor: 'default', minHeight: '100vh' }}>
     <main>
       <Flex
         sx={{
@@ -14,7 +14,7 @@ export const NotFound = () => (
           justifyContent: 'center',
         }}
       >
-        <Avatar size="lg" src="/brand-icon.png" />
+        <Avatar size="lg" src="/brand-icon.svg" />
         <Box sx={{ mt: 2 }} />
         <Typography variant="h1" paragraph>
           SORRY

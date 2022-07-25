@@ -91,7 +91,7 @@ export const EditTemplate: React.FC<Props> = ({ bookLog, bookTitle, bookContents
 
   return (
     <Form onSubmit={handleFormSubmit}>
-      <AppBar color="primary" shadow="neumorphism">
+      <AppBar color="default" shadow="neumorphism">
         <Toolbar>
           <Container disablePadding maxWidth="desktop" sx={{ height: '100%' }}>
             <Flex

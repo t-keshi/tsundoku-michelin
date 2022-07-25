@@ -52,7 +52,7 @@ const EditPage: NextPageWithLayout<PageProps> = () => {
 };
 
 EditPage.getLayout = (page: React.ReactElement) => (
-  <Box sx={{ bgColor: 'primary-light', minHeight: '100vh' }}>{page}</Box>
+  <Box sx={{ bgColor: 'default', minHeight: '100vh' }}>{page}</Box>
 );
 
 export default EditPage;

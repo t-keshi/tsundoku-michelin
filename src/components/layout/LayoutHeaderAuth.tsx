@@ -42,7 +42,7 @@ export const LayoutHeaderAuth = () => {
   return (
     <>
       <IconButton onClick={onMenuOpen}>
-        <Avatar priority src={session.user?.image ? session.user.image : '/brand-icon.png'} />
+        <Avatar priority src={session.user?.image ? session.user.image : '/brand-icon.svg'} />
       </IconButton>
       <Link href="/me/bookshelf">
         <Button>MY本棚</Button>

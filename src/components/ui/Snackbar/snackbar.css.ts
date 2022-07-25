@@ -1,24 +1,24 @@
-import { recipe } from "@vanilla-extract/recipes";
-import { vars } from "../../system/theme/index.css";
-import { mq } from "../../system/utils/mediaQuery";
+import { recipe } from '@vanilla-extract/recipes';
+import { vars } from '../../system/theme/index.css';
+import { mq } from '../../system/utils/mediaQuery';
 
 export const snackbarButton = recipe({
   base: {
-    cursor: "pointer",
+    cursor: 'pointer',
   },
 });
 
 export const snackbar = recipe({
   base: {
     zIndex: vars.zIndex.snackbar,
-    position: "fixed",
-    display: "flex",
+    position: 'fixed',
+    display: 'flex',
     bottom: 8,
     left: 8,
-    alignItems: "center",
-    justifyContent: "flex-start",
-    "@media": {
-      [mq("tablet")]: {
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    '@media': {
+      [mq('tablet')]: {
         bottom: 24,
         left: 24,
       },
@@ -27,7 +27,7 @@ export const snackbar = recipe({
   variants: {
     inline: {
       true: {
-        display: "inline-grid",
+        display: 'inline-grid',
       },
     },
   },
@@ -37,16 +37,16 @@ export const snackbarContent = recipe({
   base: {
     ...vars.typography.body2,
     color: vars.palette.lightMode.text.primary,
-    backgroundColor: vars.palette.lightMode.background,
-    display: "flex",
-    alignItems: "center",
-    flexWrap: "wrap",
-    padding: "14px 16px",
+    backgroundColor: vars.palette.lightMode.background.paper,
+    display: 'flex',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    padding: '14px 16px',
     borderRadius: vars.radius,
     flexGrow: 1,
-    "@media": {
-      [mq("tablet")]: {
-        flexGrow: "initial",
+    '@media': {
+      [mq('tablet')]: {
+        flexGrow: 'initial',
         minWidth: 288,
       },
     },
@@ -57,7 +57,7 @@ export const snackbarContent = recipe({
 export const snackbarIcon = recipe({
   base: {
     marginRight: 12,
-    display: "flex",
+    display: 'flex',
     fontSize: 22,
     opacity: 0.9,
   },

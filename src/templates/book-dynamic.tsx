@@ -1,5 +1,5 @@
 import React, { Suspense, useCallback, useState } from 'react';
-import { MdOutlineBookmarkAdd, MdTaskAlt } from 'react-icons/md';
+import { MdEditNote, MdOutlineBookmarkAdd, MdTaskAlt } from 'react-icons/md';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { Button, Typography } from '../components/ui';
@@ -43,7 +43,7 @@ const BookDynamic: React.FC<Props> = ({ uid, bookId }) => {
   return (
     <>
       <LinkWithAuth href={`/edit/${bookId}`}>
-        <Button startIcon={<>✍️</>}>読書ログを{hasBookLog ? '更新' : '投稿'}</Button>
+        <Button startIcon={<MdEditNote />}>読書ログを{hasBookLog ? '更新' : '投稿'}</Button>
       </LinkWithAuth>
       {inBookshelf ? (
         <ButtonWithAuth>

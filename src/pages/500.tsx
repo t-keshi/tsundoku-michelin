@@ -2,7 +2,7 @@ import React from 'react';
 import { Avatar, Box, Flex, Typography } from '../components/ui';
 
 export const InternalServerError = () => (
-  <Box sx={{ bgColor: 'primary-light', minHeight: '100vh' }}>
+  <Box sx={{ bgColor: 'default', minHeight: '100vh' }}>
     <main>
       <Flex
         sx={{
@@ -12,7 +12,7 @@ export const InternalServerError = () => (
           justifyContent: 'center',
         }}
       >
-        <Avatar size="lg" src="/brand-icon.png" />
+        <Avatar size="lg" src="/brand-icon.svg" />
         <Box sx={{ mt: 2 }} />
         <Typography variant="h1" paragraph>
           SORRY

@@ -27,7 +27,7 @@ export const LayoutHeader = () => (
             >
               <Link href="/">
                 <Image
-                  src="/brand-logo.png"
+                  src="/brand-logo.svg"
                   layout="fill"
                   objectFit="contain"
                   alt="logo"

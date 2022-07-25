@@ -72,7 +72,7 @@ export const OnboardTemplate: React.FC<Props> = ({ user, onSubmit }) => {
         </Typography>
         <Flex sx={{ alignItems: 'center', justifyContent: 'center', py: 5 }}>
           <IconButton>
-            <Avatar size="lg" src={imageDataUrl || user?.image || '/brand-icon.png'} priority />
+            <Avatar size="lg" src={imageDataUrl || user?.image || '/brand-icon.svg'} priority />
           </IconButton>
         </Flex>
         <Label htmlFor="name">表示名(半角英数字または_, -)</Label>

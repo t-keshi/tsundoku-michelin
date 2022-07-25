@@ -101,7 +101,7 @@ export const ProfileTemplate: React.FC<Props> = ({ user, onUpdateUserImage, onUp
       <Box sx={{ mt: 3 }} />
       <Flex sx={{ columnGap: { mobile: 2, tablet: 4, desktop: 6 } }}>
         <Box>
-          <Avatar size="lg" src={user.image || '/brand-icon.png'} />
+          <Avatar size="lg" src={user.image || '/brand-icon.svg'} />
           <Flex sx={{ mt: 1, justifyContent: 'center' }}>
             <input hidden ref={inputRef} type="file" accept="image/*" onChange={onUpload} />
             <Button variant="text" onClick={handleClickChangeImage}>

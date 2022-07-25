@@ -57,7 +57,7 @@ export const BookTemplate: React.FC<Props> = ({ bookWithLogs }) => (
                     <Avatar
                       size="sm"
                       sx={{ cursor: 'pointer' }}
-                      src={log.user.image || '/brand-icon.png'}
+                      src={log.user.image || '/brand-icon.svg'}
                     />
                     <Typography variant="body2" color="primary" clickable>
                       {log.user.name}
@@ -72,7 +72,7 @@ export const BookTemplate: React.FC<Props> = ({ bookWithLogs }) => (
                 </Typography>
               </Flex>
               <Accordion
-                initialIsOpen={index === 0}
+                initialIsOpen={index === 0 || log.log.length < 200}
                 excerpt={<Typography>{log.log.slice(0, 200)}</Typography>}
                 fullContent={
                   <Box>

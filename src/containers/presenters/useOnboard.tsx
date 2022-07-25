@@ -11,7 +11,7 @@ export const useOnboard = (uid: string) => {
     {
       userId: uid,
     },
-    { suspense: true },
+    { suspense: true, revalidateOnMount: false },
   );
 
   const { mutate: resetUsername } = useMutation(() => sdk.ResetUsername());

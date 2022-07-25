@@ -1,17 +1,17 @@
-import { recipe } from "@vanilla-extract/recipes";
-import { vars } from "../../system/theme/index.css";
+import { recipe } from '@vanilla-extract/recipes';
+import { vars } from '../../system/theme/index.css';
 
 export const appBar = recipe({
   base: {
-    display: "flex",
-    flexDirection: "column",
-    width: "100%",
-    boxSizing: "border-box",
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    boxSizing: 'border-box',
     flexShrink: 0,
-    position: "fixed",
+    position: 'fixed',
     zIndex: vars.zIndex.appBar,
     top: 0,
-    left: "auto",
+    left: 'auto',
     right: 0,
 
     borderRadius: 0,
@@ -19,10 +19,10 @@ export const appBar = recipe({
   variants: {
     color: {
       default: {
-        backgroundColor: vars.palette.lightMode.background,
+        backgroundColor: vars.palette.lightMode.background.default,
       },
-      primary: {
-        backgroundColor: vars.palette.primary.light,
+      white: {
+        backgroundColor: vars.palette.common.white,
       },
     },
     outlined: {
