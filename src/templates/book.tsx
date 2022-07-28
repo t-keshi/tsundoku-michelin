@@ -41,7 +41,14 @@ export const BookTemplate: React.FC<Props> = ({ bookWithLogs }) => (
               <Typography variant="overline" display="block" sx={{ textAlign: 'center' }}>
                 あなたの積読を、みんなの資産に。
               </Typography>
-              <Flex className={minHeight32} sx={{ columnGap: 2 }}>
+              <Flex
+                className={minHeight32}
+                sx={{
+                  columnGap: 2,
+                  rowGap: 2,
+                  flexDirection: { mobile: 'column', tablet: 'row', desktop: 'row' },
+                }}
+              >
                 <BookDynamicComponent />
               </Flex>
             </Box>

@@ -11,18 +11,14 @@ export const bookLogsQuery = extendType({
       args: { userId: stringArg() },
       resolve: async (
         _,
-        __,
+        args: { userId: string },
         ctx: {
           session: Session | null;
           prisma: PrismaClient;
         },
       ) => {
-        if (!ctx.session) {
-          throw new Error('Invalid session value');
-        }
-
         const res = await ctx.prisma.bookLog.findMany({
-          where: { userId: ctx.session.user.uid },
+          where: { userId: args.userId },
           orderBy: {
             updatedAt: 'desc',
           },

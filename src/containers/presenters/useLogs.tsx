@@ -10,7 +10,11 @@ export const useLogs = (uid: string) => {
     data,
     error,
     mutate: mutateBookLogs,
-  } = sdk.useFetchUserBookLogs([fetchUserBookLogs, uid], { userId: uid }, { suspense: true });
+  } = sdk.useFetchUserBookLogs(
+    [fetchUserBookLogs, uid],
+    { userId: uid },
+    { suspense: true, revalidateOnMount: false },
+  );
 
   const { mutate: removeBookLog } = useMutation(
     (bookLogId: string) => sdk.RemoveBookLog({ bookLogId }),

@@ -23,9 +23,12 @@ export const booksQuery = extendType({
           ...(args.keyword && { where: { title: { contains: args.keyword } } }),
           ...(args.offset && { skip: args.offset }),
           ...(args.limit && { take: args.limit }),
-          orderBy: {
-            bookshelfCount: 'desc',
-          },
+          orderBy: [
+            {
+              bookshelfCount: 'desc',
+            },
+            { title: 'asc' },
+          ],
         });
         console.log('##############', res, '##############');
 

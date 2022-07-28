@@ -7,7 +7,7 @@ export const useProfile = (uid: string) => {
   const { data, error } = sdk.useFetchProfile(
     [fetchProfile, uid],
     { userId: uid },
-    { suspense: true },
+    { suspense: true, revalidateOnMount: false },
   );
 
   const { mutate: updateUserImage } = useMutation(

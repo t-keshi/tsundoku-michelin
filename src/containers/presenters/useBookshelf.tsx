@@ -5,7 +5,7 @@ export const useBookshelf = (uid: string) => {
   const { data, error } = sdk.useFetchBookshelfBooks(
     [fetchBookshelfBooks, uid],
     { userId: uid },
-    { suspense: true },
+    { suspense: true, revalidateOnMount: false },
   );
 
   return {

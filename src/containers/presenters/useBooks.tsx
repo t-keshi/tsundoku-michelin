@@ -6,7 +6,12 @@ export const useBooks = (page: number) => {
   const { data, error } = sdk.useFetchBooksEdge(
     [fetchBooksEdge, offset],
     { offset },
-    { suspense: true },
+    {
+      suspense: true,
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    },
   );
 
   return {

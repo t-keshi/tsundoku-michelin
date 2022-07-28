@@ -22,9 +22,12 @@ export const booksEdgeQuery = extendType({
             ...(args.keyword && { where: { title: { contains: args.keyword } } }),
             ...(args.offset && { skip: args.offset }),
             ...(args.limit && { take: args.limit + 1 }),
-            orderBy: {
-              bookshelfCount: 'desc',
-            },
+            orderBy: [
+              {
+                bookshelfCount: 'desc',
+              },
+              { title: 'asc' },
+            ],
           })
           .catch((err) => datadogLogs.logger.error(err.message));
 
