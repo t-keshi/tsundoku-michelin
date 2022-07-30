@@ -24,7 +24,7 @@ export const booksEdgeQuery = extendType({
             ...(args.limit && { take: args.limit + 1 }),
             orderBy: [
               {
-                bookshelfCount: 'desc',
+                bookLogCount: 'desc',
               },
               { title: 'asc' },
             ],

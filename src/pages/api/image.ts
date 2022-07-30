@@ -55,15 +55,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     gzip: true,
   };
 
-  // eslint-disable-next-line no-console
-  console.log(gcsBucket);
-
   await gcsBucket
     .upload(fData.image.filepath, options)
     .then((result) => res.status(200).json({ image: result[1].mediaLink }))
     .catch((err) => {
-      // eslint-disable-next-line no-console
-      console.log(err);
       res.status(400).json((err as Error).message);
     });
 };
