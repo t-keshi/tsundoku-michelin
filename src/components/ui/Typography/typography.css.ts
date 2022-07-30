@@ -152,8 +152,6 @@ export const figure = recipe({
     borderLeft: `3px solid ${vars.palette.lightMode.text.secondary}`,
     marginTop: vars.spacing[4],
     marginBottom: vars.spacing[4],
-    paddingTop: vars.spacing[2],
-    paddingBottom: vars.spacing[2],
     paddingLeft: vars.spacing[2],
     paddingRight: vars.spacing[2],
     '@media': {
@@ -169,6 +167,7 @@ export const figure = recipe({
 export const blockquote = recipe({
   base: {
     ...vars.typography.body1,
+    lineHeight: 1,
   },
   variants: {
     remark: {

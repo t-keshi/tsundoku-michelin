@@ -6,45 +6,48 @@ import { dark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import { Typography } from '../ui';
 
 const H1: Components['h1'] = ({ children }) => (
-  <Typography variant="h1" gutterBottom responsive>
+  <Typography variant="h1" gutterBottom responsive sx={{ mt: 4 }}>
     {children}
   </Typography>
 );
 
 const H2: Components['h2'] = ({ children }) => (
-  <Typography variant="h2" paragraph responsive underline>
+  <Typography variant="h2" paragraph responsive underline sx={{ mt: 4 }}>
     {children}
   </Typography>
 );
 
 const H3: Components['h3'] = ({ children }) => (
-  <Typography variant="h3" paragraph responsive>
+  <Typography variant="h3" paragraph responsive sx={{ mt: 4 }}>
     {children}
   </Typography>
 );
 
 const H4: Components['h4'] = ({ children }) => (
-  <Typography variant="h4" paragraph responsive>
+  <Typography variant="h4" paragraph responsive sx={{ mt: 4 }}>
     {children}
   </Typography>
 );
 
 const H5: Components['h5'] = ({ children }) => (
-  <Typography variant="h5" paragraph responsive>
+  <Typography variant="h5" paragraph responsive sx={{ mt: 4 }}>
     {children}
   </Typography>
 );
 
 const H6: Components['h6'] = ({ children }) => (
-  <Typography variant="h6" paragraph responsive>
+  <Typography variant="h6" paragraph responsive sx={{ mt: 2 }}>
     {children}
   </Typography>
 );
 
 const P: Components['p'] = ({ children }) => (
-  <Typography variant="body1" noWrap remark>
-    {children}
-  </Typography>
+  <>
+    <Typography variant="body1" noWrap remark>
+      {children}
+    </Typography>
+    <br />
+  </>
 );
 
 const Blockquote: Components['blockquote'] = ({ children }) => (
