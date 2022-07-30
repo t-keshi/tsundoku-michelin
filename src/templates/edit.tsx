@@ -56,7 +56,8 @@ const generateDefaultLog = (bookContents: FetchEditBookLogInfoQuery['book']['boo
     }
 
     return `${accum}
-    ${sharp} ${index} ${heading}
+
+${sharp} ${index} ${heading}
     `;
   }, '');
 
