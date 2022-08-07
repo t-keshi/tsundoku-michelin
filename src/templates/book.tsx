@@ -21,17 +21,19 @@ type Props = {
 
 export const BookTemplate: React.FC<Props> = ({ bookWithLogs }) => (
   <>
-    <Typography
-      variant="h2"
-      responsive
-      sx={{
-        px: { mobile: 3, tablet: 5, desktop: 7 },
-        py: 3,
-        fontWeight: 'bold',
-      }}
-    >
-      {bookWithLogs.title}
-    </Typography>
+    <Link href={bookWithLogs.url}>
+      <Typography
+        variant="h2"
+        responsive
+        sx={{
+          px: { mobile: 3, tablet: 5, desktop: 7 },
+          py: 3,
+          fontWeight: 'bold',
+        }}
+      >
+        {bookWithLogs.title}
+      </Typography>
+    </Link>
     <Box sx={{ mt: 5 }} />
     <Flex sx={{ columnGap: 2 }}>
       <Box sx={{ width: '100%' }}>
@@ -106,6 +108,7 @@ export const BookTemplate: React.FC<Props> = ({ bookWithLogs }) => (
           media={bookWithLogs.image}
           title={bookWithLogs.title}
           color="paper"
+          href={bookWithLogs.url}
         />
       </Box>
     </Flex>
