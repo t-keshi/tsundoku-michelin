@@ -1,15 +1,5 @@
 module.exports = {
-  extends: [
-    'next',
-    'next/core-web-vitals',
-    'plugin:react/recommended',
-    'airbnb',
-    'airbnb/hooks',
-    'plugin:import/errors',
-    'plugin:jsx-a11y/recommended',
-    'plugin:@typescript-eslint/recommended',
-    'prettier',
-  ],
+  extends: ['next', 'next/core-web-vitals', 'plugin:react/recommended', 'airbnb', 'airbnb/hooks', 'plugin:import/errors', 'plugin:jsx-a11y/recommended', 'plugin:@typescript-eslint/recommended', 'prettier', 'plugin:storybook/recommended'],
   plugins: ['jsx-a11y', 'prefer-arrow', 'react', 'react-hooks'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
