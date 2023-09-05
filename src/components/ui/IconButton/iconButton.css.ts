@@ -8,6 +8,7 @@ export const iconButton = recipe({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: '50%',
+    border: '1px solid red',
     overflow: 'visible',
     transition: createTransition(['background-color'], {
       duration: 'shortest',

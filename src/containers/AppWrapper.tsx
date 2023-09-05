@@ -10,7 +10,7 @@ import { SnackbarProvider } from '../containers/contexts/snackbar';
 import { NextPageWithLayout } from '../type';
 import { TopErrorBoundary } from '../components/organisms/ErrorBoundary';
 
-type AppPropsWithLayout = Partial<AppProps> & {
+type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 

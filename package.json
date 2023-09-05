@@ -17,7 +17,8 @@
     "generate": "npm run typegen & npm run codegen",
     "seed": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed.ts",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "chromatic": "npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
@@ -96,6 +97,7 @@
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.30.7",
     "@typescript-eslint/parser": "^5.30.7",
+    "@vanilla-extract/webpack-plugin": "^2.3.0",
     "eslint": "8.18.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-next": "12.1.6",
@@ -108,11 +110,14 @@
     "jest": "^28.1.2",
     "jest-environment-jsdom": "^28.1.2",
     "lint-staged": "^13.0.3",
+    "mini-css-extract-plugin": "^2.7.6",
     "prettier": "^2.7.1",
     "prisma": "^3.5.0",
     "storybook": "^7.4.0",
     "testing-library-selector": "^0.2.1",
     "ts-node": "^10.8.2",
     "typescript": "^4.7.4"
-  }
+  },
+  "readme": "ERROR: No README data found!",
+  "_id": "tsundoku-michelin@0.1.0"
 }

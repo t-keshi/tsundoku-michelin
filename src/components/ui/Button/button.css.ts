@@ -1,20 +1,20 @@
-import { recipe } from "@vanilla-extract/recipes";
-import { vars } from "../../system/theme/index.css";
+import { recipe } from '@vanilla-extract/recipes';
+import { vars } from '../../system/theme/index.css';
 
 export const button = recipe({
   base: {
-    padding: "6px 16px",
-    display: "inline-flex",
-    justifyContent: "center",
-    position: "relative",
-    boxSizing: "border-box",
-    alignItems: "center",
+    padding: '6px 16px',
+    borderRadius: '9999px',
+    display: 'inline-flex',
+    justifyContent: 'center',
+    position: 'relative',
+    boxSizing: 'border-box',
+    alignItems: 'center',
     outline: 0,
-    cursor: "pointer",
-    userSelect: "none",
-    verticalAlign: "middle",
-    borderRadius: 6,
-    backgroundColor: "inherit",
+    cursor: 'pointer',
+    userSelect: 'none',
+    verticalAlign: 'middle',
+    backgroundColor: 'inherit',
   },
   variants: {
     color: {
@@ -38,80 +38,80 @@ export const button = recipe({
   compoundVariants: [
     {
       variants: {
-        color: "inherit",
-        variant: "contained",
+        color: 'inherit',
+        variant: 'contained',
       },
       style: {
-        color: "inherit",
-        border: "none",
+        color: 'inherit',
+        border: 'none',
         background: vars.palette.lightMode.action.active,
-        ":hover": {
+        ':hover': {
           background: vars.palette.lightMode.action.hover,
         },
       },
     },
     {
       variants: {
-        color: "primary",
-        variant: "contained",
+        color: 'primary',
+        variant: 'contained',
       },
       style: {
         color: vars.palette.primary.contrastText,
-        border: "none",
+        border: 'none',
         background: vars.palette.primary.main,
-        ":hover": {
+        ':hover': {
           background: vars.palette.primary.dark,
         },
       },
     },
     {
       variants: {
-        color: "secondary",
-        variant: "contained",
+        color: 'secondary',
+        variant: 'contained',
       },
       style: {
         color: vars.palette.secondary.contrastText,
-        border: "none",
+        border: 'none',
         background: vars.palette.secondary.main,
-        ":hover": {
+        ':hover': {
           background: vars.palette.secondary.dark,
         },
       },
     },
     {
       variants: {
-        color: "inherit",
-        variant: "outlined",
+        color: 'inherit',
+        variant: 'outlined',
       },
       style: {
         border: `1px solid ${vars.palette.lightMode.divider}`,
-        ":hover": {
+        ':hover': {
           background: vars.palette.lightMode.action.hover,
         },
       },
     },
     {
       variants: {
-        color: "primary",
-        variant: "outlined",
+        color: 'primary',
+        variant: 'outlined',
       },
       style: {
         color: vars.palette.primary.main,
         border: `1px solid ${vars.palette.primary.main}`,
-        ":hover": {
+        ':hover': {
           background: vars.palette.lightMode.action.hover,
         },
       },
     },
     {
       variants: {
-        color: "secondary",
-        variant: "outlined",
+        color: 'secondary',
+        variant: 'outlined',
       },
       style: {
         color: vars.palette.secondary.main,
         border: `1px solid ${vars.palette.secondary.main}`,
-        ":hover": {
+        ':hover': {
           background: vars.palette.lightMode.action.hover,
         },
       },
@@ -121,7 +121,7 @@ export const button = recipe({
 
 export const buttonStartIcon = recipe({
   base: {
-    display: "inherit",
+    display: 'inherit',
     marginRight: 8,
     marginLeft: -4,
   },
@@ -136,7 +136,7 @@ export const buttonStartIcon = recipe({
 
 export const buttonEndIcon = recipe({
   base: {
-    display: "inherit",
+    display: 'inherit',
     marginRight: -4,
     marginLeft: 8,
   },
